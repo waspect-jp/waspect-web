@@ -197,7 +197,7 @@ export default {
   'about.story.p2': 'We bring the Japanese commitment to precision, craftsmanship (Monozukuri), and hospitality (Omotenashi) into the digital age.',
   'about.founders.label': 'The Minds Behind Waspect',
   'about.founders.title': 'Our Founders',
-  'about.mashio.name': 'Mashio',
+  'about.mashio.name': 'Mashio Yamamoto',
   'about.mashio.role': 'Co-founder & CEO',
   'about.mashio.bio': 'Alumnus of <strong>Waseda University</strong> and former lead at <strong>Suntory</strong>. Mashio focuses on global collaboration and restoring Japan\'s competitiveness through strategic bridge-building.',
   'about.stefan.name': 'Stefan Mihaylov',

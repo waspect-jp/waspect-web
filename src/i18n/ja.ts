@@ -197,7 +197,7 @@ export default {
   'about.story.p2': '日本が誇る精密さ、ものづくり、おもてなしの精神をデジタル時代に持ち込みます。',
   'about.founders.label': '創業メンバー',
   'about.founders.title': '創設者紹介',
-  'about.mashio.name': 'Mashio',
+  'about.mashio.name': '山本 真潮',
   'about.mashio.role': '共同創設者 & CEO',
   'about.mashio.bio': '<strong>早稲田大学</strong>卒業。<strong>サントリー</strong>にて事業部門をリード。戦略的な架け橋づくりを通じて、グローバル協働と日本の競争力回復に注力。',
   'about.stefan.name': 'Stefan Mihaylov',
