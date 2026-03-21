@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "start": "netlify dev",
+    "start": "astro dev",
     "build": "astro check && astro build",
     "preview": "astro preview",
     "check": "astro check",
@@ -21,7 +21,6 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.8",
-    "netlify-cli": "^24.4.0",
     "typescript": "^5.9.3"
   }
 }
