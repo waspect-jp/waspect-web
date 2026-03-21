@@ -50,13 +50,28 @@ const currentYear = new Date().getFullYear();
         <div class="md:col-span-4">
           <h4 class="text-xs font-bold text-primary uppercase tracking-[0.15em] mb-5">{t(lang, 'footer.newsletter')}</h4>
           <p class="text-on-surface-variant text-sm mb-4">{t(lang, 'footer.newsletter.desc')}</p>
-          <form class="flex gap-2" name="newsletter" method="POST" action="/" data-netlify="true" netlify-honeypot="bot-field">
-            <p class="hidden"><label>Don't fill this out: <input name="bot-field" /></label></p>
-            <input name="email" class="flex-1 bg-surface-container-lowest border border-outline-variant/20 rounded-full py-2.5 px-4 text-sm text-on-surface placeholder:text-outline/40 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" placeholder={t(lang, 'footer.newsletter.placeholder')} type="email" required aria-label="Email" />
-            <button type="submit" class="btn btn-primary btn-sm px-5" aria-label="Subscribe">
-              <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
-            </button>
-          </form>
+          <div id="newsletter-wrap">
+            <form id="newsletter-form" class="flex gap-2" name="newsletter" method="POST" action="/" data-netlify="true" netlify-honeypot="bot-field">
+              <p class="hidden"><label>Don't fill this out: <input name="bot-field" /></label></p>
+              <input name="email" class="flex-1 bg-surface-container-lowest border border-outline-variant/20 rounded-full py-2.5 px-4 text-sm text-on-surface placeholder:text-outline/40 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" placeholder={t(lang, 'footer.newsletter.placeholder')} type="email" required aria-label="Email" />
+              <button type="submit" class="btn btn-primary btn-sm px-5" aria-label="Subscribe">
+                <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+              </button>
+            </form>
+            <p id="newsletter-success" class="hidden text-sm text-green-600 font-medium flex items-center gap-2">
+              <span class="material-symbols-outlined text-lg">check_circle</span>
+              {lang === 'ja' ? '登録ありがとうございます！' : 'Thank you for subscribing!'}
+            </p>
+          </div>
+          <script is:inline>
+            document.getElementById('newsletter-form')?.addEventListener('submit', function(e) {
+              e.preventDefault();
+              var form = this;
+              fetch(form.action, { method: 'POST', body: new URLSearchParams(new FormData(form)) }).catch(function(){});
+              form.classList.add('hidden');
+              document.getElementById('newsletter-success')?.classList.remove('hidden');
+            });
+          </script>
         </div>
       </div>
       <div class="mt-16 pt-8 border-t border-outline-variant/15 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-on-surface-variant/60">
