@@ -1,0 +1,129 @@
+---
+import { t, localePath, switchLangPath, type Lang } from '../i18n/utils';
+
+interface Props {
+  activePage?: string;
+  lang?: Lang;
+}
+
+const { activePage = '', lang = 'ja' } = Astro.props;
+const currentPath = Astro.url.pathname;
+
+const navLinks = [
+  { path: '/', label: t(lang, 'nav.home'), id: 'home' },
+  { path: '/schools', label: t(lang, 'nav.schools'), id: 'schools' },
+  { path: '/businesses', label: t(lang, 'nav.businesses'), id: 'businesses' },
+  { path: '/kids', label: t(lang, 'nav.kids'), id: 'kids' },
+  { path: '/about', label: t(lang, 'nav.about'), id: 'about' },
+];
+
+const switchUrl = switchLangPath(lang, currentPath.replace(/^\/en/, '') || '/');
+---
+
+<nav id="main-nav" class="fixed top-0 w-full z-50 bg-white/70 backdrop-blur-xl transition-all duration-500">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <div class="flex justify-between items-center h-[72px]">
+      <a href={localePath(lang, '/')} class="flex items-center gap-3 group">
+        <img src="/images/logo.png" alt="Waspect" class="h-9 w-auto transition-transform duration-500 group-hover:scale-105" width="36" height="36" />
+        <div class="flex flex-col">
+          <span class="text-lg font-extrabold text-primary font-headline tracking-tight leading-none">Waspect</span>
+          <span class="text-[10px] text-on-surface-variant/60 font-medium tracking-widest">和スペクト</span>
+        </div>
+      </a>
+
+      <div class="hidden lg:flex items-center gap-1">
+        {navLinks.map((link) => (
+          <a
+            href={localePath(lang, link.path)}
+            class:list={[
+              'relative px-4 py-2 text-sm font-medium rounded-lg transition-all duration-300',
+              activePage === link.id
+                ? 'text-primary bg-primary/5'
+                : 'text-on-surface-variant hover:text-primary hover:bg-surface-container-low',
+            ]}
+          >
+            {link.label}
+            {activePage === link.id && (
+              <span class="absolute bottom-0 left-4 right-4 h-0.5 bg-primary rounded-full" />
+            )}
+          </a>
+        ))}
+      </div>
+
+      <div class="flex items-center gap-3">
+        <a
+          href={switchUrl}
+          class="hidden md:flex items-center gap-1.5 text-sm text-on-surface-variant hover:text-primary px-3 py-2 rounded-lg hover:bg-surface-container-low transition-all duration-300"
+        >
+          <span class="material-symbols-outlined text-[18px]">translate</span>
+          <span class="font-medium">{t(lang, 'nav.lang')}</span>
+        </a>
+        <a href={localePath(lang, '/contact')} class="btn btn-primary btn-sm shadow-none hover:shadow-[0_4px_16px_rgba(45,49,66,0.25)]">
+          {t(lang, 'nav.contact')}
+        </a>
+        <button
+          id="mobile-menu-btn"
+          class="lg:hidden flex items-center justify-center w-10 h-10 rounded-lg hover:bg-surface-container-low focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none transition-colors"
+          aria-label="Open menu"
+          aria-expanded="false"
+          aria-controls="mobile-menu"
+        >
+          <span class="material-symbols-outlined text-on-surface" id="menu-icon">menu</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="mobile-menu" class="hidden lg:hidden bg-white/95 backdrop-blur-xl border-t border-outline-variant/10 overflow-hidden transition-all duration-300" role="navigation">
+    <div class="px-6 py-4 space-y-1">
+      {navLinks.map((link) => (
+        <a
+          href={localePath(lang, link.path)}
+          class:list={[
+            'flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200',
+            activePage === link.id
+              ? 'text-primary bg-primary/5 font-bold'
+              : 'text-on-surface-variant hover:text-primary hover:bg-surface-container-low',
+          ]}
+        >
+          {link.label}
+        </a>
+      ))}
+      <a href={switchUrl} class="flex items-center gap-2 px-4 py-3 rounded-xl text-sm font-medium text-on-surface-variant hover:text-primary">
+        <span class="material-symbols-outlined text-[18px]">translate</span>
+        {t(lang, 'nav.lang')}
+      </a>
+      <div class="pt-3 mt-3 border-t border-outline-variant/10">
+        <a href={localePath(lang, '/contact')} class="btn btn-primary w-full text-center">{t(lang, 'nav.contact')}</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<script>
+  const btn = document.getElementById('mobile-menu-btn');
+  const menu = document.getElementById('mobile-menu');
+  const icon = document.getElementById('menu-icon');
+
+  function toggleMenu() {
+    const isOpen = !menu?.classList.contains('hidden');
+    menu?.classList.toggle('hidden');
+    if (btn) btn.setAttribute('aria-expanded', String(!isOpen));
+    if (btn) btn.setAttribute('aria-label', isOpen ? 'Open menu' : 'Close menu');
+    if (icon) icon.textContent = isOpen ? 'menu' : 'close';
+  }
+
+  btn?.addEventListener('click', toggleMenu);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !menu?.classList.contains('hidden')) {
+      toggleMenu();
+      btn?.focus();
+    }
+  });
+
+  const nav = document.getElementById('main-nav');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 20) nav?.classList.add('nav-scrolled');
+    else nav?.classList.remove('nav-scrolled');
+  }, { passive: true });
+</script>

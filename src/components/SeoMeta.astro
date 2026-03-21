@@ -1,0 +1,45 @@
+---
+import type { Lang } from '../i18n/utils';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  url?: string;
+  lang?: Lang;
+}
+
+const { title, description, image = '/images/og.png', url = '', lang = 'ja' } = Astro.props;
+const siteUrl = 'https://waspect.jp';
+const fullUrl = url ? `${siteUrl}${url}` : siteUrl;
+const fullImage = image.startsWith('http') ? image : `${siteUrl}${image}`;
+
+// Build hreflang paths
+const pathWithoutLocale = url.replace(/^\/en/, '') || '/';
+const jaUrl = `${siteUrl}${pathWithoutLocale}`;
+const enUrl = `${siteUrl}/en${pathWithoutLocale}`;
+---
+
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={fullImage} />
+<meta property="og:url" content={fullUrl} />
+<meta property="og:site_name" content="Waspect (和スペクト)" />
+<meta property="og:locale" content={lang === 'ja' ? 'ja_JP' : 'en_US'} />
+<meta property="og:locale:alternate" content={lang === 'ja' ? 'en_US' : 'ja_JP'} />
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={fullImage} />
+
+<!-- Canonical -->
+<link rel="canonical" href={fullUrl} />
+
+<!-- Hreflang -->
+<link rel="alternate" hreflang="ja" href={jaUrl} />
+<link rel="alternate" hreflang="en" href={enUrl} />
+<link rel="alternate" hreflang="x-default" href={jaUrl} />

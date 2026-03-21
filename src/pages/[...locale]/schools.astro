@@ -1,0 +1,177 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { t, localePath, getStaticPaths as gsp, type Lang } from '../../i18n/utils';
+export const getStaticPaths = gsp;
+const { lang } = Astro.props as { lang: Lang };
+---
+
+<BaseLayout title={t(lang, 'meta.schools.title')} description={t(lang, 'meta.schools.desc')} activePage="schools" lang={lang}>
+
+  <!-- Hero -->
+  <section class="relative min-h-[85vh] flex items-center overflow-hidden ink-wash">
+    <div class="enso-blob w-[500px] h-[500px] top-0 right-0 bg-tertiary"></div>
+    <div class="max-w-7xl mx-auto px-6 lg:px-8 w-full grid lg:grid-cols-2 gap-16 items-center py-20">
+      <div>
+        <span class="badge badge-primary hero-enter mb-6">{t(lang, 'schools.badge')}</span>
+        <h1 class="text-[clamp(2.5rem,5vw,4.5rem)] font-headline font-extrabold text-primary leading-[1.08] tracking-tight mb-8 hero-enter hero-enter-delay-1">
+          <span set:html={t(lang, 'schools.hero.title')} />
+        </h1>
+        <p class="text-lg lg:text-xl text-on-surface-variant max-w-xl leading-relaxed mb-10 hero-enter hero-enter-delay-2">
+          {t(lang, 'schools.hero.desc')}
+        </p>
+        <div class="flex flex-wrap gap-3 hero-enter hero-enter-delay-3">
+          <a href={localePath(lang, '/contact?who=school')} class="btn btn-primary">{t(lang, 'schools.hero.btn')}</a>
+          <a href="#programs" class="btn btn-ghost">{t(lang, 'schools.hero.btn2')}</a>
+        </div>
+      </div>
+      <div class="relative hero-enter hero-enter-delay-2">
+        <div class="aspect-square rounded-[2rem] overflow-hidden shadow-2xl relative">
+          <img alt="Students in a modern Japanese classroom" class="w-full h-full object-cover" src="/images/classroom-shizuoka.jpg" />
+          <div class="absolute inset-0 bg-gradient-to-t from-primary/15 via-transparent to-transparent"></div>
+        </div>
+        <div class="absolute -bottom-6 -left-6 card p-5 max-w-[240px]">
+          <div class="flex items-center gap-3 mb-2">
+            <span class="material-symbols-outlined text-tertiary text-2xl">verified</span>
+            <span class="font-headline font-bold text-primary text-sm">{t(lang, 'schools.mext')}</span>
+          </div>
+          <p class="text-xs text-on-surface-variant leading-relaxed">{t(lang, 'schools.mext.desc')}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- The Challenge -->
+  <section class="py-28 lg:py-36 bg-surface-container-low">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="flex flex-col lg:flex-row gap-16 items-center">
+        <div class="lg:w-1/2 reveal">
+          <div class="section-header">
+            <h2>{t(lang, 'schools.challenge.title')}</h2>
+          </div>
+          <div class="space-y-5 text-on-surface-variant leading-relaxed">
+            <p set:html={t(lang, 'schools.challenge.p1')}></p>
+            <p set:html={t(lang, 'schools.challenge.p2')}></p>
+          </div>
+        </div>
+        <div class="lg:w-1/2 grid grid-cols-2 gap-4 reveal-stagger">
+          <div class="card p-7 space-y-3">
+            <span class="material-symbols-outlined text-tertiary text-2xl">psychology</span>
+            <h4 class="font-bold text-primary text-sm">{t(lang, 'schools.challenge.analysis')}</h4>
+            <p class="text-xs text-on-surface-variant leading-relaxed">{t(lang, 'schools.challenge.analysis.desc')}</p>
+          </div>
+          <div class="card p-7 space-y-3 translate-y-6">
+            <span class="material-symbols-outlined text-tertiary text-2xl">diversity_3</span>
+            <h4 class="font-bold text-primary text-sm">{t(lang, 'schools.challenge.society')}</h4>
+            <p class="text-xs text-on-surface-variant leading-relaxed">{t(lang, 'schools.challenge.society.desc')}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- What Sets Us Apart -->
+  <section id="programs" class="py-28 lg:py-36">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 reveal-stagger">
+        {[
+          { icon: 'translate', title: t(lang, 'schools.feat.bilingual'), desc: t(lang, 'schools.feat.bilingual.desc'), color: 'bg-secondary-container text-on-secondary-container' },
+          { icon: 'school', title: t(lang, 'schools.feat.research'), desc: t(lang, 'schools.feat.research.desc'), color: 'bg-tertiary-fixed text-tertiary' },
+          { icon: 'tune', title: t(lang, 'schools.feat.tailored'), desc: t(lang, 'schools.feat.tailored.desc'), color: 'bg-secondary-fixed text-secondary' },
+          { icon: 'verified_user', title: t(lang, 'schools.feat.safety'), desc: t(lang, 'schools.feat.safety.desc'), color: 'bg-error-container text-error' },
+        ].map((item) => (
+          <div class="card stone-surface p-8 flex flex-col items-center text-center">
+            <div class:list={['w-14 h-14 rounded-2xl flex items-center justify-center mb-6', item.color]}>
+              <span class="material-symbols-outlined text-2xl">{item.icon}</span>
+            </div>
+            <h4 class="font-headline font-bold text-base mb-3">{item.title}</h4>
+            <p class="text-on-surface-variant text-sm leading-relaxed">{item.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- MEXT Alignment -->
+  <section class="py-28 lg:py-36 bg-surface-container-low">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col lg:flex-row gap-16 items-center">
+      <div class="lg:w-1/2 reveal">
+        <div class="section-header">
+          <h2>{t(lang, 'schools.align.title')}</h2>
+          <p>{t(lang, 'schools.align.desc')}</p>
+        </div>
+        <ul class="space-y-4">
+          {[
+            { title: t(lang, 'schools.align.society'), desc: t(lang, 'schools.align.society.desc') },
+            { title: t(lang, 'schools.align.giga'), desc: t(lang, 'schools.align.giga.desc') },
+            { title: t(lang, 'schools.align.info'), desc: t(lang, 'schools.align.info.desc') },
+          ].map((item) => (
+            <li class="flex items-start gap-4 p-4 rounded-xl bg-surface-container-lowest border-l-4 border-tertiary">
+              <span class="material-symbols-outlined text-tertiary mt-0.5">check_circle</span>
+              <div>
+                <span class="font-bold text-sm block">{item.title}</span>
+                <span class="text-sm text-on-surface-variant">{item.desc}</span>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div class="lg:w-1/2 reveal">
+        <div class="bg-primary p-10 lg:p-12 rounded-3xl text-white">
+          <h4 class="text-xl font-headline font-bold mb-8">{t(lang, 'schools.policy.title')}</h4>
+          <div class="space-y-6 text-sm">
+            <div class="border-b border-white/15 pb-4">
+              <span class="text-[10px] uppercase tracking-widest block mb-2 text-white/50 font-label">{t(lang, 'schools.policy.mext.label')}</span>
+              <p class="italic text-white/90">{t(lang, 'schools.policy.mext')}</p>
+            </div>
+            <div>
+              <span class="text-[10px] uppercase tracking-widest block mb-2 text-white/50 font-label">{t(lang, 'schools.policy.waspect.label')}</span>
+              <p class="text-white/90">{t(lang, 'schools.policy.waspect')}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Implementation Journey -->
+  <section class="py-28 lg:py-36">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="text-center section-header reveal">
+        <h2 class="mx-auto">{t(lang, 'schools.journey.title')}</h2>
+        <p class="mx-auto">{t(lang, 'schools.journey.desc')}</p>
+      </div>
+      <div class="grid md:grid-cols-4 gap-6 relative reveal-stagger">
+        <div class="hidden md:block absolute top-14 left-[12.5%] right-[12.5%] h-px bg-outline-variant/30"></div>
+        {[
+          { num: '1', title: t(lang, 'schools.journey.1'), desc: t(lang, 'schools.journey.1.desc'), color: 'text-primary' },
+          { num: '2', title: t(lang, 'schools.journey.2'), desc: t(lang, 'schools.journey.2.desc'), color: 'text-tertiary' },
+          { num: '3', title: t(lang, 'schools.journey.3'), desc: t(lang, 'schools.journey.3.desc'), color: 'text-secondary' },
+          { num: '4', title: t(lang, 'schools.journey.4'), desc: t(lang, 'schools.journey.4.desc'), color: 'text-primary-container' },
+        ].map((step) => (
+          <div class="relative">
+            <div class:list={['w-[72px] h-[72px] rounded-full bg-surface-container-lowest border-4 border-surface flex items-center justify-center font-headline text-xl font-extrabold shadow-sm relative z-10 mb-6', step.color]}>
+              {step.num}
+            </div>
+            <h5 class="font-bold text-sm mb-2">{step.title}</h5>
+            <p class="text-xs text-on-surface-variant leading-relaxed">{step.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="py-20 px-6 lg:px-8">
+    <div class="max-w-5xl mx-auto bg-primary rounded-[2.5rem] p-12 lg:p-20 text-center text-white relative overflow-hidden reveal">
+      <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-white/5 rounded-full blur-[80px]"></div>
+      <div class="relative z-10">
+        <h2 class="text-3xl lg:text-5xl font-headline font-bold mb-6 tracking-tight" set:html={t(lang, 'schools.cta.title')}></h2>
+        <p class="text-lg text-white/70 mb-10 max-w-xl mx-auto">{t(lang, 'schools.cta.desc')}</p>
+        <a href={localePath(lang, '/contact?who=school')} class="btn btn-lg bg-white text-primary hover:shadow-lg">
+          {t(lang, 'schools.cta.btn')}
+        </a>
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>

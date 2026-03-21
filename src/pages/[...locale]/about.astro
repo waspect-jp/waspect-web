@@ -1,0 +1,168 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { t, getStaticPaths as gsp, type Lang } from '../../i18n/utils';
+export const getStaticPaths = gsp;
+const { lang } = Astro.props as { lang: Lang };
+---
+
+<BaseLayout title={t(lang, 'meta.about.title')} description={t(lang, 'meta.about.desc')} activePage="about" lang={lang}>
+
+  <!-- Hero -->
+  <section class="relative min-h-[80vh] flex items-center ink-wash overflow-hidden">
+    <div class="enso-blob w-[600px] h-[600px] -top-20 -right-20 bg-tertiary"></div>
+    <div class="max-w-7xl mx-auto px-6 lg:px-8 py-20 grid lg:grid-cols-2 gap-16 items-center">
+      <div class="z-10">
+        <span class="badge badge-primary hero-enter mb-6">{t(lang, 'about.badge')}</span>
+        <h1 class="text-[clamp(2.5rem,5vw,4.5rem)] font-headline font-extrabold text-primary leading-[1.08] tracking-tight mb-8 hero-enter hero-enter-delay-1">
+          {t(lang, 'about.hero.title.1')} <span class="text-primary-container">{t(lang, 'about.hero.title.accent')}</span>
+        </h1>
+        <p class="text-lg lg:text-xl text-on-surface-variant leading-relaxed max-w-xl hero-enter hero-enter-delay-2">
+          {t(lang, 'about.hero.desc')}
+        </p>
+      </div>
+      <div class="relative hero-enter hero-enter-delay-2">
+        <div class="aspect-square bg-surface-container-high rounded-[2rem] overflow-hidden shadow-2xl transform rotate-2 hover:rotate-0 transition-transform duration-700">
+          <img class="w-full h-full object-cover" alt="Minimalist Japanese garden" src="/images/zen-garden.jpg" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Our Story -->
+  <section class="py-28 lg:py-36 bg-surface-container-low">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="grid lg:grid-cols-12 gap-16 items-center">
+        <div class="lg:col-span-5 order-2 lg:order-1 reveal">
+          <div class="section-header">
+            <h2>{t(lang, 'about.story.title')}</h2>
+          </div>
+          <div class="space-y-5 text-on-surface-variant leading-relaxed">
+            <p set:html={t(lang, 'about.story.p1')} />
+            <p>{t(lang, 'about.story.p2')}</p>
+          </div>
+        </div>
+        <div class="lg:col-span-7 order-1 lg:order-2 reveal">
+          <div class="grid grid-cols-2 gap-4">
+            <div class="space-y-4 pt-12">
+              <div class="h-56 rounded-3xl overflow-hidden">
+                <img class="w-full h-full object-cover" alt="Traditional Japanese wood joinery" src="/images/wood-joinery.jpg" />
+              </div>
+              <div class="h-72 bg-tertiary-container rounded-3xl flex items-center justify-center">
+                <span class="text-7xl font-headline font-extrabold text-on-tertiary-container opacity-15">和</span>
+              </div>
+            </div>
+            <div class="space-y-4">
+              <div class="h-72 rounded-3xl overflow-hidden">
+                <img class="w-full h-full object-cover" alt="Modern Tokyo skyscraper" src="/images/tokyo-skyscraper.jpg" />
+              </div>
+              <div class="h-56 rounded-3xl overflow-hidden border-4 border-white">
+                <img class="w-full h-full object-cover" alt="Team collaboration" src="/images/team-whiteboard.jpg" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Founders -->
+  <section class="py-28 lg:py-36">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="text-center section-header reveal">
+        <span class="badge badge-subtle mb-4">{t(lang, 'about.founders.label')}</span>
+        <h2 class="mx-auto">{t(lang, 'about.founders.title')}</h2>
+      </div>
+      <div class="grid md:grid-cols-2 gap-8 lg:gap-16 reveal-stagger">
+        <div class="card stone-surface p-10 flex flex-col items-center text-center group">
+          <div class="w-40 h-40 rounded-full mb-8 border-8 border-surface-container-low overflow-hidden group-hover:scale-105 transition-transform duration-500">
+            <img class="w-full h-full object-cover" alt="Mashio" src="/images/mashio2.jpg" />
+          </div>
+          <h3 class="text-2xl font-headline font-bold text-primary mb-1">{t(lang, 'about.mashio.name')}</h3>
+          <p class="text-tertiary font-semibold text-sm mb-5">{t(lang, 'about.mashio.role')}</p>
+          <p class="text-on-surface-variant text-sm leading-relaxed" set:html={t(lang, 'about.mashio.bio')} />
+        </div>
+        <div class="card stone-surface p-10 flex flex-col items-center text-center group">
+          <div class="w-40 h-40 rounded-full mb-8 border-8 border-surface-container-low overflow-hidden group-hover:scale-105 transition-transform duration-500">
+            <img class="w-full h-full object-cover saturate-[0.85] brightness-[1.02]" alt="Stefan Mihaylov" src="/images/stefan2.jpg" />
+          </div>
+          <h3 class="text-2xl font-headline font-bold text-primary mb-1">{t(lang, 'about.stefan.name')}</h3>
+          <p class="text-tertiary font-semibold text-sm mb-5">{t(lang, 'about.stefan.role')}</p>
+          <p class="text-on-surface-variant text-sm leading-relaxed" set:html={t(lang, 'about.stefan.bio')} />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Core Values -->
+  <section class="py-28 lg:py-36 bg-surface-container-low">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="section-header reveal">
+        <h2>{t(lang, 'about.values.title')}</h2>
+      </div>
+      <div class="grid md:grid-cols-3 gap-6 reveal-stagger">
+        <div class="card stone-surface p-10 min-h-[360px] flex flex-col">
+          <div class="w-14 h-14 bg-primary-container rounded-2xl flex items-center justify-center mb-6">
+            <span class="material-symbols-outlined text-white text-2xl">spa</span>
+          </div>
+          <h4 class="text-xl font-headline font-bold text-primary mb-3">{t(lang, 'about.values.harmony')}</h4>
+          <p class="text-on-surface-variant text-sm leading-relaxed">{t(lang, 'about.values.harmony.desc')}</p>
+        </div>
+        <div class="bg-primary p-10 rounded-3xl min-h-[360px] flex flex-col text-white shadow-[var(--shadow-card)]">
+          <div class="w-14 h-14 bg-white/15 backdrop-blur-sm rounded-2xl flex items-center justify-center mb-6">
+            <span class="material-symbols-outlined text-white text-2xl">conversion_path</span>
+          </div>
+          <h4 class="text-xl font-headline font-bold mb-3">{t(lang, 'about.values.bridge')}</h4>
+          <p class="text-primary-fixed text-sm leading-relaxed">{t(lang, 'about.values.bridge.desc')}</p>
+        </div>
+        <div class="bg-tertiary p-10 rounded-3xl min-h-[360px] flex flex-col text-white shadow-[var(--shadow-card)]">
+          <div class="w-14 h-14 bg-white/15 backdrop-blur-sm rounded-2xl flex items-center justify-center mb-6">
+            <span class="material-symbols-outlined text-white text-2xl">architecture</span>
+          </div>
+          <h4 class="text-xl font-headline font-bold mb-3">{t(lang, 'about.values.hands')}</h4>
+          <p class="text-tertiary-fixed text-sm leading-relaxed">{t(lang, 'about.values.hands.desc')}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Company Info -->
+  <section class="py-28 lg:py-36">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="bg-surface-container-low rounded-[2.5rem] p-12 lg:p-20 relative overflow-hidden reveal">
+        <div class="enso-blob w-[500px] h-[500px] bottom-0 left-0 translate-y-1/2 -translate-x-1/2 bg-tertiary"></div>
+        <div class="relative z-10 grid lg:grid-cols-2 gap-16">
+          <div>
+            <h2 class="text-3xl font-headline font-bold text-primary mb-10">{t(lang, 'about.hq.title')}</h2>
+            <div class="space-y-6">
+              <div class="flex items-start gap-5">
+                <span class="material-symbols-outlined text-tertiary">location_on</span>
+                <div>
+                  <h5 class="font-bold text-primary text-sm mb-0.5">{t(lang, 'about.hq.name')}</h5>
+                  <p class="text-on-surface-variant text-sm">{t(lang, 'about.hq.address')}</p>
+                </div>
+              </div>
+              <div class="flex items-start gap-5">
+                <span class="material-symbols-outlined text-tertiary">mail</span>
+                <div>
+                  <h5 class="font-bold text-primary text-sm mb-0.5">{t(lang, 'about.hq.email.label')}</h5>
+                  <p class="text-on-surface-variant text-sm">{t(lang, 'about.hq.email')}</p>
+                </div>
+              </div>
+              <div class="flex items-start gap-5">
+                <span class="material-symbols-outlined text-tertiary">calendar_today</span>
+                <div>
+                  <h5 class="font-bold text-primary text-sm mb-0.5">{t(lang, 'about.hq.founded.label')}</h5>
+                  <p class="text-on-surface-variant text-sm">{t(lang, 'about.hq.founded')}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="rounded-3xl overflow-hidden grayscale contrast-125 h-[360px]">
+            <img class="w-full h-full object-cover" alt="Ginza district, Tokyo" src="/images/ginza-aerial.jpg" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>

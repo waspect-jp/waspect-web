@@ -1,0 +1,136 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { t, localePath, getStaticPaths as gsp, type Lang } from '../../i18n/utils';
+export const getStaticPaths = gsp;
+const { lang } = Astro.props as { lang: Lang };
+---
+
+<BaseLayout title={t(lang, 'meta.kids.title')} description={t(lang, 'meta.kids.desc')} activePage="kids" lang={lang}>
+
+  <!-- Hero -->
+  <section class="relative min-h-[85vh] flex items-center overflow-hidden ink-wash">
+    <div class="enso-blob w-[400px] h-[400px] -top-12 -right-12 bg-tertiary"></div>
+    <div class="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col md:flex-row items-center gap-16 py-20">
+      <div class="flex-1 z-10">
+        <span class="badge badge-subtle hero-enter mb-6">{t(lang, 'kids.badge')}</span>
+        <h1 class="text-[clamp(2.5rem,5vw,4.5rem)] font-headline font-extrabold text-primary leading-[1.08] tracking-tight mb-8 hero-enter hero-enter-delay-1">
+          {t(lang, 'kids.hero.title.1')}<br />{t(lang, 'kids.hero.title.2')}
+        </h1>
+        <p class="text-lg lg:text-xl text-on-surface-variant max-w-xl leading-relaxed mb-10 hero-enter hero-enter-delay-2">
+          {t(lang, 'kids.hero.desc')}
+        </p>
+        <div class="hero-enter hero-enter-delay-3">
+          <a href="#register" class="btn btn-primary">{t(lang, 'kids.hero.btn')}</a>
+        </div>
+      </div>
+      <div class="flex-1 relative hero-enter hero-enter-delay-2">
+        <div class="rounded-3xl overflow-hidden shadow-2xl transform rotate-1 aspect-[4/3]">
+          <img alt="Parent and child learning together" class="w-full h-full object-cover" src="/images/parent-child.jpg" />
+        </div>
+        <div class="absolute -bottom-4 -left-4 card p-5 max-w-[200px]">
+          <p class="text-xs font-bold text-primary italic leading-relaxed">{t(lang, 'kids.hero.quote')}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why This Matters -->
+  <section class="py-28 lg:py-36 bg-surface-container-low">
+    <div class="max-w-5xl mx-auto px-6 lg:px-8 text-center">
+      <div class="section-header reveal">
+        <h2 class="mx-auto">{t(lang, 'kids.why.title')}</h2>
+      </div>
+      <div class="grid md:grid-cols-2 gap-16 items-center">
+        <div class="text-left space-y-5 reveal">
+          <p class="text-on-surface-variant leading-relaxed">{t(lang, 'kids.why.p1')}</p>
+          <p class="text-on-surface-variant leading-relaxed">{t(lang, 'kids.why.p2')}</p>
+          <div class="pt-4 border-l-4 border-tertiary pl-6">
+            <p class="text-xl font-bold text-tertiary leading-snug">{t(lang, 'kids.why.callout')}</p>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3 reveal-stagger">
+          {['smart_toy', 'cognition', 'forum', 'brush'].map((icon, i) => (
+            <div class:list={['bg-surface-container h-28 rounded-2xl flex items-center justify-center', i === 1 || i === 2 ? (i === 1 ? 'mt-6' : '-mt-6') : '']}>
+              <span class="material-symbols-outlined text-3xl text-primary/30">{icon}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- What Children Learn -->
+  <section class="py-28 lg:py-36">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="section-header reveal">
+        <h2>{t(lang, 'kids.learn.title')}</h2>
+        <div class="section-accent accent-gradient"></div>
+      </div>
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 reveal-stagger">
+        {[
+          { icon: 'psychology', title: t(lang, 'kids.learn.ai'), desc: t(lang, 'kids.learn.ai.desc') },
+          { icon: 'fact_check', title: t(lang, 'kids.learn.critical'), desc: t(lang, 'kids.learn.critical.desc') },
+          { icon: 'public', title: t(lang, 'kids.learn.global'), desc: t(lang, 'kids.learn.global.desc') },
+          { icon: 'architecture', title: t(lang, 'kids.learn.creative'), desc: t(lang, 'kids.learn.creative.desc') },
+        ].map((item) => (
+          <div class="card stone-surface p-8 group">
+            <div class="w-12 h-12 bg-secondary-container rounded-full flex items-center justify-center mb-5 group-hover:bg-primary-container transition-colors duration-300">
+              <span class="material-symbols-outlined text-on-secondary-container group-hover:text-white text-xl transition-colors">{item.icon}</span>
+            </div>
+            <h3 class="font-bold text-primary mb-3 font-headline">{item.title}</h3>
+            <p class="text-on-surface-variant text-sm leading-relaxed">{item.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Age Groups -->
+  <section class="py-28 lg:py-36 bg-surface-container-low">
+    <div class="max-w-5xl mx-auto px-6 lg:px-8">
+      <div class="text-center section-header reveal">
+        <h2 class="mx-auto">{t(lang, 'kids.age.title')}</h2>
+        <p class="mx-auto">{t(lang, 'kids.age.desc')}</p>
+      </div>
+      <div class="grid md:grid-cols-2 gap-8 reveal-stagger">
+        <div class="p-[2px] bg-gradient-to-br from-secondary-container to-surface-container-low rounded-3xl">
+          <div class="card rounded-[calc(1.5rem-2px)] p-10 h-full !shadow-none">
+            <span class="text-xs font-bold text-tertiary tracking-widest uppercase mb-3 block">{t(lang, 'kids.age.young.label')}</span>
+            <h3 class="text-2xl font-bold text-primary mb-4 font-headline">{t(lang, 'kids.age.young.title')}</h3>
+            <p class="text-on-surface italic leading-relaxed mb-6">{t(lang, 'kids.age.young.desc')}</p>
+            <ul class="space-y-3">
+              <li class="flex items-start gap-3 text-sm"><span class="material-symbols-outlined text-secondary text-lg">check_circle</span>{t(lang, 'kids.age.young.1')}</li>
+              <li class="flex items-start gap-3 text-sm"><span class="material-symbols-outlined text-secondary text-lg">check_circle</span>{t(lang, 'kids.age.young.2')}</li>
+            </ul>
+          </div>
+        </div>
+        <div class="p-[2px] bg-gradient-to-br from-primary-container/30 to-surface-container-low rounded-3xl">
+          <div class="card rounded-[calc(1.5rem-2px)] p-10 h-full !shadow-none">
+            <span class="text-xs font-bold text-tertiary tracking-widest uppercase mb-3 block">{t(lang, 'kids.age.old.label')}</span>
+            <h3 class="text-2xl font-bold text-primary mb-4 font-headline">{t(lang, 'kids.age.old.title')}</h3>
+            <p class="text-on-surface italic leading-relaxed mb-6">{t(lang, 'kids.age.old.desc')}</p>
+            <ul class="space-y-3">
+              <li class="flex items-start gap-3 text-sm"><span class="material-symbols-outlined text-secondary text-lg">check_circle</span>{t(lang, 'kids.age.old.1')}</li>
+              <li class="flex items-start gap-3 text-sm"><span class="material-symbols-outlined text-secondary text-lg">check_circle</span>{t(lang, 'kids.age.old.2')}</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section id="register" class="py-20 px-6 lg:px-8">
+    <div class="max-w-5xl mx-auto bg-primary rounded-[2.5rem] p-12 lg:p-20 text-center text-white relative overflow-hidden reveal">
+      <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-white/5 rounded-full blur-[80px]"></div>
+      <div class="relative z-10">
+        <h2 class="text-3xl lg:text-5xl font-headline font-bold mb-6 tracking-tight" set:html={t(lang, 'kids.cta.title').replace('\n', '<br />')}></h2>
+        <p class="text-lg text-white/70 mb-10 max-w-xl mx-auto">{t(lang, 'kids.cta.desc')}</p>
+        <a href={localePath(lang, '/contact?who=parent')} class="btn btn-lg bg-white text-primary hover:shadow-lg">
+          {t(lang, 'kids.cta.btn')}
+        </a>
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>

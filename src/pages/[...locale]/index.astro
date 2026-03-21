@@ -1,0 +1,161 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { t, localePath, getStaticPaths as gsp, type Lang } from '../../i18n/utils';
+export const getStaticPaths = gsp;
+const { lang } = Astro.props as { lang: Lang };
+---
+
+<BaseLayout title={t(lang, 'meta.home.title')} description={t(lang, 'meta.home.desc')} activePage="home" lang={lang}>
+
+  <!-- HERO -->
+  <section class="relative min-h-[90vh] flex items-center overflow-hidden ink-wash">
+    <div class="enso-blob w-[500px] h-[500px] -top-32 -right-32 bg-primary"></div>
+    <div class="enso-blob w-[300px] h-[300px] bottom-0 left-[10%] bg-secondary"></div>
+    <div class="max-w-7xl mx-auto px-6 lg:px-8 py-20 lg:py-0 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center relative z-10">
+      <div class="lg:col-span-7">
+        <span class="badge badge-primary hero-enter mb-6">{t(lang, 'home.badge')}</span>
+        <h1 class="text-[clamp(2.5rem,5vw,4.5rem)] font-headline font-extrabold text-primary leading-[1.08] tracking-tight mb-8 hero-enter hero-enter-delay-1">
+          {t(lang, 'home.hero.title.1')}{t(lang, 'home.hero.title.2') && <><br />{t(lang, 'home.hero.title.2')}</>}{t(lang, 'home.hero.title.3') ? <><br />{t(lang, 'home.hero.title.3')}<span class="text-tertiary">{t(lang, 'home.hero.title.accent')}</span></> : <><br /><span class="text-tertiary">{t(lang, 'home.hero.title.accent')}</span></>}
+        </h1>
+        <p class="text-lg lg:text-xl text-on-surface-variant leading-relaxed mb-10 max-w-xl hero-enter hero-enter-delay-2">{t(lang, 'home.hero.desc')}</p>
+        <div class="flex flex-wrap gap-3 hero-enter hero-enter-delay-3">
+          <a href={localePath(lang, '/schools')} class="btn btn-primary">{t(lang, 'home.btn.schools')}</a>
+          <a href={localePath(lang, '/businesses')} class="btn btn-secondary">{t(lang, 'home.btn.businesses')}</a>
+          <a href={localePath(lang, '/kids')} class="btn btn-primary bg-tertiary hover:bg-tertiary-container">{t(lang, 'home.btn.parents')}</a>
+        </div>
+      </div>
+      <div class="lg:col-span-5 relative hero-enter hero-enter-delay-2">
+        <div class="absolute inset-0 -m-8 animate-enso opacity-[0.04]">
+          <svg viewBox="0 0 200 200" class="w-full h-full" aria-hidden="true"><circle cx="100" cy="100" r="90" fill="none" stroke="currentColor" stroke-width="3" class="text-primary" stroke-dasharray="8 4" /></svg>
+        </div>
+        <div class="aspect-square rounded-[2rem] overflow-hidden shadow-2xl relative bg-gradient-to-br from-primary/5 to-secondary/5">
+          <img alt="Modern Japanese education collaboration" class="w-full h-full object-cover" src="/images/hero-collaboration.jpg" />
+          <div class="absolute inset-0 bg-gradient-to-t from-primary/15 via-transparent to-transparent"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHO WE HELP -->
+  <section class="py-28 lg:py-36 bg-surface-container-low">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="section-header reveal">
+        <h2>{t(lang, 'home.who.title')}</h2>
+        <div class="section-accent accent-gradient"></div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 reveal-stagger">
+        {[
+          { path: '/schools', icon: 'school', title: t(lang, 'home.who.schools.title'), desc: t(lang, 'home.who.schools.desc'), color: 'bg-primary/8 group-hover:bg-primary', iconColor: 'text-primary group-hover:text-on-primary' },
+          { path: '/businesses', icon: 'work', title: t(lang, 'home.who.businesses.title'), desc: t(lang, 'home.who.businesses.desc'), color: 'bg-secondary/8 group-hover:bg-secondary', iconColor: 'text-secondary group-hover:text-on-secondary' },
+          { path: '/kids', icon: 'family_restroom', title: t(lang, 'home.who.parents.title'), desc: t(lang, 'home.who.parents.desc'), color: 'bg-tertiary/8 group-hover:bg-tertiary', iconColor: 'text-tertiary group-hover:text-on-tertiary' },
+        ].map((item) => (
+          <a href={localePath(lang, item.path)} class="card stone-surface p-10 group block">
+            <div class:list={['w-14 h-14 rounded-2xl flex items-center justify-center mb-8 transition-all duration-300', item.color]}>
+              <span class:list={['material-symbols-outlined text-3xl transition-colors', item.iconColor]}>{item.icon}</span>
+            </div>
+            <h3 class="text-xl font-headline font-bold text-primary mb-3">{item.title}</h3>
+            <p class="text-on-surface-variant text-sm leading-relaxed mb-6">{item.desc}</p>
+            <span class="link-arrow text-sm">{t(lang, 'home.learn.more')} <span class="material-symbols-outlined text-[16px]">arrow_forward</span></span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- OUR APPROACH -->
+  <section class="py-28 lg:py-36 relative overflow-hidden">
+    <div class="enso-blob w-[400px] h-[400px] top-1/2 -right-48 bg-secondary"></div>
+    <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+        <div class="reveal">
+          <div class="section-header">
+            <h2>{t(lang, 'home.approach.title')}</h2>
+            <p>{t(lang, 'home.approach.desc')}</p>
+          </div>
+          <div class="space-y-6">
+            {[
+              { icon: 'psychology', title: t(lang, 'home.approach.ai.title'), desc: t(lang, 'home.approach.ai.desc') },
+              { icon: 'language', title: t(lang, 'home.approach.global.title'), desc: t(lang, 'home.approach.global.desc') },
+              { icon: 'precision_manufacturing', title: t(lang, 'home.approach.hands.title'), desc: t(lang, 'home.approach.hands.desc') },
+            ].map((item) => (
+              <div class="flex gap-5 p-5 rounded-2xl hover:bg-surface-container-low transition-colors duration-300">
+                <div class="shrink-0 w-11 h-11 bg-secondary-container flex items-center justify-center rounded-xl text-on-secondary-container">
+                  <span class="material-symbols-outlined text-xl">{item.icon}</span>
+                </div>
+                <div>
+                  <h4 class="text-base font-bold text-primary mb-1">{item.title}</h4>
+                  <p class="text-sm text-on-surface-variant leading-relaxed">{item.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div class="relative reveal">
+          <div class="aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl relative">
+            <img alt="Student learning AI concepts" class="w-full h-full object-cover" src="/images/student-tablet.jpg" />
+            <div class="absolute inset-0 bg-gradient-to-t from-primary/10 via-transparent to-transparent"></div>
+          </div>
+          <div class="absolute -bottom-6 -left-6 w-32 h-32 rounded-full border-[6px] border-secondary-container/40 animate-float-slow pointer-events-none"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- IN THE MEDIA -->
+  <section class="py-28 lg:py-36 bg-surface-container-low">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="text-center section-header reveal">
+        <h2 class="mx-auto">{t(lang, 'home.media.title')}</h2>
+        <p class="mx-auto">{t(lang, 'home.media.desc')}</p>
+      </div>
+      <div class="flex flex-wrap justify-center items-center gap-10 lg:gap-16 mb-16 reveal">
+        {[
+          { src: '/images/media-newspicks.png', alt: 'NewsPicks' },
+          { src: '/images/media-newswitch.png', alt: 'NewsSwitch' },
+          { src: '/images/media-dmenu.png', alt: 'dmenu' },
+          { src: '/images/media-goo.png', alt: 'goo' },
+        ].map((logo) => (
+          <img src={logo.src} alt={logo.alt} class="h-8 w-auto opacity-40 grayscale hover:opacity-80 hover:grayscale-0 transition-all duration-500" />
+        ))}
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 reveal-stagger">
+        {[
+          { url: 'https://prtimes.jp/main/html/rd/p/000000001.000166452.html', img: '/images/classroom-shizuoka.jpg', alt: 'Shizuoka classroom', date: t(lang, 'home.media.article1.date'), title: t(lang, 'home.media.article1.title') },
+          { url: 'https://newswitch.jp/p/39164', img: '/images/newspaper-press.jpg', alt: 'NewsSwitch', date: t(lang, 'home.media.article2.date'), title: t(lang, 'home.media.article2.title') },
+        ].map((a) => (
+          <a href={a.url} target="_blank" rel="noopener noreferrer" class="card overflow-hidden group flex flex-col">
+            <div class="h-52 overflow-hidden">
+              <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" alt={a.alt} src={a.img} />
+            </div>
+            <div class="p-8 flex-1 flex flex-col">
+              <span class="text-xs font-bold text-tertiary mb-3 tracking-widest">{a.date}</span>
+              <h3 class="text-lg font-bold text-primary mb-4 flex-1 leading-snug">{a.title}</h3>
+              <span class="link-arrow text-sm">{t(lang, 'home.media.read')} <span class="material-symbols-outlined text-[16px]">arrow_forward</span></span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="py-28 lg:py-36">
+    <div class="max-w-5xl mx-auto px-6 lg:px-8">
+      <div class="relative bg-primary rounded-[2.5rem] p-12 lg:p-20 text-center overflow-hidden reveal">
+        <div class="absolute inset-0 opacity-[0.04]">
+          <svg width="100%" height="100%" aria-hidden="true"><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><circle cx="20" cy="20" r="1" fill="white" /></pattern><rect width="100%" height="100%" fill="url(#grid)" /></svg>
+        </div>
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-white/5 rounded-full blur-[80px]"></div>
+        <div class="relative z-10">
+          <h2 class="text-3xl lg:text-5xl font-headline font-extrabold text-on-primary mb-6 tracking-tight leading-tight" set:html={t(lang, 'home.cta.title').replace('\n', '<br />')} />
+          <p class="text-lg text-on-primary/70 mb-10 max-w-lg mx-auto">{t(lang, 'home.cta.desc')}</p>
+          <div class="flex flex-col sm:flex-row gap-3 justify-center">
+            <a href={localePath(lang, '/contact')} class="btn btn-lg bg-white text-primary hover:bg-secondary-container hover:shadow-lg transition-all">{t(lang, 'home.cta.btn')}</a>
+            <a href={localePath(lang, '/about')} class="btn btn-lg bg-white/10 text-white border border-white/20 hover:bg-white/20 transition-all">{t(lang, 'home.cta.btn2')}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>
