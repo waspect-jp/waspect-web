@@ -1,7 +1,7 @@
 export default {
   // ── Page Meta ──
-  'meta.home.title': 'Waspect (和スペクト) | 伝統と革新を融合しAI時代へ',
-  'meta.home.desc': '研究と現場の知見に基づいた実践的なAI教育を通じて、日本の学校・企業・家庭をAIが形作る未来に備えます。',
+  'meta.home.title': 'Waspect (和スペクト) | AI時代に備える実践的な教育 — 学校・企業・家庭向け',
+  'meta.home.desc': 'Waspectは日本の学校・企業・家庭向けに、研究と現場の知見に基づいた実践的なAI教育プログラムを提供。文科省ガイドラインに準拠し、バイリンガルの専門家がAIリテラシー、グローバル対応力、ハンズオン学習を指導します。',
   'meta.schools.title': '学校向け | Waspect (和スペクト)',
   'meta.schools.desc': '日本の教育現場に特化した、研究に基づくAIリテラシープログラム。文科省ガイドラインに完全準拠。',
   'meta.businesses.title': '企業向け | Waspect (和スペクト)',
