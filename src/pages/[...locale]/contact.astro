@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { t, getStaticPaths as gsp, type Lang } from '../../i18n/utils';
+import { t, localePath, getStaticPaths as gsp, type Lang } from '../../i18n/utils';
 export const getStaticPaths = gsp;
 const { lang } = Astro.props as { lang: Lang };
 ---
@@ -66,7 +66,7 @@ const { lang } = Astro.props as { lang: Lang };
     <!-- FORM -->
     <section class="lg:w-3/5">
       <div id="contact-form" class="card stone-surface p-8 lg:p-12 !rounded-2xl border border-outline-variant/10 hero-enter hero-enter-delay-1">
-        <form class="space-y-8" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+        <form class="space-y-8" name="contact" method="POST" action={localePath(lang, '/contact/')} data-netlify="true" netlify-honeypot="bot-field">
           <p class="hidden"><label>Don't fill this out: <input name="bot-field" /></label></p>
           <!-- Identity Selector -->
           <fieldset class="space-y-3">

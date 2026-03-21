@@ -50,7 +50,7 @@ const currentYear = new Date().getFullYear();
         <div class="md:col-span-4">
           <h4 class="text-xs font-bold text-primary uppercase tracking-[0.15em] mb-5">{t(lang, 'footer.newsletter')}</h4>
           <p class="text-on-surface-variant text-sm mb-4">{t(lang, 'footer.newsletter.desc')}</p>
-          <form class="flex gap-2" name="newsletter" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+          <form class="flex gap-2" name="newsletter" method="POST" action="/" data-netlify="true" netlify-honeypot="bot-field">
             <p class="hidden"><label>Don't fill this out: <input name="bot-field" /></label></p>
             <input name="email" class="flex-1 bg-surface-container-lowest border border-outline-variant/20 rounded-full py-2.5 px-4 text-sm text-on-surface placeholder:text-outline/40 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" placeholder={t(lang, 'footer.newsletter.placeholder')} type="email" required aria-label="Email" />
             <button type="submit" class="btn btn-primary btn-sm px-5" aria-label="Subscribe">
