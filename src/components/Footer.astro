@@ -4,11 +4,12 @@ import { t, localePath, switchLangPath, type Lang } from '../i18n/utils';
 
 interface Props {
   lang?: Lang;
+  switchUrl?: string;
 }
 const { lang = 'ja' } = Astro.props;
 const year = new Date().getFullYear();
 const currentPath = Astro.url.pathname;
-const switchUrl = switchLangPath(lang, currentPath.replace(/^\/en/, '') || '/');
+const switchUrl = Astro.props.switchUrl ?? switchLangPath(lang, currentPath.replace(/^\/en/, '') || '/');
 ---
 
 <footer class="mt-24 border-t border-rule-faint bg-mist lg:mt-32">
@@ -27,7 +28,7 @@ const switchUrl = switchLangPath(lang, currentPath.replace(/^\/en/, '') || '/');
           <a
             href="mailto:info@waspect.jp"
             class="grid h-10 w-10 place-items-center rounded-full border border-rule-soft bg-white text-ink-muted transition-colors hover:border-ink hover:text-ink"
-            aria-label="Email"
+            aria-label={t(lang, 'about.company.email.label')}
           >
             <Icon name="mail" size={18} />
           </a>
@@ -53,7 +54,7 @@ const switchUrl = switchLangPath(lang, currentPath.replace(/^\/en/, '') || '/');
       </div>
 
       <nav class="lg:col-span-2" aria-label={t(lang, 'footer.services')}>
-        <h2 class="small font-bold text-ink">{t(lang, 'footer.services')}</h2>
+        <p class="small font-bold text-ink">{t(lang, 'footer.services')}</p>
         <ul class="mt-4 grid gap-1">
           <li><a class="small muted inline-flex min-h-9 items-center no-underline hover:text-ink" href={localePath(lang, '/schools')}>{t(lang, 'nav.schools')}</a></li>
           <li><a class="small muted inline-flex min-h-9 items-center no-underline hover:text-ink" href={localePath(lang, '/businesses')}>{t(lang, 'nav.businesses')}</a></li>
@@ -62,7 +63,7 @@ const switchUrl = switchLangPath(lang, currentPath.replace(/^\/en/, '') || '/');
       </nav>
 
       <div class="lg:col-span-3">
-        <h2 class="small font-bold text-ink">{t(lang, 'footer.company')}</h2>
+        <p class="small font-bold text-ink">{t(lang, 'footer.company')}</p>
         <ul class="mt-4 grid gap-1">
           <li><a class="small muted inline-flex min-h-9 items-center no-underline hover:text-ink" href={localePath(lang, '/about')}>{t(lang, 'footer.about')}</a></li>
           <li><a class="small muted inline-flex min-h-9 items-center no-underline hover:text-ink" href={localePath(lang, '/contact')}>{t(lang, 'footer.contact')}</a></li>
@@ -71,11 +72,11 @@ const switchUrl = switchLangPath(lang, currentPath.replace(/^\/en/, '') || '/');
       </div>
 
       <div class="lg:col-span-3">
-        <h2 class="small font-bold text-ink">{t(lang, 'footer.newsletter')}</h2>
+        <p class="small font-bold text-ink">{t(lang, 'footer.newsletter')}</p>
         <p class="small muted mt-4 leading-relaxed">{t(lang, 'footer.newsletter.desc')}</p>
         <form
           id="newsletter-form"
-          class="mt-4 flex gap-2"
+          class="mt-4 flex flex-col gap-2"
           name="newsletter"
           method="POST"
           action="/"
@@ -84,7 +85,7 @@ const switchUrl = switchLangPath(lang, currentPath.replace(/^\/en/, '') || '/');
         >
           <input type="hidden" name="form-name" value="newsletter" />
           <p class="hidden" aria-hidden="true"><label>Don't fill this out: <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
-          <label class="sr-only" for="newsletter-email">Email</label>
+          <label class="sr-only" for="newsletter-email">{t(lang, 'contact.form.email')}</label>
           <input
             id="newsletter-email"
             name="email"
@@ -94,12 +95,13 @@ const switchUrl = switchLangPath(lang, currentPath.replace(/^\/en/, '') || '/');
             class="input min-w-0 flex-1 rounded-full px-5"
             placeholder={t(lang, 'footer.newsletter.placeholder')}
           />
-          <button type="submit" class="btn btn-primary shrink-0">{t(lang, 'footer.newsletter.btn')}</button>
+          <button type="submit" class="btn btn-primary self-start">{t(lang, 'footer.newsletter.btn')}</button>
         </form>
-        <p id="newsletter-success" class="mt-4 hidden items-center gap-2 text-sm font-bold text-rule-deep" role="status">
+        <p id="newsletter-success" class="mt-4 hidden items-center gap-2 text-sm font-bold text-rule-deep" role="status" tabindex="-1">
           <Icon name="check-circle" size={18} />
           {t(lang, 'footer.newsletter.success')}
         </p>
+        <p id="newsletter-error" class="small mt-3 hidden rounded-xl bg-[#fdf0ed] px-4 py-3 text-[#8a2a1b]" role="alert">{t(lang, 'footer.newsletter.error')}</p>
       </div>
     </div>
 
@@ -112,13 +114,25 @@ const switchUrl = switchLangPath(lang, currentPath.replace(/^\/en/, '') || '/');
 
 <script>
   const form = document.getElementById('newsletter-form') as HTMLFormElement | null;
-  form?.addEventListener('submit', (e) => {
+  const success = document.getElementById('newsletter-success');
+  const error = document.getElementById('newsletter-error');
+  form?.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const body = new URLSearchParams(new FormData(form) as unknown as Record<string, string>);
-    fetch(form.action, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body }).catch(() => {});
-    form.classList.add('hidden');
-    const ok = document.getElementById('newsletter-success');
-    ok?.classList.remove('hidden');
-    ok?.classList.add('flex');
+    error?.classList.add('hidden');
+    const button = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+    if (button) button.disabled = true;
+    try {
+      const body = new URLSearchParams(new FormData(form) as unknown as Record<string, string>);
+      const res = await fetch(form.action, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body });
+      if (!res.ok) throw new Error(`Newsletter submission failed: ${res.status}`);
+      form.classList.add('hidden');
+      success?.classList.remove('hidden');
+      success?.classList.add('flex');
+      success?.focus();
+    } catch (err) {
+      console.error(err);
+      error?.classList.remove('hidden');
+      if (button) button.disabled = false;
+    }
   });
 </script>

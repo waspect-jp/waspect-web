@@ -58,8 +58,8 @@ const grid = columns.map((col) => {
 });
 ---
 
-<div class="sheet-wrap hero-media">
-  <div class="sheet" role="img" aria-label={label} lang="ja">
+<div class="sheet-wrap hero-media" role="img" aria-label={label}>
+  <div class="sheet" lang="ja">
     {grid.map((col) =>
       col.map(({ cell, i, first, last }) =>
         cell ? (

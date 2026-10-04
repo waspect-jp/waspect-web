@@ -34,8 +34,9 @@ export const GLUE_TERMS = [
   'モルガン・スタンレー',
   'インペリアル・カレッジ・ロンドン',
   'ニュースイッチ',
-  '英語“を”学ぶ',
-  '英語“で”学ぶ',
+  '英語「を」学ぶ',
+  '英語「で」学ぶ',
+  '地域課題×AI×英語',
 ];
 
 const OPEN_WRAPPER = /<span style="word-break:\s*keep-all;\s*overflow-wrap:\s*anywhere;?">/g;
@@ -56,9 +57,10 @@ export function jp(lang: Lang, html: string): string {
     .replaceAll(ZWSP, '<wbr>')
     .replace(OPEN_WRAPPER, '<span class="jp">');
 
-  for (const term of GLUE_TERMS) {
-    // BudouX may have placed a <wbr> inside the term; match it with or without.
-    const pattern = new RegExp(Array.from(term).map(escapeRegExp).join('(?:<wbr>)?'), 'g');
+  // Longest terms first so a short term never splits a longer one that contains it.
+  for (const term of [...GLUE_TERMS].sort((a, b) => b.length - a.length)) {
+    // BudouX may have placed a <wbr> (or an earlier term a joiner) inside; match either way.
+    const pattern = new RegExp(Array.from(term).map(escapeRegExp).join(`(?:<wbr>|${WORD_JOINER})*`), 'g');
     out = out.replace(pattern, glue(term));
   }
   out = out.replace(CLOSE_BRACKET_PARTICLE, (_m, bracket: string, particle: string) => bracket + WORD_JOINER + particle);

@@ -42,11 +42,11 @@ const contactHref = localePath(lang, '/contact?who=school');
 <BaseLayout title={t(lang, 'meta.schools.title')} description={t(lang, 'meta.schools.desc')} activePage="schools" lang={lang}>
   <PageHero title={T('schools.hero.title')} lead={T('schools.hero.lead')} image={shimoda} alt={t(lang, 'schools.hero.alt')} position="60% 50%">
     <Fragment slot="actions">
-      <a href={contactHref} class="btn btn-primary btn-lg">
+      <a href={contactHref} class="btn btn-primary btn-lg w-full sm:w-auto">
         {t(lang, 'schools.hero.btn')}
         <Icon name="arrow" size={18} class="ic-arrow" />
       </a>
-      <a href="#programs" class="btn btn-ghost btn-lg">{t(lang, 'schools.hero.btn2')}</a>
+      <a href="#programs" class="btn btn-ghost btn-lg w-full sm:w-auto">{t(lang, 'schools.hero.btn2')}</a>
     </Fragment>
     <Fragment slot="facts">
       <span class="fact"><Icon name="check" size={16} />{t(lang, 'schools.hero.fact1')}</span>
@@ -85,13 +85,11 @@ const contactHref = localePath(lang, '/contact?who=school');
         {programs.map((p, i) => (
           <details class="disc" open={i === 0}>
             <summary>
-              <div>
-                <div class="flex flex-wrap gap-2">
-                  <span class="chip">{t(lang, p.grade)}</span>
-                  <span class="chip chip-ink">{t(lang, p.sessions)}</span>
-                </div>
-                <h3 class="h3 mt-3 lg:text-[1.375rem]" set:html={T(p.title)} />
-              </div>
+              <span class="flex flex-wrap gap-2">
+                <span class="chip">{t(lang, p.grade)}</span>
+                <span class="chip chip-ink">{t(lang, p.sessions)}</span>
+              </span>
+              <h3 class="h3 mt-3 lg:text-[1.375rem]" set:html={T(p.title)} />
               <span class="disc-icon" aria-hidden="true"><Icon name="plus" size={18} /></span>
             </summary>
             <div class="disc-body grid gap-8 lg:grid-cols-12 lg:gap-12">
@@ -103,28 +101,22 @@ const contactHref = localePath(lang, '/contact?who=school');
                   ))}
                 </ul>
               </div>
-              <dl class="small grid content-start gap-4 rounded-2xl bg-mist p-6 lg:col-span-5">
-                <div>
-                  <dt class="muted">{t(lang, 'schools.programs.meta.grade')}</dt>
-                  <dd class="mt-0.5 font-bold text-ink">{t(lang, p.grade)}</dd>
-                </div>
-                <div>
-                  <dt class="muted">{t(lang, 'schools.programs.meta.sessions')}</dt>
-                  <dd class="mt-0.5 font-bold text-ink">{t(lang, p.sessions)}</dd>
-                </div>
-                <div>
-                  <dt class="muted">{t(lang, 'schools.programs.meta.outcome')}</dt>
-                  <dd class="mt-0.5 font-bold text-ink" set:html={T(p.outcome)} />
-                </div>
+              <div class="small grid content-start gap-4 rounded-2xl bg-mist p-6 lg:col-span-5">
+                <dl class="grid gap-4">
+                  <div>
+                    <dt class="muted">{t(lang, 'schools.programs.meta.outcome')}</dt>
+                    <dd class="mt-0.5 font-bold text-ink" set:html={T(p.outcome)} />
+                  </div>
+                </dl>
                 {p.caseLink && (
-                  <div class="border-t border-rule-soft pt-4">
+                  <p class="border-t border-rule-soft pt-4">
                     <a href={p.caseLink} target="_blank" rel="noopener noreferrer" class="link small">
-                      {t(lang, 'home.case.title')}
+                      {t(lang, 'schools.prog.case')}
                       <Icon name="arrow-up-right" size={14} />
                     </a>
-                  </div>
+                  </p>
                 )}
-              </dl>
+              </div>
             </div>
           </details>
         ))}
@@ -153,8 +145,9 @@ const contactHref = localePath(lang, '/contact?who=school');
   <section class="section tint">
     <div class="wrap">
       <SectionHead title={T('schools.journey.title')} lead={T('schools.journey.lead')} />
-      <ol class="steps mt-12 grid gap-10 md:grid-cols-4 md:gap-6 lg:mt-16">
-        <span class="steps-line left-[1.4375rem] top-0 bottom-0 w-0.5 md:top-[1.4375rem] md:bottom-auto md:left-[12.5%] md:right-[12.5%] md:h-0.5 md:w-auto" aria-hidden="true"></span>
+      <div class="steps relative mt-12 lg:mt-16">
+        <span class="steps-line left-[1.4375rem] top-6 bottom-6 w-0.5 md:top-[1.4375rem] md:bottom-auto md:left-6 md:right-[calc(25%-2.625rem)] md:h-0.5 md:w-auto" aria-hidden="true"></span>
+        <ol class="grid gap-10 md:grid-cols-4 md:gap-6">
         {steps.map((s, i) => (
           <li class="relative grid grid-cols-[auto_1fr] gap-5 md:block">
             <span class="step-num">{i + 1}</span>
@@ -164,7 +157,8 @@ const contactHref = localePath(lang, '/contact?who=school');
             </div>
           </li>
         ))}
-      </ol>
+        </ol>
+      </div>
     </div>
   </section>
 

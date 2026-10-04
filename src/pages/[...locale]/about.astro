@@ -25,13 +25,14 @@ const people = [
 ];
 
 const values = [
-  { icon: 'handshake', title: 'about.values.1.title', desc: 'about.values.1.desc' },
-  { icon: 'globe', title: 'about.values.2.title', desc: 'about.values.2.desc' },
-  { icon: 'hammer', title: 'about.values.3.title', desc: 'about.values.3.desc' },
+  { title: 'about.values.1.title', desc: 'about.values.1.desc' },
+  { title: 'about.values.2.title', desc: 'about.values.2.desc' },
+  { title: 'about.values.3.title', desc: 'about.values.3.desc' },
 ] as const;
 
 const company = [
   { label: 'about.company.name.label', value: 'about.company.name' },
+  { label: 'about.company.rep.label', value: 'about.company.rep' },
   { label: 'about.company.address.label', value: 'about.company.address' },
   { label: 'about.company.founded.label', value: 'about.company.founded' },
   { label: 'about.company.business.label', value: 'about.company.business' },
@@ -43,7 +44,7 @@ const mapsUrl = 'https://www.google.com/maps/search/?api=1&query=1-22-11+Ginza+C
 <BaseLayout title={t(lang, 'meta.about.title')} description={t(lang, 'meta.about.desc')} activePage="about" lang={lang}>
   <PageHero title={T('about.hero.title')} lead={T('about.hero.lead')} image={founders} alt={t(lang, 'about.hero.alt')} position="50% 30%">
     <Fragment slot="actions">
-      <a href={localePath(lang, '/contact')} class="btn btn-primary btn-lg">
+      <a href={localePath(lang, '/contact')} class="btn btn-primary btn-lg w-full sm:w-auto">
         {t(lang, 'common.contact')}
         <Icon name="arrow" size={18} class="ic-arrow" />
       </a>
@@ -69,14 +70,14 @@ const mapsUrl = 'https://www.google.com/maps/search/?api=1&query=1-22-11+Ginza+C
       </div>
       <div class="grid grid-cols-2 gap-4 lg:col-span-7 lg:gap-5" data-reveal-stagger>
         <div class="frame aspect-[3/4] self-end bg-mist-deep">
-          <Image src={shiboriBinding} alt={t(lang, 'about.story.alt1')} width={900} widths={[400, 640, 900]} sizes="(min-width: 1024px) 28vw, 50vw" format="webp" quality={78} />
+          <Image src={shiboriBinding} alt={t(lang, 'about.story.alt1')} width={900} widths={[400, 640, 900]} sizes="(min-width: 1200px) 304px, (min-width: 1024px) 28vw, 50vw" format="webp" quality={78} />
         </div>
         <div class="grid gap-4 lg:gap-5">
           <div class="frame aspect-[4/3] bg-mist-deep">
-            <Image src={shiboriSun} alt={t(lang, 'about.story.alt2')} width={900} widths={[400, 640, 900]} sizes="(min-width: 1024px) 28vw, 50vw" format="webp" quality={78} />
+            <Image src={shiboriSun} alt={t(lang, 'about.story.alt2')} width={900} widths={[400, 640, 900]} sizes="(min-width: 1200px) 304px, (min-width: 1024px) 28vw, 50vw" format="webp" quality={78} />
           </div>
           <div class="frame aspect-[4/3] bg-mist-deep">
-            <Image src={bonsai} alt={t(lang, 'about.story.alt3')} width={900} widths={[400, 640, 900]} sizes="(min-width: 1024px) 28vw, 50vw" format="webp" quality={78} />
+            <Image src={bonsai} alt={t(lang, 'about.story.alt3')} width={900} widths={[400, 640, 900]} sizes="(min-width: 1200px) 304px, (min-width: 1024px) 28vw, 50vw" format="webp" quality={78} />
           </div>
         </div>
       </div>
@@ -91,7 +92,7 @@ const mapsUrl = 'https://www.google.com/maps/search/?api=1&query=1-22-11+Ginza+C
         {people.map((p) => (
           <article class="grid gap-6 sm:grid-cols-[9rem_1fr] sm:gap-8">
             <div class="frame aspect-square w-36 bg-mist-deep">
-              <Image src={p.img} alt={t(lang, p.name)} width={288} height={288} format="webp" quality={82} />
+              <Image src={p.img} alt="" width={288} height={288} format="webp" quality={82} />
             </div>
             <div>
               <h3 class="h3 latin">{t(lang, p.name)}</h3>
@@ -110,14 +111,9 @@ const mapsUrl = 'https://www.google.com/maps/search/?api=1&query=1-22-11+Ginza+C
       <SectionHead title={T('about.values.title')} />
       <ul class="mt-12 grid gap-x-10 gap-y-10 lg:mt-16 lg:grid-cols-3" data-reveal-stagger>
         {values.map((v) => (
-          <li class="grid grid-cols-[auto_1fr] gap-5 border-t border-rule-soft pt-6 lg:block">
-            <span class="grid h-12 w-12 place-items-center rounded-full bg-white text-rule-deep ring-1 ring-rule-soft">
-              <Icon name={v.icon} size={22} />
-            </span>
-            <div class="lg:mt-5">
-              <h3 class="h3" set:html={T(v.title)} />
-              <p class="muted mt-2 max-w-[40em] leading-relaxed" set:html={T(v.desc)} />
-            </div>
+          <li class="border-t border-rule-soft pt-6">
+            <h3 class="h3" set:html={T(v.title)} />
+            <p class="muted mt-2 max-w-[40em] leading-relaxed" set:html={T(v.desc)} />
           </li>
         ))}
       </ul>
@@ -144,7 +140,7 @@ const mapsUrl = 'https://www.google.com/maps/search/?api=1&query=1-22-11+Ginza+C
       </div>
       <div class="lg:col-span-5" data-reveal>
         <div class="frame aspect-[4/5] bg-mist-deep">
-          <Image src={ginza} alt={t(lang, 'about.company.alt')} width={1100} widths={[480, 760, 1100]} sizes="(min-width: 1024px) 40vw, 100vw" format="webp" quality={78} />
+          <Image src={ginza} alt={t(lang, 'about.company.alt')} width={1100} widths={[480, 760, 1100]} sizes="(min-width: 1200px) 429px, (min-width: 1024px) 40vw, 100vw" format="webp" quality={78} />
         </div>
         <a href={mapsUrl} target="_blank" rel="noopener noreferrer" class="link small mt-4">
           {t(lang, 'about.company.map')}

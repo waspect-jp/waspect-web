@@ -22,6 +22,7 @@ const fields = [
 ] as const;
 
 const mapsUrl = 'https://www.google.com/maps/search/?api=1&query=1-22-11+Ginza+Chuo-ku+Tokyo';
+const mapEmbed = `https://www.google.com/maps?q=${encodeURIComponent('東京都中央区銀座1-22-11 大竹ビル')}&z=17&output=embed&hl=${lang}`;
 ---
 
 <BaseLayout lang={lang} title={t(lang, 'meta.contact.title')} description={t(lang, 'meta.contact.desc')} activePage="contact">
@@ -63,7 +64,7 @@ const mapsUrl = 'https://www.google.com/maps/search/?api=1&query=1-22-11+Ginza+C
             </ul>
             <div class="frame mt-6 aspect-[16/9] bg-mist-deep">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3241.169!2d139.7671!3d35.6722!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188be6e392b4ef%3A0x4c0e0fd8c6cf488d!2z44CSMTEwLTAwMDEg5p2x5Lqs6YO95Lit5aSu5Yy66YqA5bqnMS0yMi0xMQ!5e0!3m2!1sja!2sjp!4v1"
+                src={mapEmbed}
                 width="100%"
                 height="100%"
                 style="border:0;filter:grayscale(1) contrast(0.95);"
@@ -82,7 +83,7 @@ const mapsUrl = 'https://www.google.com/maps/search/?api=1&query=1-22-11+Ginza+C
 
         <!-- Form -->
         <section class="lg:col-span-7" aria-labelledby="contact-form-heading">
-          <h2 id="contact-form-heading" class="sr-only">{t(lang, 'contact.title')}</h2>
+          <h2 id="contact-form-heading" class="sr-only">{t(lang, 'contact.form.heading')}</h2>
 
           <div id="form-success" class="card hidden p-8 text-center lg:p-12" role="status" tabindex="-1">
             <span class="mx-auto grid h-14 w-14 place-items-center rounded-full bg-mint text-rule-deep">
@@ -102,7 +103,7 @@ const mapsUrl = 'https://www.google.com/maps/search/?api=1&query=1-22-11+Ginza+C
                 <div class="grid grid-cols-3 gap-3" id="identity-selector">
                   {who.map((w) => (
                     <label class="seg">
-                      <input name="identity" type="radio" value={w.value} />
+                      <input name="identity" type="radio" value={w.value} checked={w.value === 'school'} />
                       <Icon name={w.icon} size={22} />
                       <span>{t(lang, `contact.form.${w.value}`)}</span>
                     </label>
@@ -112,7 +113,7 @@ const mapsUrl = 'https://www.google.com/maps/search/?api=1&query=1-22-11+Ginza+C
 
               <div class="grid gap-6 md:grid-cols-2">
                 {fields.map((f) => (
-                  <div class="field">
+                  <div class="field" data-field={f.name}>
                     <label for={`field-${f.name}`}>
                       {t(lang, f.label)}
                       {f.req && <span class="req" aria-hidden="true">*</span>}
@@ -135,7 +136,7 @@ const mapsUrl = 'https://www.google.com/maps/search/?api=1&query=1-22-11+Ginza+C
                   {t(lang, 'contact.form.message')}
                   <span class="req" aria-hidden="true">*</span>
                 </label>
-                <textarea id="field-message" class="input" name="message" rows="5" required placeholder={t(lang, 'contact.form.message.placeholder')}></textarea>
+                <textarea id="field-message" class="input" name="message" rows="5" required placeholder={t(lang, 'contact.form.message.placeholder')} data-placeholder-default={t(lang, 'contact.form.message.placeholder')} data-placeholder-parent={t(lang, 'contact.form.message.placeholder.parent')}></textarea>
               </div>
 
               <div class="grid gap-4">
@@ -155,20 +156,35 @@ const mapsUrl = 'https://www.google.com/maps/search/?api=1&query=1-22-11+Ginza+C
 
   <script>
     const radios = document.querySelectorAll<HTMLInputElement>('input[name="identity"]');
+    const scrollBehavior: ScrollBehavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
     const submit = document.getElementById('contact-submit') as HTMLButtonElement | null;
     const submitLabel = submit?.querySelector('span');
 
+    const message = document.getElementById('field-message') as HTMLTextAreaElement | null;
+    const required = message?.closest('.field')?.querySelector('.req');
+
+    // Parents register interest: the button says so and the message becomes optional.
     function syncSubmitLabel() {
-      const checked = Array.from(radios).find((r) => r.checked)?.value;
+      const isParent = Array.from(radios).find((r) => r.checked)?.value === 'parent';
       if (submit && submitLabel) {
-        submitLabel.textContent = checked === 'parent' ? submit.dataset.labelParent ?? '' : submit.dataset.labelDefault ?? '';
+        submitLabel.textContent = isParent ? submit.dataset.labelParent ?? '' : submit.dataset.labelDefault ?? '';
       }
+      if (message) {
+        message.required = !isParent;
+        message.placeholder = (isParent ? message.dataset.placeholderParent : message.dataset.placeholderDefault) ?? '';
+      }
+      required?.classList.toggle('hidden', isParent);
+      // Parents have no organization or role to give; the inputs stay in the DOM for Netlify.
+      document.querySelectorAll<HTMLElement>('[data-field="organization"], [data-field="role"]').forEach((el) => el.classList.toggle('hidden', isParent));
     }
 
     function selectIdentity(value: string, scroll = false) {
       radios.forEach((r) => (r.checked = r.value === value));
       syncSubmitLabel();
-      if (scroll) document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (scroll) {
+        document.getElementById('contact-form')?.scrollIntoView({ behavior: scrollBehavior, block: 'start' });
+        Array.from(radios).find((r) => r.checked)?.focus({ preventScroll: true });
+      }
     }
 
     document.querySelectorAll<HTMLButtonElement>('[data-select-who]').forEach((btn) => {
@@ -199,7 +215,7 @@ const mapsUrl = 'https://www.google.com/maps/search/?api=1&query=1-22-11+Ginza+C
         wrap?.classList.add('hidden');
         success?.classList.remove('hidden');
         success?.focus();
-        success?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        success?.scrollIntoView({ behavior: scrollBehavior, block: 'center' });
       } catch (err) {
         console.error(err);
         error?.classList.remove('hidden');

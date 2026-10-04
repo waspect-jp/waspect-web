@@ -12,7 +12,6 @@ import classroom from '../../assets/photos/classroom-tablet.jpg';
 import business from '../../assets/photos/business-presentation.jpg';
 import parentChild from '../../assets/photos/parent-child.jpg';
 import shimoda from '../../assets/photos/shimoda-high-session.jpg';
-import founders from '../../assets/photos/founders-newswitch.jpg';
 import logoNewspicks from '../../assets/media/media-newspicks.png';
 import logoDmenu from '../../assets/media/media-dmenu.png';
 import logoGoo from '../../assets/media/media-goo.png';
@@ -37,8 +36,8 @@ const pillars = [
 const caseFacts = ['home.case.f1', 'home.case.f2', 'home.case.f3', 'home.case.f4'];
 
 const articles = [
-  { url: 'https://prtimes.jp/main/html/rd/p/000000001.000166452.html', img: shimoda, alt: 'home.case.alt', date: 'home.media.1.date', source: 'home.media.1.source', title: 'home.media.1.title' },
-  { url: 'https://newswitch.jp/p/39164', img: founders, alt: 'home.media.2.alt', date: 'home.media.2.date', source: 'home.media.2.source', title: 'home.media.2.title' },
+  { url: 'https://prtimes.jp/main/html/rd/p/000000001.000166452.html', iso: '2025-07-18', date: 'home.media.1.date', source: 'home.media.1.source', title: 'home.media.1.title' },
+  { url: 'https://newswitch.jp/p/39164', iso: '2023-11-08', date: 'home.media.2.date', source: 'home.media.2.source', title: 'home.media.2.title' },
 ];
 ---
 
@@ -47,7 +46,7 @@ const articles = [
   <section class="relative overflow-hidden pt-6 pb-16 lg:pt-14 lg:pb-24">
     <div class="wrap grid items-center gap-10 lg:grid-cols-12 lg:gap-12">
       <div class:list={['hero-stage lg:col-span-6', isJa ? 'order-2 lg:order-1' : 'order-1']}>
-        <p class="eng-note" lang={isJa ? 'en' : 'ja'}>{t(lang, 'home.hero.en')}</p>
+        {isJa && <p class="eng-note" lang="en">{t(lang, 'home.hero.en')}</p>}
         {isJa ? (
           <h1 class="sr-only">{t(lang, 'home.hero.title')}</h1>
         ) : (
@@ -55,11 +54,11 @@ const articles = [
         )}
         <p class:list={['lead max-w-[34em]', isJa ? 'mt-5 text-[1.125rem] lg:text-[1.3125rem] lg:leading-[1.95]' : 'mt-6']} set:html={T('home.hero.lead')} />
         <div class="mt-8 flex flex-wrap items-center gap-3">
-          <a href={localePath(lang, '/contact')} class="btn btn-primary btn-lg">
+          <a href={localePath(lang, '/contact')} class="btn btn-primary btn-lg w-full sm:w-auto">
             {t(lang, 'home.hero.btn')}
             <Icon name="arrow" size={18} class="ic-arrow" />
           </a>
-          <a href="#who" class="btn btn-ghost btn-lg">{t(lang, 'home.hero.btn2')}</a>
+          <a href="#who" class="btn btn-ghost btn-lg w-full sm:w-auto">{t(lang, 'home.hero.btn2')}</a>
         </div>
         <ul class="facts mt-8">
           {['home.hero.fact1', 'home.hero.fact2', 'home.hero.fact3'].map((k) => (
@@ -69,6 +68,7 @@ const articles = [
       </div>
       <div class:list={['lg:col-span-6', isJa ? 'order-1 lg:order-2' : 'order-2']}>
         <Manuscript label={t(lang, 'home.sheet.caption')} />
+        {!isJa && <p class="small muted mt-4 text-center">{t(lang, 'home.sheet.note')}</p>}
       </div>
     </div>
   </section>
@@ -81,7 +81,7 @@ const articles = [
         {audiences.map((a) => (
           <a href={localePath(lang, a.path)} class="card group flex flex-col no-underline sm:flex-row lg:flex-col">
             <div class="card-media aspect-[4/3] sm:w-2/5 sm:shrink-0 sm:[border-radius:calc(var(--radius-lg)-1px)_0_0_calc(var(--radius-lg)-1px)] lg:w-auto lg:[border-radius:calc(var(--radius-lg)-1px)_calc(var(--radius-lg)-1px)_0_0]">
-              <Image src={a.img} alt={a.alt} width={900} widths={[420, 640, 900]} sizes="(min-width: 1024px) 33vw, (min-width: 640px) 40vw, 100vw" format="webp" quality={78} />
+              <Image src={a.img} alt={a.alt} width={900} widths={[420, 640, 900]} sizes="(min-width: 1200px) 357px, (min-width: 1024px) 33vw, (min-width: 640px) 40vw, 100vw" format="webp" quality={78} />
             </div>
             <div class="flex flex-1 flex-col p-6 lg:p-7">
               <h3 class="h3" set:html={T(a.title)} />
@@ -124,7 +124,7 @@ const articles = [
     <div class="wrap">
       <div class="grid items-center gap-10 lg:grid-cols-12 lg:gap-16" data-reveal>
         <div class="frame aspect-[16/10] bg-mist lg:col-span-7">
-          <Image src={shimoda} alt={t(lang, 'home.case.alt')} width={1400} widths={[640, 960, 1400]} sizes="(min-width: 1024px) 58vw, 100vw" format="webp" quality={80} />
+          <Image src={shimoda} alt={t(lang, 'home.case.alt')} width={1400} widths={[640, 960, 1400]} sizes="(min-width: 1200px) 627px, (min-width: 1024px) 58vw, 100vw" format="webp" quality={80} />
         </div>
         <div class="lg:col-span-5">
           <span class="chip">{t(lang, 'home.case.label')}</span>
@@ -135,10 +135,16 @@ const articles = [
               <li class="fact"><Icon name="check-circle" size={16} />{t(lang, k)}</li>
             ))}
           </ul>
-          <a href={articles[0].url} target="_blank" rel="noopener noreferrer" class="link mt-7">
-            {t(lang, 'home.case.link')}
-            <Icon name="arrow-up-right" size={16} />
-          </a>
+          <div class="mt-7 flex flex-wrap gap-x-8 gap-y-3">
+            <a href={localePath(lang, '/schools') + '#programs'} class="link">
+              {t(lang, 'home.case.link2')}
+              <Icon name="arrow" size={16} />
+            </a>
+            <a href={articles[0].url} target="_blank" rel="noopener noreferrer" class="link">
+              {t(lang, 'home.case.link')}
+              <Icon name="arrow-up-right" size={16} />
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -151,12 +157,9 @@ const articles = [
       <div class="mt-12 grid gap-5 md:grid-cols-2 lg:gap-6" data-reveal-stagger>
         {articles.map((a) => (
           <a href={a.url} target="_blank" rel="noopener noreferrer" class="card group flex flex-col no-underline">
-            <div class="card-media aspect-[16/9]">
-              <Image src={a.img} alt={t(lang, a.alt)} width={1200} widths={[560, 800, 1200]} sizes="(min-width: 768px) 50vw, 100vw" format="webp" quality={78} />
-            </div>
-            <div class="flex flex-1 flex-col p-6 lg:p-7">
+            <div class="flex flex-1 flex-col p-6 lg:p-8">
               <p class="small muted flex flex-wrap gap-x-4 gap-y-1">
-                <time class="latin tabular-nums">{t(lang, a.date)}</time>
+                <time class="latin tabular-nums" datetime={a.iso}>{t(lang, a.date)}</time>
                 <span>{t(lang, a.source)}</span>
               </p>
               <h3 class="h3 mt-3 flex-1" set:html={T(a.title)} />
@@ -171,9 +174,9 @@ const articles = [
       <div class="mt-12 flex flex-wrap items-center gap-x-10 gap-y-5" data-reveal>
         <p class="small muted">{t(lang, 'home.media.also')}</p>
         <div class="flex flex-wrap items-center gap-x-10 gap-y-5 opacity-70 grayscale">
-          <Image src={logoNewspicks} alt="NewsPicks" height={40} format="png" class="h-10 w-auto" />
-          <Image src={logoDmenu} alt="dmenu" height={22} format="png" class="h-[22px] w-auto" />
-          <Image src={logoGoo} alt="goo" height={28} format="png" class="h-7 w-auto" />
+          <Image src={logoNewspicks} alt="NewsPicks" height={40} densities={[1, 2]} format="png" class="h-10 w-auto" />
+          <Image src={logoDmenu} alt="dmenu" height={22} densities={[1, 2]} format="png" class="h-[22px] w-auto" />
+          <Image src={logoGoo} alt="goo" height={28} densities={[1, 2]} format="png" class="h-7 w-auto" />
         </div>
       </div>
     </div>

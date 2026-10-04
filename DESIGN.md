@@ -31,7 +31,7 @@ utilities (`text-ink`, `bg-mist`, `border-rule-soft`, …).
 | `mist` / `mist-deep` | `#f4f7f6` / `#e9eeec` | Section alternation, image placeholders |
 | `ink` / `ink-soft` | `#1b2740` / `#2d3a55` | Headings, body, primary buttons |
 | `ink-muted` / `ink-faint` | `#56607a` / `#8a93a8` | Secondary text, hints |
-| `rule` / `rule-deep` | `#24896a` / `#176b52` | Accent, links, icons (AA on white) |
+| `rule` / `rule-deep` | `#24896a` / `#176b52` | Accent: `rule` for icons and rules, `rule-deep` for text (AA on white) |
 | `rule-soft` / `rule-faint` | `#b9dbcf` / `#dcece6` | Ruling: borders, dividers |
 | `mint` | `#e8f4ef` | Soft green tint behind icons and chips |
 | `indigo-tint` | `#e8edf5` | Soft ink tint for secondary chips |

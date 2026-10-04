@@ -5,11 +5,12 @@ import { t, localePath, switchLangPath, type Lang } from '../i18n/utils';
 interface Props {
   activePage?: string;
   lang?: Lang;
+  switchUrl?: string;
 }
 
 const { activePage = '', lang = 'ja' } = Astro.props;
 const currentPath = Astro.url.pathname;
-const switchUrl = switchLangPath(lang, currentPath.replace(/^\/en/, '') || '/');
+const switchUrl = Astro.props.switchUrl ?? switchLangPath(lang, currentPath.replace(/^\/en/, '') || '/');
 
 const links = [
   { path: '/schools', label: t(lang, 'nav.schools'), id: 'schools' },
@@ -29,7 +30,7 @@ const links = [
       </span>
     </a>
 
-    <nav class="mx-auto hidden items-center gap-1 lg:flex" aria-label="Primary">
+    <nav class="mx-auto hidden items-center gap-1 lg:flex" aria-label={t(lang, 'nav.primary')}>
       {links.map((l) => (
         <a href={localePath(lang, l.path)} class="nav-link" aria-current={activePage === l.id ? 'page' : undefined}>
           {l.label}
@@ -59,7 +60,7 @@ const links = [
   </div>
 </header>
 
-<div class="menu" id="site-menu" data-menu role="dialog" aria-modal="true" aria-label="Menu" hidden>
+<div class="menu" id="site-menu" data-menu role="dialog" aria-modal="true" aria-label={t(lang, 'nav.menu.label')} hidden>
   <div class="wrap flex items-center justify-between" style="height: var(--nav-h)">
     <a href={localePath(lang, '/')} class="flex items-center gap-3 no-underline" aria-label={t(lang, 'nav.home')} data-menu-link>
       <img src="/images/logo.png" alt="" width="40" height="40" class="h-10 w-10" />
@@ -74,7 +75,7 @@ const links = [
       <Icon name="x" size={22} />
     </button>
   </div>
-  <nav class="wrap mt-4 grid" aria-label="Primary">
+  <nav class="wrap mt-4 grid" aria-label={t(lang, 'nav.primary')}>
     {links.map((l) => (
       <a href={localePath(lang, l.path)} class="menu-link" data-menu-link aria-current={activePage === l.id ? 'page' : undefined}>
         {l.label}
@@ -103,6 +104,7 @@ const links = [
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   if (menu && openBtn && closeBtn) {
+    let closeTimer: number | undefined;
     const focusables = () => Array.from(menu.querySelectorAll<HTMLElement>('a[href], button:not([disabled])'));
 
     const onKey = (e: KeyboardEvent) => {
@@ -125,6 +127,7 @@ const links = [
     };
 
     const open = () => {
+      window.clearTimeout(closeTimer);
       menu.hidden = false;
       requestAnimationFrame(() => requestAnimationFrame(() => menu.classList.add('is-open')));
       openBtn.setAttribute('aria-expanded', 'true');
@@ -143,7 +146,7 @@ const links = [
         if (!menu.classList.contains('is-open')) menu.hidden = true;
       };
       if (reduce.matches) finish();
-      else window.setTimeout(finish, 240);
+      else closeTimer = window.setTimeout(finish, 240);
       if (returnFocus) openBtn.focus();
     };
 

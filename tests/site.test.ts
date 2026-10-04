@@ -57,11 +57,11 @@ describe('built pages', () => {
     const base = route.replace(/^\/en/, '') || '/';
     expect(doc.querySelector('link[hreflang="ja"]')?.getAttribute('href')).toBe(`${SITE}${base}`);
     expect(doc.querySelector('link[hreflang="en"]')?.getAttribute('href')).toBe(`${SITE}/en${base}`);
-    expect(doc.querySelector('meta[property="og:image"]')?.getAttribute('content')).toBe(`${SITE}/images/og.png`);
+    expect(doc.querySelector('meta[property="og:image"]')?.getAttribute('content')).toBe(`${SITE}/images/og-v2.png`);
   });
 
   it('ships the Open Graph image', () => {
-    expect(existsSync(join(DIST, 'images', 'og.png'))).toBe(true);
+    expect(existsSync(join(DIST, 'images', 'og-v2.png'))).toBe(true);
   });
 
   it.each(LOCALIZED)('%s has no leaked translation keys or undefined values', (route) => {

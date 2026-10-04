@@ -7,9 +7,10 @@ interface Props {
   image?: string;
   url?: string;
   lang?: Lang;
+  noindex?: boolean;
 }
 
-const { title, description, image = '/images/og.png', url = '', lang = 'ja' } = Astro.props;
+const { title, description, image = '/images/og-v2.png', url = '', lang = 'ja', noindex = false } = Astro.props;
 const siteUrl = 'https://waspect.jp';
 const fullUrl = url ? `${siteUrl}${url}` : siteUrl;
 const fullImage = image.startsWith('http') ? image : `${siteUrl}${image}`;
@@ -23,6 +24,11 @@ const organization = {
   '@type': 'Organization',
   name: 'Waspect',
   alternateName: '和スペクト',
+  legalName: '和スペクト株式会社',
+  founder: [
+    { '@type': 'Person', name: 'Mashio Yamamoto', jobTitle: 'Co-founder and CEO' },
+    { '@type': 'Person', name: 'Stefan Mihaylov', jobTitle: 'Co-founder and CTO' },
+  ],
   url: siteUrl,
   logo: `${siteUrl}/images/logo.png`,
   email: 'info@waspect.jp',
@@ -54,9 +60,15 @@ const organization = {
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={fullImage} />
 
-<link rel="canonical" href={fullUrl} />
-<link rel="alternate" hreflang="ja" href={jaUrl} />
-<link rel="alternate" hreflang="en" href={enUrl} />
-<link rel="alternate" hreflang="x-default" href={jaUrl} />
+{noindex ? (
+  <meta name="robots" content="noindex" />
+) : (
+  <>
+    <link rel="canonical" href={fullUrl} />
+    <link rel="alternate" hreflang="ja" href={jaUrl} />
+    <link rel="alternate" hreflang="en" href={enUrl} />
+    <link rel="alternate" hreflang="x-default" href={jaUrl} />
+  </>
+)}
 
 <script type="application/ld+json" set:html={JSON.stringify(organization)} is:inline />

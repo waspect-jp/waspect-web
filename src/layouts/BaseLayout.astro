@@ -11,9 +11,12 @@ interface Props {
   activePage?: string;
   ogImage?: string;
   lang?: Lang;
+  /** Error pages: no canonical/hreflang, robots noindex, language switch goes home. */
+  noindex?: boolean;
 }
 
-const { title, description = '', activePage = '', ogImage, lang = 'ja' } = Astro.props;
+const { title, description = '', activePage = '', ogImage, lang = 'ja', noindex = false } = Astro.props;
+const switchUrl = noindex ? (lang === 'ja' ? '/en/' : '/') : undefined;
 const currentPath = Astro.url.pathname;
 ---
 
@@ -21,6 +24,7 @@ const currentPath = Astro.url.pathname;
 <html lang={lang}>
   <head>
     <meta charset="utf-8" />
+    <script is:inline>document.documentElement.classList.add('js');</script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <meta name="theme-color" content="#ffffff" />
@@ -31,16 +35,16 @@ const currentPath = Astro.url.pathname;
       href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:ital,wght@0,400..900;1,400..900&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap"
       rel="stylesheet"
     />
-    <SeoMeta title={title} description={description} image={ogImage} url={currentPath} lang={lang} />
+    <SeoMeta title={title} description={description} image={ogImage} url={currentPath} lang={lang} noindex={noindex} />
     <title>{title}</title>
   </head>
   <body>
     <a class="skip" href="#main">{t(lang, 'skip')}</a>
-    <Nav activePage={activePage} lang={lang} />
+    <Nav activePage={activePage} lang={lang} switchUrl={switchUrl} />
     <main id="main">
       <slot />
     </main>
-    <Footer lang={lang} />
+    <Footer lang={lang} switchUrl={switchUrl} />
 
     <script>
       // Reveal-on-scroll, used on a handful of blocks per page.

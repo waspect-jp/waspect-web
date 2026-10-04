@@ -31,7 +31,7 @@ describe('translation files', () => {
   });
 
   it('falls back to Japanese for an unknown language key and returns the key when missing everywhere', () => {
-    expect(t('en', 'nav.schools')).toBe('For Schools');
+    expect(t('en', 'nav.schools')).toBe('For schools');
     expect(t('ja', 'nav.schools')).toBe('学校向け');
     expect(t('en', 'does.not.exist')).toBe('does.not.exist');
   });

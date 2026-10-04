@@ -30,14 +30,15 @@ const contactHref = localePath(lang, '/contact?who=parent');
 <BaseLayout title={t(lang, 'meta.kids.title')} description={t(lang, 'meta.kids.desc')} activePage="kids" lang={lang}>
   <PageHero title={T('kids.hero.title')} lead={T('kids.hero.lead')} image={parentChild} alt={t(lang, 'kids.hero.alt')} position="50% 40%">
     <Fragment slot="actions">
-      <a href="#program" class="btn btn-primary btn-lg">
-        {t(lang, 'kids.hero.btn')}
+      <a href={contactHref} class="btn btn-primary btn-lg w-full sm:w-auto">
+        {t(lang, 'kids.hero.btn2')}
         <Icon name="arrow" size={18} class="ic-arrow" />
       </a>
-      <a href={contactHref} class="btn btn-ghost btn-lg">{t(lang, 'kids.hero.btn2')}</a>
+      <a href="#program" class="btn btn-ghost btn-lg w-full sm:w-auto">{t(lang, 'kids.hero.btn')}</a>
     </Fragment>
     <Fragment slot="facts">
       <span class="fact"><Icon name="sparkles" size={16} />{t(lang, 'kids.hero.tag')}</span>
+      <span class="fact"><Icon name="clock" size={16} />{t(lang, 'kids.hero.status')}</span>
     </Fragment>
     <Fragment slot="overlay">
       <figure class="card absolute -bottom-5 left-5 right-5 m-0 px-5 py-4 shadow-float sm:left-auto sm:right-6 sm:max-w-[20rem] lg:-bottom-6 lg:right-8">

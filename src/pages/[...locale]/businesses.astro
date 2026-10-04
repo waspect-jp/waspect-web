@@ -15,10 +15,10 @@ const { lang } = Astro.props as { lang: Lang };
 const T = (key: string) => jp(lang, t(lang, key));
 
 const offers = [
-  { icon: 'sparkles', title: 'biz.offer.1.title', desc: 'biz.offer.1.desc' },
-  { icon: 'layers', title: 'biz.offer.2.title', desc: 'biz.offer.2.desc' },
-  { icon: 'globe', title: 'biz.offer.3.title', desc: 'biz.offer.3.desc' },
-  { icon: 'sliders', title: 'biz.offer.4.title', desc: 'biz.offer.4.desc' },
+  { title: 'biz.offer.1.title', desc: 'biz.offer.1.desc' },
+  { title: 'biz.offer.2.title', desc: 'biz.offer.2.desc' },
+  { title: 'biz.offer.3.title', desc: 'biz.offer.3.desc' },
+  { title: 'biz.offer.4.title', desc: 'biz.offer.4.desc' },
 ] as const;
 
 const strengths = [1, 2, 3].map((n) => ({ title: `biz.why.${n}.title`, sub: `biz.why.${n}.sub`, desc: `biz.why.${n}.desc` }));
@@ -28,15 +28,15 @@ const contactHref = localePath(lang, '/contact?who=business');
 <BaseLayout title={t(lang, 'meta.businesses.title')} description={t(lang, 'meta.businesses.desc')} activePage="businesses" lang={lang}>
   <PageHero title={T('biz.hero.title')} lead={T('biz.hero.lead')} image={presentation} alt={t(lang, 'biz.hero.alt')} position="40% 50%">
     <Fragment slot="actions">
-      <a href={contactHref} class="btn btn-primary btn-lg">
+      <a href={contactHref} class="btn btn-primary btn-lg w-full sm:w-auto">
         {t(lang, 'biz.hero.btn')}
         <Icon name="arrow" size={18} class="ic-arrow" />
       </a>
-      <a href="#offer" class="btn btn-ghost btn-lg">{t(lang, 'biz.offer.title')}</a>
+      <a href="#offer" class="btn btn-ghost btn-lg w-full sm:w-auto">{t(lang, 'biz.hero.btn2')}</a>
     </Fragment>
     <Fragment slot="facts">
       <span class="fact"><Icon name="check" size={16} />{t(lang, 'home.hero.fact1')}</span>
-      <span class="fact"><Icon name="check" size={16} />{t(lang, 'home.hero.fact3')}</span>
+      <span class="fact"><Icon name="check" size={16} />{t(lang, 'biz.hero.fact2')}</span>
     </Fragment>
   </PageHero>
 
@@ -56,10 +56,7 @@ const contactHref = localePath(lang, '/contact?who=business');
       <ul class="mt-12 grid gap-x-10 gap-y-10 md:grid-cols-2 lg:mt-16" data-reveal-stagger>
         {offers.map((o) => (
           <li class="border-t border-rule-soft pt-6">
-            <span class="grid h-12 w-12 place-items-center rounded-full bg-mint text-rule-deep">
-              <Icon name={o.icon} size={22} />
-            </span>
-            <h3 class="h3 mt-5" set:html={T(o.title)} />
+            <h3 class="h3" set:html={T(o.title)} />
             <p class="muted mt-2 max-w-[34em] leading-relaxed" set:html={T(o.desc)} />
           </li>
         ))}
@@ -73,7 +70,7 @@ const contactHref = localePath(lang, '/contact?who=business');
       <div class="lg:col-span-5">
         <SectionHead title={T('biz.why.title')} lead={T('biz.why.lead')} />
         <div class="frame mt-10 aspect-[4/3] bg-mist-deep" data-reveal>
-          <Image src={founders} alt={t(lang, 'biz.why.alt')} width={1200} widths={[560, 840, 1200]} sizes="(min-width: 1024px) 40vw, 100vw" format="webp" quality={80} />
+          <Image src={founders} alt={t(lang, 'biz.why.alt')} width={1200} widths={[560, 840, 1200]} sizes="(min-width: 1200px) 429px, (min-width: 1024px) 40vw, 100vw" format="webp" quality={80} />
         </div>
       </div>
       <ol class="ruled lg:col-span-7" data-reveal-stagger>
