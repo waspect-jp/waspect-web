@@ -29,10 +29,10 @@ const contactHref = localePath(lang, '/contact?who=business');
   <PageHero title={T('biz.hero.title')} lead={T('biz.hero.lead')} image={presentation} alt={t(lang, 'biz.hero.alt')} position="40% 50%">
     <Fragment slot="actions">
       <a href={contactHref} class="btn btn-primary btn-lg w-full sm:w-auto">
-        {t(lang, 'biz.hero.btn')}
+        <span set:html={T('biz.hero.btn')} />
         <Icon name="arrow" size={18} class="ic-arrow" />
       </a>
-      <a href="#offer" class="btn btn-ghost btn-lg w-full sm:w-auto">{t(lang, 'biz.hero.btn2')}</a>
+      <a href="#offer" class="btn btn-ghost btn-lg w-full sm:w-auto" set:html={T('biz.hero.btn2')} />
     </Fragment>
     <Fragment slot="facts">
       <span class="fact"><Icon name="check" size={16} />{t(lang, 'home.hero.fact1')}</span>
@@ -85,5 +85,5 @@ const contactHref = localePath(lang, '/contact?who=business');
     </div>
   </section>
 
-  <CtaBand title={T('biz.cta.title')} desc={T('biz.cta.desc')} href={contactHref} label={t(lang, 'biz.cta.btn')} />
+  <CtaBand title={T('biz.cta.title')} desc={T('biz.cta.desc')} href={contactHref} label={T('biz.cta.btn')} />
 </BaseLayout>

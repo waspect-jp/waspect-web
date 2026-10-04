@@ -31,10 +31,10 @@ const contactHref = localePath(lang, '/contact?who=parent');
   <PageHero title={T('kids.hero.title')} lead={T('kids.hero.lead')} image={parentChild} alt={t(lang, 'kids.hero.alt')} position="50% 40%">
     <Fragment slot="actions">
       <a href={contactHref} class="btn btn-primary btn-lg w-full sm:w-auto">
-        {t(lang, 'kids.hero.btn2')}
+        <span set:html={T('kids.hero.btn2')} />
         <Icon name="arrow" size={18} class="ic-arrow" />
       </a>
-      <a href="#program" class="btn btn-ghost btn-lg w-full sm:w-auto">{t(lang, 'kids.hero.btn')}</a>
+      <a href="#program" class="btn btn-ghost btn-lg w-full sm:w-auto" set:html={T('kids.hero.btn')} />
     </Fragment>
     <Fragment slot="facts">
       <span class="fact"><Icon name="sparkles" size={16} />{t(lang, 'kids.hero.tag')}</span>
@@ -104,5 +104,5 @@ const contactHref = localePath(lang, '/contact?who=parent');
     </div>
   </section>
 
-  <CtaBand title={T('kids.cta.title')} desc={T('kids.cta.desc')} href={contactHref} label={t(lang, 'kids.cta.btn')} id="register" />
+  <CtaBand title={T('kids.cta.title')} desc={T('kids.cta.desc')} href={contactHref} label={T('kids.cta.btn')} id="register" />
 </BaseLayout>

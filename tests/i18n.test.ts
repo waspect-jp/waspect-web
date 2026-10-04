@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import ja from '../src/i18n/ja';
 import en from '../src/i18n/en';
 import { localePath, switchLangPath, t } from '../src/i18n/utils';
-import { GLUE_TERMS, WORD_JOINER, glue, jp } from '../src/i18n/jp';
+import { GLUE_TERMS, KINSOKU_END, KINSOKU_START, MAX_PHRASE, WORD_JOINER, glue, jp, softenLongPhrase } from '../src/i18n/jp';
 
 describe('translation files', () => {
   it('have exactly the same keys in Japanese and English', () => {
@@ -92,5 +92,25 @@ describe('Japanese phrase breaking (jp)', () => {
     const src = '<strong>インペリアル・カレッジ・ロンドン</strong>卒業。<strong>モルガン・スタンレー</strong>での経験。';
     const out = jp('ja', src).replace(/<[^>]+>/g, '').replaceAll(WORD_JOINER, '');
     expect(out).toBe(src.replace(/<[^>]+>/g, ''));
+  });
+
+  it('never leaves a phrase longer than a narrow line unbreakable', () => {
+    const out = jp('ja', '私たちが教えるのはコーディングではありません。AI時代に求められるのは、批判的に、戦略的に、倫理的に考える力です。');
+    const runs = out
+      .replace(/<span[^>]*>|<\/span>/g, '')
+      .split(/<wbr>/)
+      .map((r) => Array.from(r).filter((c) => c !== WORD_JOINER).length);
+    expect(Math.max(...runs)).toBeLessThanOrEqual(MAX_PHRASE);
+  });
+
+  it('only adds break opportunities where kinsoku allows them', () => {
+    const out = softenLongPhrase('コーディングではありません。だから「問い」を立てて考えましょう。');
+    const starts = [...out.matchAll(/<wbr>(.)/g)].map((m) => m[1]);
+    const ends = [...out.matchAll(/(.)<wbr>/g)].map((m) => m[1]);
+    for (const c of starts) expect(KINSOKU_START.has(c), `line may not start with ${c}`).toBe(false);
+    for (const c of ends) expect(KINSOKU_END.has(c), `line may not end with ${c}`).toBe(false);
+    // Latin words are never split inside; a break between them and Japanese is fine
+    expect(softenLongPhrase('ChatGPTとKaggle Notebooks')).toMatch(/^ChatGPT(<wbr>)?と(<wbr>)?Kaggle Notebooks$/);
+    expect(softenLongPhrase('短い句')).toBe('短い句');
   });
 });

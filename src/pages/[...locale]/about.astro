@@ -45,7 +45,7 @@ const mapsUrl = 'https://www.google.com/maps/search/?api=1&query=1-22-11+Ginza+C
   <PageHero title={T('about.hero.title')} lead={T('about.hero.lead')} image={founders} alt={t(lang, 'about.hero.alt')} position="50% 30%">
     <Fragment slot="actions">
       <a href={localePath(lang, '/contact')} class="btn btn-primary btn-lg w-full sm:w-auto">
-        {t(lang, 'common.contact')}
+        <span set:html={T('common.contact')} />
         <Icon name="arrow" size={18} class="ic-arrow" />
       </a>
     </Fragment>
@@ -150,5 +150,5 @@ const mapsUrl = 'https://www.google.com/maps/search/?api=1&query=1-22-11+Ginza+C
     </div>
   </section>
 
-  <CtaBand title={T('home.cta.title')} desc={T('home.cta.desc')} href={localePath(lang, '/contact')} label={t(lang, 'home.cta.btn')} />
+  <CtaBand title={T('home.cta.title')} desc={T('home.cta.desc')} href={localePath(lang, '/contact')} label={T('home.cta.btn')} />
 </BaseLayout>

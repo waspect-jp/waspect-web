@@ -121,7 +121,7 @@ html[lang="ja"] body { line-break: strict; }
    Display text (headings, leads, facts, chips): break only at phrase boundaries. */
 .jp { word-break: auto-phrase; }
 .nobr { white-space: nowrap; }
-:is(h1, h2, h3, h4, .h1, .h2, .h3, .lead, .fact, .chip, summary, blockquote) .jp {
+:is(h1, h2, h3, h4, .h1, .h2, .h3, .lead, .fact, .chip, .btn, summary, blockquote) .jp {
   word-break: keep-all;
   overflow-wrap: anywhere;
 }
@@ -222,6 +222,7 @@ html[lang="ja"] .lead { line-height: 1.9; }
   line-height: 1.2;
   text-align: center;
   text-decoration: none;
+  flex: none;
   cursor: pointer;
   transition: background-color 180ms var(--ease-out), color 180ms var(--ease-out),
     border-color 180ms var(--ease-out), transform 180ms var(--ease-out), box-shadow 180ms var(--ease-out);
@@ -421,13 +422,17 @@ a.card:hover .card-media img { transform: scale(1.03); }
 
 /* ═══════════════════ The manuscript sheet (hero) ═══════════════════
    A fragment of genkō yōshi: 7 columns × 10 rows, read top-to-bottom,
-   right-to-left. Each character "writes" itself in on page load; a
-   vermilion side-line (傍線) then marks the key phrase. */
+   right-to-left. On page load the paper settles, each character is
+   written in with a top-to-bottom stroke, the vermilion side-line
+   (傍線) is drawn beside 「AI×英語」, and the signature comes last. */
 
 .sheet-wrap { display: flex; justify-content: center; }
 .sheet {
   --cell: clamp(26px, 7.2vw, 44px);
   --gap: calc(var(--cell) * 0.3);
+  --write-start: 720ms;
+  --stroke: 66ms;
+  --cycle: 11000ms; /* write, hold, fade, write again */
   position: relative;
   display: grid;
   grid-template-columns: repeat(7, var(--cell));
@@ -466,7 +471,6 @@ a.card:hover .card-media img { transform: scale(1.03); }
   letter-spacing: -0.02em;
 }
 .sheet .sig { font-size: calc(var(--cell) * 0.46); color: var(--color-ink-faint); font-weight: 500; }
-.sheet .ch { opacity: 0; }
 /* Side-line emphasis (傍線) drawn to the right of the key phrase */
 .sheet .mark::after {
   content: "";
@@ -482,27 +486,50 @@ a.card:hover .card-media img { transform: scale(1.03); }
 .sheet .mark.is-first::after { top: 12%; height: 88%; border-radius: 2px 2px 0 0; }
 .sheet .mark.is-last::after { height: 88%; border-radius: 0 0 2px 2px; }
 @media (prefers-reduced-motion: no-preference) {
-  .sheet .ch { animation: write 320ms var(--ease-out) forwards; animation-delay: calc(260ms + var(--i) * 62ms); }
-  .sheet .mark::after { animation: sideline 520ms var(--ease-out) forwards; animation-delay: calc(560ms + var(--n) * 62ms); }
+  /* 1. the paper is set down */
+  .hero-media { animation: paper 760ms var(--ease-out) both; }
+  /* 2. each character is written top to bottom, one after another; the signature waits a beat.
+        The whole sheet then holds for ~9s, the ink fades, and it is written again. */
+  .sheet .ch {
+    animation: write var(--cycle) cubic-bezier(0.3, 0, 0.2, 1) infinite backwards;
+    animation-delay: calc(var(--write-start) + var(--i) * var(--stroke) + var(--pause, 0ms));
+  }
+  /* 3. the side-line is drawn in one movement once 「AI×英語」 is on the paper */
+  .sheet .mark::after {
+    animation: sideline var(--cycle) linear infinite backwards;
+    animation-delay: calc(var(--write-start) + 6 * var(--stroke) + 260ms + var(--m) * 150ms);
+  }
   .hero-stage > * { animation: rise 720ms var(--ease-out) both; }
-  .hero-stage > :nth-child(1) { animation-delay: 60ms; }
-  .hero-stage > :nth-child(2) { animation-delay: 150ms; }
-  .hero-stage > :nth-child(3) { animation-delay: 240ms; }
-  .hero-stage > :nth-child(4) { animation-delay: 330ms; }
-  .hero-stage > :nth-child(5) { animation-delay: 420ms; }
-  .hero-media { animation: rise 900ms var(--ease-out) 180ms both; }
+  .hero-stage > :nth-child(1) { animation-delay: calc(var(--stage-offset, 0ms) + 60ms); }
+  .hero-stage > :nth-child(2) { animation-delay: calc(var(--stage-offset, 0ms) + 150ms); }
+  .hero-stage > :nth-child(3) { animation-delay: calc(var(--stage-offset, 0ms) + 240ms); }
+  .hero-stage > :nth-child(4) { animation-delay: calc(var(--stage-offset, 0ms) + 330ms); }
 }
+@keyframes paper {
+  from { opacity: 0; transform: translateY(18px) rotate(-0.6deg); }
+  to { opacity: 1; transform: none; }
+}
+/* percentages of --cycle (11s): 2.8% ≈ 300ms stroke, 84–90% ≈ 660ms fade */
 @keyframes write {
-  from { opacity: 0; transform: translateY(-3px); filter: blur(1.5px); }
-  to { opacity: 1; transform: none; filter: none; }
+  0% { clip-path: inset(0 0 100% 0); filter: blur(0.8px); opacity: 1; }
+  2% { filter: blur(0.3px); }
+  2.8% { clip-path: inset(0 0 0 0); filter: none; opacity: 1; }
+  84% { clip-path: inset(0 0 0 0); opacity: 1; }
+  90% { clip-path: inset(0 0 0 0); opacity: 0; }
+  100% { clip-path: inset(0 0 100% 0); opacity: 0; }
 }
-@keyframes sideline { to { transform: scaleY(1); } }
+@keyframes sideline {
+  0% { transform: scaleY(0); opacity: 1; }
+  1.6% { transform: scaleY(1); opacity: 1; }
+  84% { transform: scaleY(1); opacity: 1; }
+  90% { transform: scaleY(1); opacity: 0; }
+  100% { transform: scaleY(0); opacity: 0; }
+}
 @keyframes rise {
   from { opacity: 0; transform: translateY(14px); }
   to { opacity: 1; transform: none; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .sheet .ch { opacity: 1; }
   .sheet .mark::after { transform: none; }
 }
 

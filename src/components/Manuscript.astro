@@ -41,8 +41,9 @@ const columns: Column[] = [
 ];
 
 let index = 0;
+let markIndex = 0;
 const grid = columns.map((col) => {
-  const cells: Array<{ cell: Cell; i: number; first: boolean; last: boolean }> = [];
+  const cells: Array<{ cell: Cell; i: number; m: number; first: boolean; last: boolean }> = [];
   for (let r = 0; r < ROWS; r++) {
     const cell = col.cells[r - col.start] ?? null;
     const prev = col.cells[r - col.start - 1] ?? null;
@@ -50,6 +51,7 @@ const grid = columns.map((col) => {
     cells.push({
       cell: r >= col.start ? cell : null,
       i: cell ? index++ : -1,
+      m: cell?.mark ? markIndex++ : -1,
       first: !!cell?.mark && !prev?.mark,
       last: !!cell?.mark && !next?.mark,
     });
@@ -61,11 +63,11 @@ const grid = columns.map((col) => {
 <div class="sheet-wrap hero-media" role="img" aria-label={label}>
   <div class="sheet" lang="ja">
     {grid.map((col) =>
-      col.map(({ cell, i, first, last }) =>
+      col.map(({ cell, i, m, first, last }) =>
         cell ? (
           <span
             class:list={['ch', { mark: cell.mark, sig: cell.sig, 'is-first': first, 'is-last': last }]}
-            style={`--i:${i};--n:${i}`}
+            style={`--i:${i}${cell.mark ? `;--m:${m}` : ''}${cell.sig ? ';--pause:420ms' : ''}`}
             aria-hidden="true"
           >
             {cell.tcy ? <span class="tcy">{cell.ch}</span> : cell.ch}

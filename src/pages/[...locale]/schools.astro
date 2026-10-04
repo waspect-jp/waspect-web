@@ -43,10 +43,10 @@ const contactHref = localePath(lang, '/contact?who=school');
   <PageHero title={T('schools.hero.title')} lead={T('schools.hero.lead')} image={shimoda} alt={t(lang, 'schools.hero.alt')} position="60% 50%">
     <Fragment slot="actions">
       <a href={contactHref} class="btn btn-primary btn-lg w-full sm:w-auto">
-        {t(lang, 'schools.hero.btn')}
+        <span set:html={T('schools.hero.btn')} />
         <Icon name="arrow" size={18} class="ic-arrow" />
       </a>
-      <a href="#programs" class="btn btn-ghost btn-lg w-full sm:w-auto">{t(lang, 'schools.hero.btn2')}</a>
+      <a href="#programs" class="btn btn-ghost btn-lg w-full sm:w-auto" set:html={T('schools.hero.btn2')} />
     </Fragment>
     <Fragment slot="facts">
       <span class="fact"><Icon name="check" size={16} />{t(lang, 'schools.hero.fact1')}</span>
@@ -162,5 +162,5 @@ const contactHref = localePath(lang, '/contact?who=school');
     </div>
   </section>
 
-  <CtaBand title={T('schools.cta.title')} desc={T('schools.cta.desc')} note={t(lang, 'schools.cta.note')} href={contactHref} label={t(lang, 'schools.cta.btn')} />
+  <CtaBand title={T('schools.cta.title')} desc={T('schools.cta.desc')} note={t(lang, 'schools.cta.note')} href={contactHref} label={T('schools.cta.btn')} />
 </BaseLayout>

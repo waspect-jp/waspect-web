@@ -46,7 +46,6 @@ export default {
   'footer.copyright': 'Waspect Inc. All rights reserved.',
 
   // ── Home: hero ──
-  'home.hero.en': '「AI×英語」は、世界で通用する最強のパスポート。',
   'home.hero.title': 'AI × English is a passport that works in any country and any industry.',
   'home.hero.lead': 'Hands-on AI and English programs, written by us and grounded in real business experience. We help schools, companies and individuals in Japan learn technology and English together, connect with the world, and create value of their own.',
   'home.hero.btn': 'Get in touch',

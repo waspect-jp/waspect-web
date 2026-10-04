@@ -42,33 +42,30 @@ const articles = [
 ---
 
 <BaseLayout title={t(lang, 'meta.home.title')} description={t(lang, 'meta.home.desc')} activePage="home" lang={lang}>
-  <!-- Hero: the message, written on manuscript paper -->
+  <!-- Hero: the message, and the same message written on manuscript paper -->
   <section class="relative overflow-hidden pt-6 pb-16 lg:pt-14 lg:pb-24">
-    <div class="wrap grid items-center gap-10 lg:grid-cols-12 lg:gap-12">
-      <div class:list={['hero-stage lg:col-span-6', isJa ? 'order-2 lg:order-1' : 'order-1']}>
-        {isJa && <p class="eng-note" lang="en">{t(lang, 'home.hero.en')}</p>}
-        {isJa ? (
-          <h1 class="sr-only">{t(lang, 'home.hero.title')}</h1>
-        ) : (
-          <h1 class="h1 mt-4 max-w-[18ch]" set:html={T('home.hero.title')} />
-        )}
-        <p class:list={['lead max-w-[34em]', isJa ? 'mt-5 text-[1.125rem] lg:text-[1.3125rem] lg:leading-[1.95]' : 'mt-6']} set:html={T('home.hero.lead')} />
+    <div class="wrap grid items-center gap-8 lg:grid-cols-12 lg:gap-x-12 lg:gap-y-0">
+      <div class="hero-stage lg:col-span-6 lg:self-end">
+        <h1 class="h1" set:html={T('home.hero.title')} />
+      </div>
+      <div class="lg:col-span-6 lg:col-start-7 lg:row-span-2 lg:row-start-1">
+        <Manuscript label={t(lang, 'home.sheet.caption')} />
+        <p class="small muted mt-4 text-center" set:html={T('home.sheet.note')} />
+      </div>
+      <div class="hero-stage lg:col-span-6 lg:col-start-1 lg:row-start-2 lg:self-start" style="--stage-offset: 180ms">
+        <p class="lead max-w-[34em] lg:mt-6" set:html={T('home.hero.lead')} />
         <div class="mt-8 flex flex-wrap items-center gap-3">
           <a href={localePath(lang, '/contact')} class="btn btn-primary btn-lg w-full sm:w-auto">
-            {t(lang, 'home.hero.btn')}
+            <span set:html={T('home.hero.btn')} />
             <Icon name="arrow" size={18} class="ic-arrow" />
           </a>
-          <a href="#who" class="btn btn-ghost btn-lg w-full sm:w-auto">{t(lang, 'home.hero.btn2')}</a>
+          <a href="#who" class="btn btn-ghost btn-lg w-full sm:w-auto" set:html={T('home.hero.btn2')} />
         </div>
         <ul class="facts mt-8">
           {['home.hero.fact1', 'home.hero.fact2', 'home.hero.fact3'].map((k) => (
             <li class="fact"><Icon name="check" size={16} />{t(lang, k)}</li>
           ))}
         </ul>
-      </div>
-      <div class:list={['lg:col-span-6', isJa ? 'order-1 lg:order-2' : 'order-2']}>
-        <Manuscript label={t(lang, 'home.sheet.caption')} />
-        {!isJa && <p class="small muted mt-4 text-center">{t(lang, 'home.sheet.note')}</p>}
       </div>
     </div>
   </section>
@@ -182,5 +179,5 @@ const articles = [
     </div>
   </section>
 
-  <CtaBand title={T('home.cta.title')} desc={T('home.cta.desc')} href={localePath(lang, '/contact')} label={t(lang, 'home.cta.btn')} />
+  <CtaBand title={T('home.cta.title')} desc={T('home.cta.desc')} href={localePath(lang, '/contact')} label={T('home.cta.btn')} />
 </BaseLayout>

@@ -71,8 +71,12 @@ overflow-wrap: anywhere`). No client JavaScript is involved.
 
 ## Motion
 
-- **Hero sequence** (page load only): characters write in (`write`), the
-  side-line draws (`sideline`), copy rises (`rise`).
+- **Hero sequence:** the paper settles (`paper`), each character is written
+  with a top-to-bottom stroke (`write`), the side-line is drawn (`sideline`),
+  the signature follows. The sheet then holds for about nine seconds, the ink
+  fades and it is written again (`--cycle` on `.sheet`, 11s; set
+  `animation-iteration-count: 1` on `.sheet .ch` and `.sheet .mark::after` to
+  play once). Copy rises in (`rise`).
 - **Scroll reveal** on a handful of blocks per page (`data-reveal`,
   `data-reveal-stagger`), handled by one IntersectionObserver in `BaseLayout`.
 - **Steps line** draws itself when the sequence enters view (`.steps`).
