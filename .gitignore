@@ -23,3 +23,6 @@ Thumbs.db
 
 # Local Netlify folder
 .netlify
+
+# Open Design local skill cache
+.od-skills/

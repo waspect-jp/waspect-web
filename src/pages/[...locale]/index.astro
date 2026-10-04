@@ -1,161 +1,183 @@
 ---
+import { Image } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import Manuscript from '../../components/Manuscript.astro';
+import SectionHead from '../../components/SectionHead.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import Icon from '../../components/Icon.astro';
 import { t, localePath, getStaticPaths as gsp, type Lang } from '../../i18n/utils';
+import { jp } from '../../i18n/jp';
+
+import classroom from '../../assets/photos/classroom-tablet.jpg';
+import business from '../../assets/photos/business-presentation.jpg';
+import parentChild from '../../assets/photos/parent-child.jpg';
+import shimoda from '../../assets/photos/shimoda-high-session.jpg';
+import logoNewspicks from '../../assets/media/media-newspicks.png';
+import logoDmenu from '../../assets/media/media-dmenu.png';
+import logoGoo from '../../assets/media/media-goo.png';
+
 export const getStaticPaths = gsp;
 const { lang } = Astro.props as { lang: Lang };
+const T = (key: string) => jp(lang, t(lang, key));
+const isJa = lang === 'ja';
+
+const audiences = [
+  { path: '/schools', img: classroom, title: 'home.who.schools.title', desc: 'home.who.schools.desc', alt: isJa ? '教室でタブレットを使う生徒たち' : 'Students using tablets in a classroom' },
+  { path: '/businesses', img: business, title: 'home.who.biz.title', desc: 'home.who.biz.desc', alt: isJa ? '会議室でプレゼンテーションをする女性' : 'A woman presenting in a meeting room' },
+  { path: '/kids', img: parentChild, title: 'home.who.parents.title', desc: 'home.who.parents.desc', alt: isJa ? '親子で画面を見ながら学ぶ様子' : 'A parent and child learning together' },
+];
+
+const pillars = [
+  { icon: 'brain', title: 'home.pillars.1.title', desc: 'home.pillars.1.desc' },
+  { icon: 'globe', title: 'home.pillars.2.title', desc: 'home.pillars.2.desc' },
+  { icon: 'hammer', title: 'home.pillars.3.title', desc: 'home.pillars.3.desc' },
+] as const;
+
+const caseFacts = ['home.case.f1', 'home.case.f2', 'home.case.f3', 'home.case.f4'];
+
+const articles = [
+  { url: 'https://prtimes.jp/main/html/rd/p/000000001.000166452.html', iso: '2025-07-18', date: 'home.media.1.date', source: 'home.media.1.source', title: 'home.media.1.title' },
+  { url: 'https://newswitch.jp/p/39164', iso: '2023-11-08', date: 'home.media.2.date', source: 'home.media.2.source', title: 'home.media.2.title' },
+];
 ---
 
 <BaseLayout title={t(lang, 'meta.home.title')} description={t(lang, 'meta.home.desc')} activePage="home" lang={lang}>
-
-  <!-- HERO -->
-  <section class="relative min-h-[90vh] flex items-center overflow-hidden ink-wash">
-    <div class="enso-blob w-[500px] h-[500px] -top-32 -right-32 bg-primary"></div>
-    <div class="enso-blob w-[300px] h-[300px] bottom-0 left-[10%] bg-secondary"></div>
-    <div class="max-w-7xl mx-auto px-6 lg:px-8 py-20 lg:py-0 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center relative z-10">
-      <div class="lg:col-span-7">
-        <span class="badge badge-primary hero-enter mb-6">{t(lang, 'home.badge')}</span>
-        <h1 class="text-[clamp(2.5rem,5vw,4.5rem)] font-headline font-extrabold text-primary leading-[1.08] tracking-tight mb-8 hero-enter hero-enter-delay-1">
-          {t(lang, 'home.hero.title.1')}{t(lang, 'home.hero.title.2') && <><br />{t(lang, 'home.hero.title.2')}</>}{t(lang, 'home.hero.title.3') ? <><br />{t(lang, 'home.hero.title.3')}<span class="text-tertiary">{t(lang, 'home.hero.title.accent')}</span></> : <><br /><span class="text-tertiary">{t(lang, 'home.hero.title.accent')}</span></>}
-        </h1>
-        <p class="text-lg lg:text-xl text-on-surface-variant leading-relaxed mb-10 max-w-xl hero-enter hero-enter-delay-2">{t(lang, 'home.hero.desc')}</p>
-        <div class="flex flex-wrap gap-3 hero-enter hero-enter-delay-3">
-          <a href={localePath(lang, '/schools')} class="btn btn-primary">{t(lang, 'home.btn.schools')}</a>
-          <a href={localePath(lang, '/businesses')} class="btn btn-secondary">{t(lang, 'home.btn.businesses')}</a>
-          <a href={localePath(lang, '/kids')} class="btn btn-primary bg-tertiary hover:bg-tertiary-container">{t(lang, 'home.btn.parents')}</a>
-        </div>
+  <!-- Hero: the message, and the same message written on manuscript paper -->
+  <section class="relative overflow-hidden pt-6 pb-16 lg:pt-14 lg:pb-24">
+    <div class="wrap grid items-center gap-8 lg:grid-cols-12 lg:gap-x-12 lg:gap-y-0">
+      <div class="hero-stage lg:col-span-6 lg:self-end">
+        <h1 class="h1" set:html={T('home.hero.title')} />
       </div>
-      <div class="lg:col-span-5 relative hero-enter hero-enter-delay-2">
-        <div class="absolute inset-0 -m-8 animate-enso opacity-[0.04]">
-          <svg viewBox="0 0 200 200" class="w-full h-full" aria-hidden="true"><circle cx="100" cy="100" r="90" fill="none" stroke="currentColor" stroke-width="3" class="text-primary" stroke-dasharray="8 4" /></svg>
+      <div class="lg:col-span-6 lg:col-start-7 lg:row-span-2 lg:row-start-1">
+        <Manuscript label={t(lang, 'home.sheet.caption')} />
+        <p class="small muted mt-4 text-center" set:html={T('home.sheet.note')} />
+      </div>
+      <div class="hero-stage lg:col-span-6 lg:col-start-1 lg:row-start-2 lg:self-start" style="--stage-offset: 180ms">
+        <p class="lead max-w-[34em] lg:mt-6" set:html={T('home.hero.lead')} />
+        <div class="mt-8 flex flex-wrap items-center gap-3">
+          <a href={localePath(lang, '/contact')} class="btn btn-primary btn-lg w-full sm:w-auto">
+            <span set:html={T('home.hero.btn')} />
+            <Icon name="arrow" size={18} class="ic-arrow" />
+          </a>
+          <a href="#who" class="btn btn-ghost btn-lg w-full sm:w-auto" set:html={T('home.hero.btn2')} />
         </div>
-        <div class="aspect-square rounded-[2rem] overflow-hidden shadow-2xl relative bg-gradient-to-br from-primary/5 to-secondary/5">
-          <img alt="Modern Japanese education collaboration" class="w-full h-full object-cover" src="/images/hero-collaboration.jpg" />
-          <div class="absolute inset-0 bg-gradient-to-t from-primary/15 via-transparent to-transparent"></div>
-        </div>
+        <ul class="facts mt-8">
+          {['home.hero.fact1', 'home.hero.fact2', 'home.hero.fact3'].map((k) => (
+            <li class="fact"><Icon name="check" size={16} />{t(lang, k)}</li>
+          ))}
+        </ul>
       </div>
     </div>
   </section>
 
-  <!-- WHO WE HELP -->
-  <section class="py-28 lg:py-36 bg-surface-container-low">
-    <div class="max-w-7xl mx-auto px-6 lg:px-8">
-      <div class="section-header reveal">
-        <h2>{t(lang, 'home.who.title')}</h2>
-        <div class="section-accent accent-gradient"></div>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 reveal-stagger">
-        {[
-          { path: '/schools', icon: 'school', title: t(lang, 'home.who.schools.title'), desc: t(lang, 'home.who.schools.desc'), color: 'bg-primary/8 group-hover:bg-primary', iconColor: 'text-primary group-hover:text-on-primary' },
-          { path: '/businesses', icon: 'work', title: t(lang, 'home.who.businesses.title'), desc: t(lang, 'home.who.businesses.desc'), color: 'bg-secondary/8 group-hover:bg-secondary', iconColor: 'text-secondary group-hover:text-on-secondary' },
-          { path: '/kids', icon: 'family_restroom', title: t(lang, 'home.who.parents.title'), desc: t(lang, 'home.who.parents.desc'), color: 'bg-tertiary/8 group-hover:bg-tertiary', iconColor: 'text-tertiary group-hover:text-on-tertiary' },
-        ].map((item) => (
-          <a href={localePath(lang, item.path)} class="card stone-surface p-10 group block">
-            <div class:list={['w-14 h-14 rounded-2xl flex items-center justify-center mb-8 transition-all duration-300', item.color]}>
-              <span class:list={['material-symbols-outlined text-3xl transition-colors', item.iconColor]}>{item.icon}</span>
+  <!-- Who we help -->
+  <section class="section tint" id="who">
+    <div class="wrap">
+      <SectionHead title={T('home.who.title')} lead={T('home.who.lead')} />
+      <div class="mt-12 grid gap-5 lg:mt-16 lg:grid-cols-3 lg:gap-6" data-reveal-stagger>
+        {audiences.map((a) => (
+          <a href={localePath(lang, a.path)} class="card group flex flex-col no-underline sm:flex-row lg:flex-col">
+            <div class="card-media aspect-[4/3] sm:w-2/5 sm:shrink-0 sm:[border-radius:calc(var(--radius-lg)-1px)_0_0_calc(var(--radius-lg)-1px)] lg:w-auto lg:[border-radius:calc(var(--radius-lg)-1px)_calc(var(--radius-lg)-1px)_0_0]">
+              <Image src={a.img} alt={a.alt} width={900} widths={[420, 640, 900]} sizes="(min-width: 1200px) 357px, (min-width: 1024px) 33vw, (min-width: 640px) 40vw, 100vw" format="webp" quality={78} />
             </div>
-            <h3 class="text-xl font-headline font-bold text-primary mb-3">{item.title}</h3>
-            <p class="text-on-surface-variant text-sm leading-relaxed mb-6">{item.desc}</p>
-            <span class="link-arrow text-sm">{t(lang, 'home.learn.more')} <span class="material-symbols-outlined text-[16px]">arrow_forward</span></span>
+            <div class="flex flex-1 flex-col p-6 lg:p-7">
+              <h3 class="h3" set:html={T(a.title)} />
+              <p class="small muted mt-3 flex-1 leading-relaxed" set:html={T(a.desc)} />
+              <span class="link small mt-6 self-start">
+                {t(lang, 'common.learnMore')}
+                <Icon name="arrow" size={16} />
+              </span>
+            </div>
           </a>
         ))}
       </div>
     </div>
   </section>
 
-  <!-- OUR APPROACH -->
-  <section class="py-28 lg:py-36 relative overflow-hidden">
-    <div class="enso-blob w-[400px] h-[400px] top-1/2 -right-48 bg-secondary"></div>
-    <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
-        <div class="reveal">
-          <div class="section-header">
-            <h2>{t(lang, 'home.approach.title')}</h2>
-            <p>{t(lang, 'home.approach.desc')}</p>
-          </div>
-          <div class="space-y-6">
-            {[
-              { icon: 'psychology', title: t(lang, 'home.approach.ai.title'), desc: t(lang, 'home.approach.ai.desc') },
-              { icon: 'language', title: t(lang, 'home.approach.global.title'), desc: t(lang, 'home.approach.global.desc') },
-              { icon: 'precision_manufacturing', title: t(lang, 'home.approach.hands.title'), desc: t(lang, 'home.approach.hands.desc') },
-            ].map((item) => (
-              <div class="flex gap-5 p-5 rounded-2xl hover:bg-surface-container-low transition-colors duration-300">
-                <div class="shrink-0 w-11 h-11 bg-secondary-container flex items-center justify-center rounded-xl text-on-secondary-container">
-                  <span class="material-symbols-outlined text-xl">{item.icon}</span>
-                </div>
-                <div>
-                  <h4 class="text-base font-bold text-primary mb-1">{item.title}</h4>
-                  <p class="text-sm text-on-surface-variant leading-relaxed">{item.desc}</p>
-                </div>
-              </div>
+  <!-- Three pillars -->
+  <section class="section">
+    <div class="wrap grid gap-12 lg:grid-cols-12 lg:gap-16">
+      <div class="lg:col-span-5">
+        <SectionHead title={T('home.pillars.title')} lead={T('home.pillars.lead')} class="lg:sticky lg:top-28" />
+      </div>
+      <ul class="ruled lg:col-span-7" data-reveal-stagger>
+        {pillars.map((p) => (
+          <li class="grid grid-cols-[auto_1fr] gap-5 py-7 lg:gap-7 lg:py-9">
+            <span class="grid h-12 w-12 place-items-center rounded-full bg-mint text-rule-deep">
+              <Icon name={p.icon} size={22} />
+            </span>
+            <div>
+              <h3 class="h3" set:html={T(p.title)} />
+              <p class="muted mt-2 max-w-[38em] leading-relaxed" set:html={T(p.desc)} />
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- In practice: Shimoda High School -->
+  <section class="section-tight">
+    <div class="wrap">
+      <div class="grid items-center gap-10 lg:grid-cols-12 lg:gap-16" data-reveal>
+        <div class="frame aspect-[16/10] bg-mist lg:col-span-7">
+          <Image src={shimoda} alt={t(lang, 'home.case.alt')} width={1400} widths={[640, 960, 1400]} sizes="(min-width: 1200px) 627px, (min-width: 1024px) 58vw, 100vw" format="webp" quality={80} />
+        </div>
+        <div class="lg:col-span-5">
+          <span class="chip">{t(lang, 'home.case.label')}</span>
+          <h2 class="h2 mt-4" set:html={T('home.case.title')} />
+          <p class="muted mt-4 leading-relaxed" set:html={T('home.case.desc')} />
+          <ul class="mt-6 grid gap-2.5 sm:grid-cols-2">
+            {caseFacts.map((k) => (
+              <li class="fact"><Icon name="check-circle" size={16} />{t(lang, k)}</li>
             ))}
+          </ul>
+          <div class="mt-7 flex flex-wrap gap-x-8 gap-y-3">
+            <a href={localePath(lang, '/schools') + '#programs'} class="link">
+              {t(lang, 'home.case.link2')}
+              <Icon name="arrow" size={16} />
+            </a>
+            <a href={articles[0].url} target="_blank" rel="noopener noreferrer" class="link">
+              {t(lang, 'home.case.link')}
+              <Icon name="arrow-up-right" size={16} />
+            </a>
           </div>
-        </div>
-        <div class="relative reveal">
-          <div class="aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl relative">
-            <img alt="Student learning AI concepts" class="w-full h-full object-cover" src="/images/student-tablet.jpg" />
-            <div class="absolute inset-0 bg-gradient-to-t from-primary/10 via-transparent to-transparent"></div>
-          </div>
-          <div class="absolute -bottom-6 -left-6 w-32 h-32 rounded-full border-[6px] border-secondary-container/40 animate-float-slow pointer-events-none"></div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- IN THE MEDIA -->
-  <section class="py-28 lg:py-36 bg-surface-container-low">
-    <div class="max-w-7xl mx-auto px-6 lg:px-8">
-      <div class="text-center section-header reveal">
-        <h2 class="mx-auto">{t(lang, 'home.media.title')}</h2>
-        <p class="mx-auto">{t(lang, 'home.media.desc')}</p>
-      </div>
-      <div class="flex flex-wrap justify-center items-center gap-10 lg:gap-16 mb-16 reveal">
-        {[
-          { src: '/images/media-newspicks.png', alt: 'NewsPicks' },
-          { src: '/images/media-newswitch.png', alt: 'NewsSwitch' },
-          { src: '/images/media-dmenu.png', alt: 'dmenu' },
-          { src: '/images/media-goo.png', alt: 'goo' },
-        ].map((logo) => (
-          <img src={logo.src} alt={logo.alt} class="h-8 w-auto opacity-40 grayscale hover:opacity-80 hover:grayscale-0 transition-all duration-500" />
-        ))}
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 reveal-stagger">
-        {[
-          { url: 'https://prtimes.jp/main/html/rd/p/000000001.000166452.html', img: '/images/classroom-shizuoka.jpg', alt: 'Shizuoka classroom', date: t(lang, 'home.media.article1.date'), title: t(lang, 'home.media.article1.title') },
-          { url: 'https://newswitch.jp/p/39164', img: '/images/newspaper-press.jpg', alt: 'NewsSwitch', date: t(lang, 'home.media.article2.date'), title: t(lang, 'home.media.article2.title') },
-        ].map((a) => (
-          <a href={a.url} target="_blank" rel="noopener noreferrer" class="card overflow-hidden group flex flex-col">
-            <div class="h-52 overflow-hidden">
-              <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" alt={a.alt} src={a.img} />
-            </div>
-            <div class="p-8 flex-1 flex flex-col">
-              <span class="text-xs font-bold text-tertiary mb-3 tracking-widest">{a.date}</span>
-              <h3 class="text-lg font-bold text-primary mb-4 flex-1 leading-snug">{a.title}</h3>
-              <span class="link-arrow text-sm">{t(lang, 'home.media.read')} <span class="material-symbols-outlined text-[16px]">arrow_forward</span></span>
+  <!-- In the media -->
+  <section class="section tint">
+    <div class="wrap">
+      <SectionHead title={T('home.media.title')} lead={T('home.media.lead')} />
+      <div class="mt-12 grid gap-5 md:grid-cols-2 lg:gap-6" data-reveal-stagger>
+        {articles.map((a) => (
+          <a href={a.url} target="_blank" rel="noopener noreferrer" class="card group flex flex-col no-underline">
+            <div class="flex flex-1 flex-col p-6 lg:p-8">
+              <p class="small muted flex flex-wrap gap-x-4 gap-y-1">
+                <time class="latin tabular-nums" datetime={a.iso}>{t(lang, a.date)}</time>
+                <span>{t(lang, a.source)}</span>
+              </p>
+              <h3 class="h3 mt-3 flex-1" set:html={T(a.title)} />
+              <span class="link small mt-6 self-start">
+                {t(lang, 'home.media.read')}
+                <Icon name="arrow-up-right" size={16} />
+              </span>
             </div>
           </a>
         ))}
       </div>
-    </div>
-  </section>
-
-  <!-- CTA -->
-  <section class="py-28 lg:py-36">
-    <div class="max-w-5xl mx-auto px-6 lg:px-8">
-      <div class="relative bg-primary rounded-[2.5rem] p-12 lg:p-20 text-center overflow-hidden reveal">
-        <div class="absolute inset-0 opacity-[0.04]">
-          <svg width="100%" height="100%" aria-hidden="true"><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><circle cx="20" cy="20" r="1" fill="white" /></pattern><rect width="100%" height="100%" fill="url(#grid)" /></svg>
-        </div>
-        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-white/5 rounded-full blur-[80px]"></div>
-        <div class="relative z-10">
-          <h2 class="text-3xl lg:text-5xl font-headline font-extrabold text-on-primary mb-6 tracking-tight leading-tight" set:html={t(lang, 'home.cta.title').replace('\n', '<br />')} />
-          <p class="text-lg text-on-primary/70 mb-10 max-w-lg mx-auto">{t(lang, 'home.cta.desc')}</p>
-          <div class="flex flex-col sm:flex-row gap-3 justify-center">
-            <a href={localePath(lang, '/contact')} class="btn btn-lg bg-white text-primary hover:bg-secondary-container hover:shadow-lg transition-all">{t(lang, 'home.cta.btn')}</a>
-            <a href={localePath(lang, '/about')} class="btn btn-lg bg-white/10 text-white border border-white/20 hover:bg-white/20 transition-all">{t(lang, 'home.cta.btn2')}</a>
-          </div>
+      <div class="mt-12 flex flex-wrap items-center gap-x-10 gap-y-5" data-reveal>
+        <p class="small muted">{t(lang, 'home.media.also')}</p>
+        <div class="flex flex-wrap items-center gap-x-10 gap-y-5 opacity-70 grayscale">
+          <Image src={logoNewspicks} alt="NewsPicks" height={40} densities={[1, 2]} format="png" class="h-10 w-auto" />
+          <Image src={logoDmenu} alt="dmenu" height={22} densities={[1, 2]} format="png" class="h-[22px] w-auto" />
+          <Image src={logoGoo} alt="goo" height={28} densities={[1, 2]} format="png" class="h-7 w-auto" />
         </div>
       </div>
     </div>
   </section>
 
+  <CtaBand title={T('home.cta.title')} desc={T('home.cta.desc')} href={localePath(lang, '/contact')} label={T('home.cta.btn')} />
 </BaseLayout>

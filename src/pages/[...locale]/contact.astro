@@ -1,196 +1,226 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/Icon.astro';
 import { t, localePath, getStaticPaths as gsp, type Lang } from '../../i18n/utils';
+import { jp } from '../../i18n/jp';
+
 export const getStaticPaths = gsp;
 const { lang } = Astro.props as { lang: Lang };
+const T = (key: string) => jp(lang, t(lang, key));
+
+const who = [
+  { value: 'school', icon: 'school', title: 'contact.link.school', sub: 'contact.link.school.sub' },
+  { value: 'business', icon: 'building', title: 'contact.link.business', sub: 'contact.link.business.sub' },
+  { value: 'parent', icon: 'users', title: 'contact.link.parent', sub: 'contact.link.parent.sub' },
+] as const;
+
+const fields = [
+  { name: 'name', label: 'contact.form.name', placeholder: 'contact.form.name.placeholder', type: 'text', req: true, autocomplete: 'name' },
+  { name: 'email', label: 'contact.form.email', placeholder: 'contact.form.email.placeholder', type: 'email', req: true, autocomplete: 'email' },
+  { name: 'organization', label: 'contact.form.org', placeholder: 'contact.form.org.placeholder', type: 'text', req: false, autocomplete: 'organization' },
+  { name: 'role', label: 'contact.form.role', placeholder: 'contact.form.role.placeholder', type: 'text', req: false, autocomplete: 'organization-title' },
+] as const;
+
+const mapsUrl = 'https://www.google.com/maps/search/?api=1&query=1-22-11+Ginza+Chuo-ku+Tokyo';
+const mapEmbed = `https://www.google.com/maps?q=${encodeURIComponent('東京都中央区銀座1-22-11 大竹ビル')}&z=17&output=embed&hl=${lang}`;
 ---
 
 <BaseLayout lang={lang} title={t(lang, 'meta.contact.title')} description={t(lang, 'meta.contact.desc')} activePage="contact">
-
-  <div class="max-w-7xl mx-auto px-6 lg:px-8 pt-12 pb-24 lg:flex lg:gap-16">
-    <!-- LEFT SIDEBAR -->
-    <aside class="lg:w-2/5 mb-16 lg:mb-0">
-      <div class="lg:sticky lg:top-28 space-y-10">
-        <div class="hero-enter">
-          <span class="badge badge-primary mb-4">{t(lang, 'contact.badge')}</span>
-          <h1 class="text-[clamp(2.5rem,4vw,3.5rem)] font-headline font-bold text-primary tracking-tight leading-tight mb-4">{t(lang, 'contact.title')}</h1>
-          <p class="text-lg text-on-surface-variant max-w-md leading-relaxed">{t(lang, 'contact.desc')}</p>
-        </div>
-
-        <!-- Quick links — click to select identity in the form -->
-        <div class="space-y-3 hero-enter hero-enter-delay-1">
-          {[
-            { who: 'school', icon: 'school', title: t(lang, 'contact.link.school'), sub: t(lang, 'contact.link.school.sub') },
-            { who: 'business', icon: 'corporate_fare', title: t(lang, 'contact.link.business'), sub: t(lang, 'contact.link.business.sub') },
-            { who: 'parent', icon: 'family_history', title: t(lang, 'contact.link.parent'), sub: t(lang, 'contact.link.parent.sub') },
-          ].map((item) => (
-            <button type="button" data-select-who={item.who} class="who-link group flex items-center gap-5 p-5 card !rounded-xl w-full text-left">
-              <div class="w-10 h-10 flex items-center justify-center bg-primary/5 rounded-xl text-primary group-hover:bg-primary group-hover:text-on-primary transition-all duration-300">
-                <span class="material-symbols-outlined text-xl">{item.icon}</span>
-              </div>
-              <div class="flex-1">
-                <p class="font-bold text-on-surface text-sm">{item.title}</p>
-                <p class="text-xs text-on-surface-variant">{item.sub}</p>
-              </div>
-              <span class="material-symbols-outlined text-outline-variant group-hover:text-primary transition-colors text-lg">chevron_right</span>
-            </button>
-          ))}
-        </div>
-
-        <!-- Contact details -->
-        <div class="pt-8 border-t border-outline-variant/15 space-y-4 hero-enter hero-enter-delay-2">
-          <div class="flex items-start gap-4">
-            <span class="material-symbols-outlined text-tertiary text-lg">location_on</span>
-            <p class="text-sm text-on-surface-variant" set:html={t(lang, 'contact.address')} />
-          </div>
-          <div class="flex items-center gap-4">
-            <span class="material-symbols-outlined text-tertiary text-lg">mail</span>
-            <p class="text-sm text-on-surface-variant">info@waspect.jp</p>
-          </div>
-          <div class="mt-4 overflow-hidden rounded-xl h-44 w-full">
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3241.169!2d139.7671!3d35.6722!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188be6e392b4ef%3A0x4c0e0fd8c6cf488d!2z44CSMTEwLTAwMDEg5p2x5Lqs6YO95Lit5aSu5Yy66YqA5bqnMS0yMi0xMQ!5e0!3m2!1sja!2sjp!4v1"
-              width="100%"
-              height="100%"
-              style="border:0;filter:grayscale(1) opacity(0.7);"
-              allowfullscreen=""
-              loading="lazy"
-              referrerpolicy="no-referrer-when-downgrade"
-              title={t(lang, 'contact.map.title')}
-            ></iframe>
-          </div>
-        </div>
-      </div>
-    </aside>
-
-    <!-- FORM -->
-    <section class="lg:w-3/5">
-      <!-- Success message (hidden by default) -->
-      <div id="form-success" class="hidden card p-8 lg:p-12 !rounded-2xl border border-green-200 bg-green-50 text-center">
-        <span class="material-symbols-outlined text-5xl text-green-600 mb-4">check_circle</span>
-        <h3 class="text-xl font-headline font-bold text-green-800 mb-2">{lang === 'ja' ? 'お問い合わせありがとうございます' : 'Thank you for reaching out'}</h3>
-        <p class="text-green-700 text-sm">{lang === 'ja' ? '内容を確認の上、折り返しご連絡いたします。' : "We've received your message and will get back to you shortly."}</p>
+  <section class="pt-10 pb-16 lg:pt-20 lg:pb-24">
+    <div class="wrap">
+      <div class="hero-stage max-w-3xl">
+        <h1 class="h1" set:html={T('contact.title')} />
+        <p class="lead mt-5 max-w-[34em]" set:html={T('contact.lead')} />
       </div>
 
-      <div id="contact-form" class="card stone-surface p-8 lg:p-12 !rounded-2xl border border-outline-variant/10 hero-enter hero-enter-delay-1">
-        <form id="contact-form-el" class="space-y-8" name="contact" method="POST" action={localePath(lang, '/contact/')} data-netlify="true" netlify-honeypot="bot-field">
-          <p class="hidden"><label>Don't fill this out: <input name="bot-field" /></label></p>
-          <!-- Identity Selector -->
-          <fieldset class="space-y-3">
-            <legend class="font-label font-bold text-sm text-on-surface block">{t(lang, 'contact.form.who')}</legend>
-            <div class="grid grid-cols-3 gap-3" id="identity-selector">
-              {[
-                { value: 'school', icon: 'school', label: t(lang, 'contact.form.school') },
-                { value: 'business', icon: 'apartment', label: t(lang, 'contact.form.business') },
-                { value: 'parent', icon: 'family_restroom', label: t(lang, 'contact.form.parent') },
-              ].map((opt) => (
-                <label class="identity-option relative flex flex-col items-center gap-2 p-5 rounded-xl border-2 border-surface-container hover:bg-surface-container-low transition-all cursor-pointer has-checked:border-primary has-checked:bg-primary/3 group">
-                  <input name="identity" type="radio" value={opt.value} class="sr-only" />
-                  <span class="material-symbols-outlined text-2xl text-outline group-hover:text-primary transition-colors">{opt.icon}</span>
-                  <span class="font-label text-xs font-bold text-on-surface-variant">{opt.label}</span>
-                </label>
-              ))}
-            </div>
-          </fieldset>
-
-          <!-- Fields -->
-          <div class="grid md:grid-cols-2 gap-6">
-            {[
-              { name: 'name', label: t(lang, 'contact.form.name'), placeholder: t(lang, 'contact.form.name.placeholder'), type: 'text', req: true },
-              { name: 'email', label: t(lang, 'contact.form.email'), placeholder: t(lang, 'contact.form.email.placeholder'), type: 'email', req: true },
-              { name: 'organization', label: t(lang, 'contact.form.org'), placeholder: t(lang, 'contact.form.org.placeholder'), type: 'text', req: false },
-              { name: 'role', label: t(lang, 'contact.form.role'), placeholder: t(lang, 'contact.form.role.placeholder'), type: 'text', req: false },
-            ].map((field) => (
-              <div class="space-y-1.5">
-                <label for={`field-${field.name}`} class="font-label font-bold text-[11px] text-primary uppercase tracking-wider">{field.label}{field.req && <span class="text-secondary ml-0.5">*</span>}</label>
-                <input
-                  id={`field-${field.name}`}
-                  name={field.name}
-                  type={field.type as astroHTML.JSX.HTMLInputTypeAttribute}
-                  placeholder={field.placeholder}
-                  required={field.req}
-                  class="w-full bg-surface-container-high/50 border-0 border-b-2 border-transparent focus:border-primary focus:bg-surface-container-lowest rounded-lg transition-all px-4 py-2.5 text-sm text-on-surface placeholder:text-outline/40 focus:ring-0"
-                />
-              </div>
+      <div class="mt-12 grid gap-12 lg:mt-16 lg:grid-cols-12 lg:gap-16">
+        <!-- Sidebar -->
+        <aside class="lg:col-span-5">
+          <div class="grid gap-3" data-reveal-stagger>
+            {who.map((w) => (
+              <button type="button" class="card is-hover flex w-full items-center gap-5 p-5 text-left" data-select-who={w.value}>
+                <span class="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-mint text-rule-deep">
+                  <Icon name={w.icon} size={20} />
+                </span>
+                <span class="flex-1">
+                  <span class="block font-bold text-ink">{t(lang, w.title)}</span>
+                  <span class="small muted block">{t(lang, w.sub)}</span>
+                </span>
+                <Icon name="arrow" size={18} class="text-ink-faint" />
+              </button>
             ))}
           </div>
 
-          <div class="space-y-1.5">
-            <label for="field-message" class="font-label font-bold text-[11px] text-primary uppercase tracking-wider">{t(lang, 'contact.form.message')}<span class="text-secondary ml-0.5">*</span></label>
-            <textarea
-              id="field-message"
-              name="message"
-              placeholder={t(lang, 'contact.form.message.placeholder')}
-              rows="4"
-              required
-              class="w-full bg-surface-container-high/50 border-0 border-b-2 border-transparent focus:border-primary focus:bg-surface-container-lowest rounded-lg transition-all px-4 py-2.5 text-sm text-on-surface placeholder:text-outline/40 focus:ring-0 resize-none"
-            ></textarea>
+          <div class="mt-10 border-t border-rule-soft pt-8" data-reveal>
+            <ul class="grid gap-3">
+              <li class="flex items-start gap-3">
+                <Icon name="map-pin" size={18} class="mt-1 shrink-0 text-rule" />
+                <p class="small muted leading-relaxed" set:html={t(lang, 'contact.address')} />
+              </li>
+              <li class="flex items-center gap-3">
+                <Icon name="mail" size={18} class="shrink-0 text-rule" />
+                <a href="mailto:info@waspect.jp" class="small link">info@waspect.jp</a>
+              </li>
+            </ul>
+            <div class="frame mt-6 aspect-[16/9] bg-mist-deep">
+              <iframe
+                src={mapEmbed}
+                width="100%"
+                height="100%"
+                style="border:0;filter:grayscale(1) contrast(0.95);"
+                allowfullscreen=""
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+                title={t(lang, 'contact.map.title')}
+              ></iframe>
+            </div>
+            <a href={mapsUrl} target="_blank" rel="noopener noreferrer" class="link small mt-3">
+              {t(lang, 'about.company.map')}
+              <Icon name="arrow-up-right" size={14} />
+            </a>
+          </div>
+        </aside>
+
+        <!-- Form -->
+        <section class="lg:col-span-7" aria-labelledby="contact-form-heading">
+          <h2 id="contact-form-heading" class="sr-only">{t(lang, 'contact.form.heading')}</h2>
+
+          <div id="form-success" class="card hidden p-8 text-center lg:p-12" role="status" tabindex="-1">
+            <span class="mx-auto grid h-14 w-14 place-items-center rounded-full bg-mint text-rule-deep">
+              <Icon name="check" size={26} />
+            </span>
+            <h3 class="h3 mt-5" set:html={T('contact.success.title')} />
+            <p class="muted mt-2" set:html={T('contact.success.desc')} />
           </div>
 
-          <button class="btn btn-primary w-full py-4" type="submit">
-            {t(lang, 'contact.form.submit')}
-            <span class="material-symbols-outlined text-lg">arrow_forward</span>
-          </button>
-          <p class="text-center text-[11px] text-on-surface-variant/50">{t(lang, 'contact.form.disclaimer')}</p>
-        </form>
-      </div>
+          <div id="contact-form" class="card p-6 sm:p-8 lg:p-10" data-reveal>
+            <form id="contact-form-el" class="grid gap-8" name="contact" method="POST" action={localePath(lang, '/contact/')} data-netlify="true" netlify-honeypot="bot-field">
+              <input type="hidden" name="form-name" value="contact" />
+              <p class="hidden" aria-hidden="true"><label>Don't fill this out: <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
 
-      <!-- Trust markers -->
-      <div class="mt-10 flex flex-wrap justify-center lg:justify-start gap-8 opacity-30">
-        {[
-          { icon: 'verified_user', label: t(lang, 'contact.trust.standards') },
-          { icon: 'lock', label: t(lang, 'contact.trust.secure') },
-          { icon: 'support_agent', label: t(lang, 'contact.trust.response') },
-        ].map((item) => (
-          <div class="flex items-center gap-2">
-            <span class="material-symbols-outlined text-sm">{item.icon}</span>
-            <span class="font-label font-bold text-[10px] uppercase tracking-widest">{item.label}</span>
+              <fieldset class="grid gap-3">
+                <legend class="small mb-3 font-bold text-ink">{t(lang, 'contact.form.who')}</legend>
+                <div class="grid grid-cols-3 gap-3" id="identity-selector">
+                  {who.map((w) => (
+                    <label class="seg">
+                      <input name="identity" type="radio" value={w.value} checked={w.value === 'school'} />
+                      <Icon name={w.icon} size={22} />
+                      <span>{t(lang, `contact.form.${w.value}`)}</span>
+                    </label>
+                  ))}
+                </div>
+              </fieldset>
+
+              <div class="grid gap-6 md:grid-cols-2">
+                {fields.map((f) => (
+                  <div class="field" data-field={f.name}>
+                    <label for={`field-${f.name}`}>
+                      {t(lang, f.label)}
+                      {f.req && <span class="req" aria-hidden="true">*</span>}
+                    </label>
+                    <input
+                      id={`field-${f.name}`}
+                      class="input"
+                      name={f.name}
+                      type={f.type}
+                      placeholder={t(lang, f.placeholder)}
+                      required={f.req}
+                      autocomplete={f.autocomplete}
+                    />
+                  </div>
+                ))}
+              </div>
+
+              <div class="field">
+                <label for="field-message">
+                  {t(lang, 'contact.form.message')}
+                  <span class="req" aria-hidden="true">*</span>
+                </label>
+                <textarea id="field-message" class="input" name="message" rows="5" required placeholder={t(lang, 'contact.form.message.placeholder')} data-placeholder-default={t(lang, 'contact.form.message.placeholder')} data-placeholder-parent={t(lang, 'contact.form.message.placeholder.parent')}></textarea>
+              </div>
+
+              <div class="grid gap-4">
+                <button class="btn btn-primary btn-lg btn-block" type="submit" id="contact-submit" data-label-default={t(lang, 'contact.form.submit')} data-label-parent={t(lang, 'contact.form.submit.parent')}>
+                  <span>{t(lang, 'contact.form.submit')}</span>
+                  <Icon name="arrow" size={18} class="ic-arrow" />
+                </button>
+                <p id="form-error" class="small hidden rounded-xl bg-[#fdf0ed] px-4 py-3 text-[#8a2a1b]" role="alert">{t(lang, 'contact.form.error')}</p>
+                <p class="small muted text-center text-[0.8125rem]">{t(lang, 'contact.form.disclaimer')}</p>
+              </div>
+            </form>
           </div>
-        ))}
+        </section>
       </div>
-    </section>
-  </div>
+    </div>
+  </section>
 
   <script>
-    function selectIdentity(value: string) {
-      const radios = document.querySelectorAll<HTMLInputElement>('input[name="identity"]');
-      radios.forEach((r) => { r.checked = r.value === value; });
-      // Scroll form into view on mobile
-      document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    const radios = document.querySelectorAll<HTMLInputElement>('input[name="identity"]');
+    const scrollBehavior: ScrollBehavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+    const submit = document.getElementById('contact-submit') as HTMLButtonElement | null;
+    const submitLabel = submit?.querySelector('span');
+
+    const message = document.getElementById('field-message') as HTMLTextAreaElement | null;
+    const required = message?.closest('.field')?.querySelector('.req');
+
+    // Parents register interest: the button says so and the message becomes optional.
+    function syncSubmitLabel() {
+      const isParent = Array.from(radios).find((r) => r.checked)?.value === 'parent';
+      if (submit && submitLabel) {
+        submitLabel.textContent = isParent ? submit.dataset.labelParent ?? '' : submit.dataset.labelDefault ?? '';
+      }
+      if (message) {
+        message.required = !isParent;
+        message.placeholder = (isParent ? message.dataset.placeholderParent : message.dataset.placeholderDefault) ?? '';
+      }
+      required?.classList.toggle('hidden', isParent);
+      // Parents have no organization or role to give; the inputs stay in the DOM for Netlify.
+      document.querySelectorAll<HTMLElement>('[data-field="organization"], [data-field="role"]').forEach((el) => el.classList.toggle('hidden', isParent));
     }
 
-    // Sidebar buttons select the identity and scroll to form
-    document.querySelectorAll<HTMLButtonElement>('.who-link').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const who = btn.dataset.selectWho;
-        if (who) selectIdentity(who);
-      });
+    function selectIdentity(value: string, scroll = false) {
+      radios.forEach((r) => (r.checked = r.value === value));
+      syncSubmitLabel();
+      if (scroll) {
+        document.getElementById('contact-form')?.scrollIntoView({ behavior: scrollBehavior, block: 'start' });
+        Array.from(radios).find((r) => r.checked)?.focus({ preventScroll: true });
+      }
+    }
+
+    document.querySelectorAll<HTMLButtonElement>('[data-select-who]').forEach((btn) => {
+      btn.addEventListener('click', () => selectIdentity(btn.dataset.selectWho ?? 'school', true));
     });
+    radios.forEach((r) => r.addEventListener('change', syncSubmitLabel));
 
-    // URL query param: /contact?who=parent pre-selects
-    const params = new URLSearchParams(window.location.search);
-    const whoParam = params.get('who');
-    if (whoParam) {
-      selectIdentity(whoParam);
-    } else {
-      selectIdentity('school');
-    }
+    const whoParam = new URLSearchParams(window.location.search).get('who');
+    selectIdentity(whoParam && ['school', 'business', 'parent'].includes(whoParam) ? whoParam : 'school');
 
-    // Handle form submission with success message
-    const form = document.getElementById('contact-form-el') as HTMLFormElement;
+    const form = document.getElementById('contact-form-el') as HTMLFormElement | null;
+    const wrap = document.getElementById('contact-form');
+    const success = document.getElementById('form-success');
+    const error = document.getElementById('form-error');
+
     form?.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const formData = new FormData(form);
+      error?.classList.add('hidden');
+      if (submit) submit.disabled = true;
       try {
-        await fetch(form.action, {
+        const body = new URLSearchParams(new FormData(form) as unknown as Record<string, string>);
+        const res = await fetch(form.action, {
           method: 'POST',
-          body: new URLSearchParams(formData as any),
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body,
         });
-      } catch (_) {}
-      document.getElementById('contact-form')!.classList.add('hidden');
-      document.getElementById('form-success')!.classList.remove('hidden');
-      document.getElementById('form-success')!.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        if (!res.ok) throw new Error(`Form submission failed: ${res.status}`);
+        wrap?.classList.add('hidden');
+        success?.classList.remove('hidden');
+        success?.focus();
+        success?.scrollIntoView({ behavior: scrollBehavior, block: 'center' });
+      } catch (err) {
+        console.error(err);
+        error?.classList.remove('hidden');
+        if (submit) submit.disabled = false;
+      }
     });
   </script>
-
 </BaseLayout>

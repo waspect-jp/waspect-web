@@ -11,16 +11,23 @@
     "build": "astro check && astro build",
     "preview": "astro preview",
     "check": "astro check",
-    "astro": "astro"
+    "astro": "astro",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "verify": "npm run build && npm run test"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.1",
     "@tailwindcss/vite": "^4.2.2",
     "astro": "^6.0.8",
+    "budoux": "^0.9.3",
+    "sharp": "^0.35.5",
     "tailwindcss": "^4.2.2"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.8",
-    "typescript": "^5.9.3"
+    "node-html-parser": "^9.0.4",
+    "typescript": "^5.9.3",
+    "vitest": "^5.0.3"
   }
 }

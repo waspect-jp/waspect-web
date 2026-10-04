@@ -1,177 +1,166 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import SectionHead from '../../components/SectionHead.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import Icon from '../../components/Icon.astro';
 import { t, localePath, getStaticPaths as gsp, type Lang } from '../../i18n/utils';
+import { jp } from '../../i18n/jp';
+import shimoda from '../../assets/photos/shimoda-high-session.jpg';
+
 export const getStaticPaths = gsp;
 const { lang } = Astro.props as { lang: Lang };
+const T = (key: string) => jp(lang, t(lang, key));
+
+const stances = [
+  { icon: 'brain', title: 'schools.why.p1.title', desc: 'schools.why.p1.desc' },
+  { icon: 'palette', title: 'schools.why.p2.title', desc: 'schools.why.p2.desc' },
+  { icon: 'compass', title: 'schools.why.p3.title', desc: 'schools.why.p3.desc' },
+] as const;
+
+const programs = [1, 2, 3, 4].map((n) => ({
+  title: `schools.prog.${n}.title`,
+  grade: `schools.prog.${n}.grade`,
+  sessions: `schools.prog.${n}.sessions`,
+  desc: `schools.prog.${n}.desc`,
+  bullets: [`schools.prog.${n}.b1`, `schools.prog.${n}.b2`, `schools.prog.${n}.b3`],
+  outcome: `schools.prog.${n}.outcome`,
+  caseLink: n === 1 ? 'https://prtimes.jp/main/html/rd/p/000000001.000166452.html' : undefined,
+}));
+
+const common = [
+  { icon: 'languages', title: 'schools.common.1.title', desc: 'schools.common.1.desc' },
+  { icon: 'flask', title: 'schools.common.2.title', desc: 'schools.common.2.desc' },
+  { icon: 'sliders', title: 'schools.common.3.title', desc: 'schools.common.3.desc' },
+  { icon: 'shield', title: 'schools.common.4.title', desc: 'schools.common.4.desc' },
+] as const;
+
+const steps = [1, 2, 3, 4].map((n) => ({ title: `schools.journey.${n}`, desc: `schools.journey.${n}.desc` }));
+const contactHref = localePath(lang, '/contact?who=school');
 ---
 
 <BaseLayout title={t(lang, 'meta.schools.title')} description={t(lang, 'meta.schools.desc')} activePage="schools" lang={lang}>
+  <PageHero title={T('schools.hero.title')} lead={T('schools.hero.lead')} image={shimoda} alt={t(lang, 'schools.hero.alt')} position="60% 50%">
+    <Fragment slot="actions">
+      <a href={contactHref} class="btn btn-primary btn-lg w-full sm:w-auto">
+        <span set:html={T('schools.hero.btn')} />
+        <Icon name="arrow" size={18} class="ic-arrow" />
+      </a>
+      <a href="#programs" class="btn btn-ghost btn-lg w-full sm:w-auto" set:html={T('schools.hero.btn2')} />
+    </Fragment>
+    <Fragment slot="facts">
+      <span class="fact"><Icon name="check" size={16} />{t(lang, 'schools.hero.fact1')}</span>
+      <span class="fact"><Icon name="check" size={16} />{t(lang, 'schools.hero.fact2')}</span>
+    </Fragment>
+  </PageHero>
 
-  <!-- Hero -->
-  <section class="relative min-h-[85vh] flex items-center overflow-hidden ink-wash">
-    <div class="enso-blob w-[500px] h-[500px] top-0 right-0 bg-tertiary"></div>
-    <div class="max-w-7xl mx-auto px-6 lg:px-8 w-full grid lg:grid-cols-2 gap-16 items-center py-20">
-      <div>
-        <span class="badge badge-primary hero-enter mb-6">{t(lang, 'schools.badge')}</span>
-        <h1 class="text-[clamp(2.5rem,5vw,4.5rem)] font-headline font-extrabold text-primary leading-[1.08] tracking-tight mb-8 hero-enter hero-enter-delay-1">
-          <span set:html={t(lang, 'schools.hero.title')} />
-        </h1>
-        <p class="text-lg lg:text-xl text-on-surface-variant max-w-xl leading-relaxed mb-10 hero-enter hero-enter-delay-2">
-          {t(lang, 'schools.hero.desc')}
-        </p>
-        <div class="flex flex-wrap gap-3 hero-enter hero-enter-delay-3">
-          <a href={localePath(lang, '/contact?who=school')} class="btn btn-primary">{t(lang, 'schools.hero.btn')}</a>
-          <a href="#programs" class="btn btn-ghost">{t(lang, 'schools.hero.btn2')}</a>
-        </div>
+  <!-- Why: thinking, creating and solving with AI -->
+  <section class="section tint">
+    <div class="wrap grid gap-12 lg:grid-cols-12 lg:gap-16">
+      <div class="lg:col-span-6">
+        <SectionHead title={T('schools.why.title')} />
+        <p class="muted mt-6 max-w-[38em] leading-relaxed" set:html={T('schools.why.body')} data-reveal />
       </div>
-      <div class="relative hero-enter hero-enter-delay-2">
-        <div class="aspect-square rounded-[2rem] overflow-hidden shadow-2xl relative">
-          <img alt="Students in a modern Japanese classroom" class="w-full h-full object-cover" src="/images/classroom-shizuoka.jpg" />
-          <div class="absolute inset-0 bg-gradient-to-t from-primary/15 via-transparent to-transparent"></div>
-        </div>
-        <div class="absolute -bottom-6 -left-6 card p-5 max-w-[240px]">
-          <div class="flex items-center gap-3 mb-2">
-            <span class="material-symbols-outlined text-tertiary text-2xl">verified</span>
-            <span class="font-headline font-bold text-primary text-sm">{t(lang, 'schools.mext')}</span>
-          </div>
-          <p class="text-xs text-on-surface-variant leading-relaxed">{t(lang, 'schools.mext.desc')}</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- The Challenge -->
-  <section class="py-28 lg:py-36 bg-surface-container-low">
-    <div class="max-w-7xl mx-auto px-6 lg:px-8">
-      <div class="flex flex-col lg:flex-row gap-16 items-center">
-        <div class="lg:w-1/2 reveal">
-          <div class="section-header">
-            <h2>{t(lang, 'schools.challenge.title')}</h2>
-          </div>
-          <div class="space-y-5 text-on-surface-variant leading-relaxed">
-            <p set:html={t(lang, 'schools.challenge.p1')}></p>
-            <p set:html={t(lang, 'schools.challenge.p2')}></p>
-          </div>
-        </div>
-        <div class="lg:w-1/2 grid grid-cols-2 gap-4 reveal-stagger">
-          <div class="card p-7 space-y-3">
-            <span class="material-symbols-outlined text-tertiary text-2xl">psychology</span>
-            <h4 class="font-bold text-primary text-sm">{t(lang, 'schools.challenge.analysis')}</h4>
-            <p class="text-xs text-on-surface-variant leading-relaxed">{t(lang, 'schools.challenge.analysis.desc')}</p>
-          </div>
-          <div class="card p-7 space-y-3 translate-y-6">
-            <span class="material-symbols-outlined text-tertiary text-2xl">diversity_3</span>
-            <h4 class="font-bold text-primary text-sm">{t(lang, 'schools.challenge.society')}</h4>
-            <p class="text-xs text-on-surface-variant leading-relaxed">{t(lang, 'schools.challenge.society.desc')}</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- What Sets Us Apart -->
-  <section id="programs" class="py-28 lg:py-36">
-    <div class="max-w-7xl mx-auto px-6 lg:px-8">
-      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 reveal-stagger">
-        {[
-          { icon: 'translate', title: t(lang, 'schools.feat.bilingual'), desc: t(lang, 'schools.feat.bilingual.desc'), color: 'bg-secondary-container text-on-secondary-container' },
-          { icon: 'school', title: t(lang, 'schools.feat.research'), desc: t(lang, 'schools.feat.research.desc'), color: 'bg-tertiary-fixed text-tertiary' },
-          { icon: 'tune', title: t(lang, 'schools.feat.tailored'), desc: t(lang, 'schools.feat.tailored.desc'), color: 'bg-secondary-fixed text-secondary' },
-          { icon: 'verified_user', title: t(lang, 'schools.feat.safety'), desc: t(lang, 'schools.feat.safety.desc'), color: 'bg-error-container text-error' },
-        ].map((item) => (
-          <div class="card stone-surface p-8 flex flex-col items-center text-center">
-            <div class:list={['w-14 h-14 rounded-2xl flex items-center justify-center mb-6', item.color]}>
-              <span class="material-symbols-outlined text-2xl">{item.icon}</span>
+      <ul class="ruled lg:col-span-6" data-reveal-stagger>
+        {stances.map((s) => (
+          <li class="grid grid-cols-[auto_1fr] gap-5 py-6">
+            <span class="grid h-12 w-12 place-items-center rounded-full bg-white text-rule-deep ring-1 ring-rule-soft">
+              <Icon name={s.icon} size={22} />
+            </span>
+            <div>
+              <h3 class="h3" set:html={T(s.title)} />
+              <p class="small muted mt-1.5 leading-relaxed" set:html={T(s.desc)} />
             </div>
-            <h4 class="font-headline font-bold text-base mb-3">{item.title}</h4>
-            <p class="text-on-surface-variant text-sm leading-relaxed">{item.desc}</p>
-          </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- Programs -->
+  <section class="section" id="programs">
+    <div class="wrap">
+      <SectionHead title={T('schools.programs.title')} lead={T('schools.programs.lead')} />
+      <div class="mt-10 border-t border-rule-soft lg:mt-14" data-reveal>
+        {programs.map((p, i) => (
+          <details class="disc" open={i === 0}>
+            <summary>
+              <span class="flex flex-wrap gap-2">
+                <span class="chip">{t(lang, p.grade)}</span>
+                <span class="chip chip-ink">{t(lang, p.sessions)}</span>
+              </span>
+              <h3 class="h3 mt-3 lg:text-[1.375rem]" set:html={T(p.title)} />
+              <span class="disc-icon" aria-hidden="true"><Icon name="plus" size={18} /></span>
+            </summary>
+            <div class="disc-body grid gap-8 lg:grid-cols-12 lg:gap-12">
+              <div class="lg:col-span-7">
+                <p class="muted leading-relaxed" set:html={T(p.desc)} />
+                <ul class="mt-5 grid gap-2.5">
+                  {p.bullets.map((b) => (
+                    <li class="fact text-ink"><Icon name="check" size={16} />{t(lang, b)}</li>
+                  ))}
+                </ul>
+              </div>
+              <div class="small grid content-start gap-4 rounded-2xl bg-mist p-6 lg:col-span-5">
+                <dl class="grid gap-4">
+                  <div>
+                    <dt class="muted">{t(lang, 'schools.programs.meta.outcome')}</dt>
+                    <dd class="mt-0.5 font-bold text-ink" set:html={T(p.outcome)} />
+                  </div>
+                </dl>
+                {p.caseLink && (
+                  <p class="border-t border-rule-soft pt-4">
+                    <a href={p.caseLink} target="_blank" rel="noopener noreferrer" class="link small">
+                      {t(lang, 'schools.prog.case')}
+                      <Icon name="arrow-up-right" size={14} />
+                    </a>
+                  </p>
+                )}
+              </div>
+            </div>
+          </details>
         ))}
       </div>
-    </div>
-  </section>
 
-  <!-- MEXT Alignment -->
-  <section class="py-28 lg:py-36 bg-surface-container-low">
-    <div class="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col lg:flex-row gap-16 items-center">
-      <div class="lg:w-1/2 reveal">
-        <div class="section-header">
-          <h2>{t(lang, 'schools.align.title')}</h2>
-          <p>{t(lang, 'schools.align.desc')}</p>
-        </div>
-        <ul class="space-y-4">
-          {[
-            { title: t(lang, 'schools.align.society'), desc: t(lang, 'schools.align.society.desc') },
-            { title: t(lang, 'schools.align.giga'), desc: t(lang, 'schools.align.giga.desc') },
-            { title: t(lang, 'schools.align.info'), desc: t(lang, 'schools.align.info.desc') },
-          ].map((item) => (
-            <li class="flex items-start gap-4 p-4 rounded-xl bg-surface-container-lowest border-l-4 border-tertiary">
-              <span class="material-symbols-outlined text-tertiary mt-0.5">check_circle</span>
-              <div>
-                <span class="font-bold text-sm block">{item.title}</span>
-                <span class="text-sm text-on-surface-variant">{item.desc}</span>
+      <div class="mt-16 lg:mt-20">
+        <h3 class="h3" set:html={T('schools.common.title')} />
+        <ul class="mt-6 grid gap-x-10 gap-y-7 sm:grid-cols-2 lg:grid-cols-4" data-reveal-stagger>
+          {common.map((c) => (
+            <li class="flex gap-4 lg:block">
+              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-mint text-rule-deep">
+                <Icon name={c.icon} size={20} />
+              </span>
+              <div class="lg:mt-4">
+                <h4 class="font-bold text-ink" set:html={T(c.title)} />
+                <p class="small muted mt-1.5 leading-relaxed" set:html={T(c.desc)} />
               </div>
             </li>
           ))}
         </ul>
       </div>
-      <div class="lg:w-1/2 reveal">
-        <div class="bg-primary p-10 lg:p-12 rounded-3xl text-white">
-          <h4 class="text-xl font-headline font-bold mb-8">{t(lang, 'schools.policy.title')}</h4>
-          <div class="space-y-6 text-sm">
-            <div class="border-b border-white/15 pb-4">
-              <span class="text-[10px] uppercase tracking-widest block mb-2 text-white/50 font-label">{t(lang, 'schools.policy.mext.label')}</span>
-              <p class="italic text-white/90">{t(lang, 'schools.policy.mext')}</p>
-            </div>
-            <div>
-              <span class="text-[10px] uppercase tracking-widest block mb-2 text-white/50 font-label">{t(lang, 'schools.policy.waspect.label')}</span>
-              <p class="text-white/90">{t(lang, 'schools.policy.waspect')}</p>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   </section>
 
-  <!-- Implementation Journey -->
-  <section class="py-28 lg:py-36">
-    <div class="max-w-7xl mx-auto px-6 lg:px-8">
-      <div class="text-center section-header reveal">
-        <h2 class="mx-auto">{t(lang, 'schools.journey.title')}</h2>
-        <p class="mx-auto">{t(lang, 'schools.journey.desc')}</p>
-      </div>
-      <div class="grid md:grid-cols-4 gap-6 relative reveal-stagger">
-        <div class="hidden md:block absolute top-14 left-[12.5%] right-[12.5%] h-px bg-outline-variant/30"></div>
-        {[
-          { num: '1', title: t(lang, 'schools.journey.1'), desc: t(lang, 'schools.journey.1.desc'), color: 'text-primary' },
-          { num: '2', title: t(lang, 'schools.journey.2'), desc: t(lang, 'schools.journey.2.desc'), color: 'text-tertiary' },
-          { num: '3', title: t(lang, 'schools.journey.3'), desc: t(lang, 'schools.journey.3.desc'), color: 'text-secondary' },
-          { num: '4', title: t(lang, 'schools.journey.4'), desc: t(lang, 'schools.journey.4.desc'), color: 'text-primary-container' },
-        ].map((step) => (
-          <div class="relative">
-            <div class:list={['w-[72px] h-[72px] rounded-full bg-surface-container-lowest border-4 border-surface flex items-center justify-center font-headline text-xl font-extrabold shadow-sm relative z-10 mb-6', step.color]}>
-              {step.num}
+  <!-- Journey -->
+  <section class="section tint">
+    <div class="wrap">
+      <SectionHead title={T('schools.journey.title')} lead={T('schools.journey.lead')} />
+      <div class="steps relative mt-12 lg:mt-16">
+        <span class="steps-line left-[1.4375rem] top-6 bottom-6 w-0.5 md:top-[1.4375rem] md:bottom-auto md:left-6 md:right-[calc(25%-2.625rem)] md:h-0.5 md:w-auto" aria-hidden="true"></span>
+        <ol class="grid gap-10 md:grid-cols-4 md:gap-6">
+        {steps.map((s, i) => (
+          <li class="relative grid grid-cols-[auto_1fr] gap-5 md:block">
+            <span class="step-num">{i + 1}</span>
+            <div class="md:mt-5">
+              <h3 class="h3" set:html={T(s.title)} />
+              <p class="small muted mt-2 leading-relaxed" set:html={T(s.desc)} />
             </div>
-            <h5 class="font-bold text-sm mb-2">{step.title}</h5>
-            <p class="text-xs text-on-surface-variant leading-relaxed">{step.desc}</p>
-          </div>
+          </li>
         ))}
+        </ol>
       </div>
     </div>
   </section>
 
-  <!-- CTA -->
-  <section class="py-20 px-6 lg:px-8">
-    <div class="max-w-5xl mx-auto bg-primary rounded-[2.5rem] p-12 lg:p-20 text-center text-white relative overflow-hidden reveal">
-      <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-white/5 rounded-full blur-[80px]"></div>
-      <div class="relative z-10">
-        <h2 class="text-3xl lg:text-5xl font-headline font-bold mb-6 tracking-tight" set:html={t(lang, 'schools.cta.title')}></h2>
-        <p class="text-lg text-white/70 mb-10 max-w-xl mx-auto">{t(lang, 'schools.cta.desc')}</p>
-        <a href={localePath(lang, '/contact?who=school')} class="btn btn-lg bg-white text-primary hover:shadow-lg">
-          {t(lang, 'schools.cta.btn')}
-        </a>
-      </div>
-    </div>
-  </section>
-
+  <CtaBand title={T('schools.cta.title')} desc={T('schools.cta.desc')} note={t(lang, 'schools.cta.note')} href={contactHref} label={T('schools.cta.btn')} />
 </BaseLayout>

@@ -1,0 +1,15 @@
+---
+interface Props {
+  title: string; // HTML (pass through jp())
+  lead?: string; // HTML
+  center?: boolean;
+  id?: string;
+  class?: string;
+}
+const { title, lead, center = false, id, class: className = '' } = Astro.props;
+---
+
+<div class:list={['sec-head', { 'is-center': center }, className]} data-reveal>
+  <h2 class="h2" id={id} set:html={title} />
+  {lead && <p class="lead" set:html={lead} />}
+</div>
