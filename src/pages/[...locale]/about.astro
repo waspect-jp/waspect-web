@@ -49,7 +49,7 @@ const mapsUrl = 'https://www.google.com/maps/search/?api=1&query=1-22-11+Ginza+C
       </a>
     </Fragment>
     <Fragment slot="facts">
-      <span class="fact"><Icon name="map-pin" size={16} />{t(lang, 'footer.address')}</span>
+      <span class="fact"><Icon name="map-pin" size={16} />{t(lang, 'about.hero.place')}</span>
       <span class="fact"><Icon name="languages" size={16} />{t(lang, 'about.company.lang')}</span>
     </Fragment>
     <Fragment slot="overlay">
@@ -87,7 +87,7 @@ const mapsUrl = 'https://www.google.com/maps/search/?api=1&query=1-22-11+Ginza+C
   <section class="section">
     <div class="wrap">
       <SectionHead title={T('about.founders.title')} />
-      <div class="mt-12 grid gap-10 md:grid-cols-2 lg:mt-16 lg:gap-16" data-reveal-stagger>
+      <div class="mt-12 grid gap-10 lg:mt-16 lg:grid-cols-2 lg:gap-16" data-reveal-stagger>
         {people.map((p) => (
           <article class="grid gap-6 sm:grid-cols-[9rem_1fr] sm:gap-8">
             <div class="frame aspect-square w-36 bg-mist-deep">
@@ -108,14 +108,16 @@ const mapsUrl = 'https://www.google.com/maps/search/?api=1&query=1-22-11+Ginza+C
   <section class="section tint">
     <div class="wrap">
       <SectionHead title={T('about.values.title')} />
-      <ul class="mt-12 grid gap-x-10 gap-y-10 md:grid-cols-3 lg:mt-16" data-reveal-stagger>
+      <ul class="mt-12 grid gap-x-10 gap-y-10 lg:mt-16 lg:grid-cols-3" data-reveal-stagger>
         {values.map((v) => (
-          <li class="border-t border-rule-soft pt-6">
+          <li class="grid grid-cols-[auto_1fr] gap-5 border-t border-rule-soft pt-6 lg:block">
             <span class="grid h-12 w-12 place-items-center rounded-full bg-white text-rule-deep ring-1 ring-rule-soft">
               <Icon name={v.icon} size={22} />
             </span>
-            <h3 class="h3 mt-5" set:html={T(v.title)} />
-            <p class="muted mt-2 leading-relaxed" set:html={T(v.desc)} />
+            <div class="lg:mt-5">
+              <h3 class="h3" set:html={T(v.title)} />
+              <p class="muted mt-2 max-w-[40em] leading-relaxed" set:html={T(v.desc)} />
+            </div>
           </li>
         ))}
       </ul>

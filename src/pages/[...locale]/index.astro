@@ -77,11 +77,11 @@ const articles = [
   <section class="section tint" id="who">
     <div class="wrap">
       <SectionHead title={T('home.who.title')} lead={T('home.who.lead')} />
-      <div class="mt-12 grid gap-5 md:grid-cols-3 lg:mt-16 lg:gap-6" data-reveal-stagger>
+      <div class="mt-12 grid gap-5 lg:mt-16 lg:grid-cols-3 lg:gap-6" data-reveal-stagger>
         {audiences.map((a) => (
-          <a href={localePath(lang, a.path)} class="card group flex flex-col no-underline">
-            <div class="card-media aspect-[4/3]">
-              <Image src={a.img} alt={a.alt} width={900} widths={[420, 640, 900]} sizes="(min-width: 768px) 33vw, 100vw" format="webp" quality={78} />
+          <a href={localePath(lang, a.path)} class="card group flex flex-col no-underline sm:flex-row lg:flex-col">
+            <div class="card-media aspect-[4/3] sm:w-2/5 sm:shrink-0 sm:[border-radius:calc(var(--radius-lg)-1px)_0_0_calc(var(--radius-lg)-1px)] lg:w-auto lg:[border-radius:calc(var(--radius-lg)-1px)_calc(var(--radius-lg)-1px)_0_0]">
+              <Image src={a.img} alt={a.alt} width={900} widths={[420, 640, 900]} sizes="(min-width: 1024px) 33vw, (min-width: 640px) 40vw, 100vw" format="webp" quality={78} />
             </div>
             <div class="flex flex-1 flex-col p-6 lg:p-7">
               <h3 class="h3" set:html={T(a.title)} />

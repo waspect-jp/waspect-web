@@ -40,7 +40,7 @@ export default {
   'footer.newsletter.placeholder': 'メールアドレス',
   'footer.newsletter.btn': '登録する',
   'footer.newsletter.success': 'ご登録ありがとうございます。',
-  'footer.address': '東京都中央区銀座1-22-11 大竹ビル2F',
+  'footer.address': '東京都中央区銀座1-22-11<br />大竹ビル2F',
   'footer.copyright': 'Waspect Inc. All rights reserved.',
 
   // ── Home: hero ──
@@ -265,6 +265,7 @@ export default {
   'about.hero.title': 'Waspectについて',
   'about.hero.lead': '日本の強みとグローバルな視点を融合し、人と組織を次のステージへ導きます。',
   'about.hero.alt': '創業者の二人、Stefan Mihaylovと山本真潮。学校の廊下にて',
+  'about.hero.place': '東京・銀座',
   'about.story.title': '和（ハーモニー）とアスペクトの融合',
   'about.story.p1': 'Waspectは、イノベーションとは単にスピードだけではなく、目的を持って前進することだと信じています。私たちの名前は、調和とバランスを表す日本の概念<strong>「和」</strong>と、グローバルな近代化の多面的な<strong>「アスペクト」</strong>を組み合わせたものです。',
   'about.story.p2': '日本が誇る精密さ、ものづくり、おもてなしの精神をデジタル時代に持ち込みます。藍染めのように一度ずつ重ねて深まる学びを、学校・企業・ご家庭へ。',

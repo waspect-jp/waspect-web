@@ -61,16 +61,16 @@ const switchUrl = switchLangPath(lang, currentPath.replace(/^\/en/, '') || '/');
         </ul>
       </nav>
 
-      <div class="lg:col-span-2">
+      <div class="lg:col-span-3">
         <h2 class="small font-bold text-ink">{t(lang, 'footer.company')}</h2>
         <ul class="mt-4 grid gap-1">
           <li><a class="small muted inline-flex min-h-9 items-center no-underline hover:text-ink" href={localePath(lang, '/about')}>{t(lang, 'footer.about')}</a></li>
           <li><a class="small muted inline-flex min-h-9 items-center no-underline hover:text-ink" href={localePath(lang, '/contact')}>{t(lang, 'footer.contact')}</a></li>
         </ul>
-        <p class="small muted mt-5 leading-relaxed">{t(lang, 'footer.address')}<br /><a class="hover:text-ink" href="mailto:info@waspect.jp">info@waspect.jp</a></p>
+        <p class="small muted mt-5 leading-relaxed"><span set:html={t(lang, 'footer.address')} /><br /><a class="hover:text-ink" href="mailto:info@waspect.jp">info@waspect.jp</a></p>
       </div>
 
-      <div class="lg:col-span-4">
+      <div class="lg:col-span-3">
         <h2 class="small font-bold text-ink">{t(lang, 'footer.newsletter')}</h2>
         <p class="small muted mt-4 leading-relaxed">{t(lang, 'footer.newsletter.desc')}</p>
         <form
