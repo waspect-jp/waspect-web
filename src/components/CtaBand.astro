@@ -1,0 +1,38 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  title: string; // HTML
+  desc?: string; // HTML
+  note?: string;
+  href: string;
+  label: string;
+  id?: string;
+}
+const { title, desc, note, href, label, id } = Astro.props;
+---
+
+<section class="section-tight" id={id}>
+  <div class="wrap">
+    <div class="band-ink on-ink px-7 py-12 sm:px-12 lg:px-16 lg:py-16" data-reveal>
+      <div class="grid items-center gap-8 lg:grid-cols-12">
+        <div class="lg:col-span-8">
+          <h2 class="h2 text-white" set:html={title} />
+          {desc && <p class="lead mt-4 max-w-[36em] text-on-ink-muted" set:html={desc} />}
+          {note && (
+            <p class="small mt-5 inline-flex items-center gap-2 text-on-ink-muted">
+              <Icon name="languages" size={16} class="text-rule-soft" />
+              {note}
+            </p>
+          )}
+        </div>
+        <div class="lg:col-span-4 lg:justify-self-end">
+          <a href={href} class="btn btn-light btn-lg">
+            {label}
+            <Icon name="arrow" size={18} class="ic-arrow" />
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

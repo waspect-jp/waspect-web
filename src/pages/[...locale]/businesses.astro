@@ -1,112 +1,92 @@
 ---
+import { Image } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import SectionHead from '../../components/SectionHead.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import Icon from '../../components/Icon.astro';
 import { t, localePath, getStaticPaths as gsp, type Lang } from '../../i18n/utils';
+import { jp } from '../../i18n/jp';
+import presentation from '../../assets/photos/business-presentation.jpg';
+import founders from '../../assets/photos/founders-newswitch.jpg';
+
 export const getStaticPaths = gsp;
 const { lang } = Astro.props as { lang: Lang };
+const T = (key: string) => jp(lang, t(lang, key));
+
+const offers = [
+  { icon: 'sparkles', title: 'biz.offer.1.title', desc: 'biz.offer.1.desc' },
+  { icon: 'layers', title: 'biz.offer.2.title', desc: 'biz.offer.2.desc' },
+  { icon: 'globe', title: 'biz.offer.3.title', desc: 'biz.offer.3.desc' },
+  { icon: 'sliders', title: 'biz.offer.4.title', desc: 'biz.offer.4.desc' },
+] as const;
+
+const strengths = [1, 2, 3].map((n) => ({ title: `biz.why.${n}.title`, sub: `biz.why.${n}.sub`, desc: `biz.why.${n}.desc` }));
+const contactHref = localePath(lang, '/contact?who=business');
 ---
 
 <BaseLayout title={t(lang, 'meta.businesses.title')} description={t(lang, 'meta.businesses.desc')} activePage="businesses" lang={lang}>
+  <PageHero title={T('biz.hero.title')} lead={T('biz.hero.lead')} image={presentation} alt={t(lang, 'biz.hero.alt')} position="40% 50%">
+    <Fragment slot="actions">
+      <a href={contactHref} class="btn btn-primary btn-lg">
+        {t(lang, 'biz.hero.btn')}
+        <Icon name="arrow" size={18} class="ic-arrow" />
+      </a>
+      <a href="#offer" class="btn btn-ghost btn-lg">{t(lang, 'biz.offer.title')}</a>
+    </Fragment>
+    <Fragment slot="facts">
+      <span class="fact"><Icon name="check" size={16} />{t(lang, 'home.hero.fact1')}</span>
+      <span class="fact"><Icon name="check" size={16} />{t(lang, 'home.hero.fact3')}</span>
+    </Fragment>
+  </PageHero>
 
-  <!-- Hero -->
-  <section class="relative min-h-[85vh] flex items-center overflow-hidden ink-wash">
-    <div class="enso-blob w-[500px] h-[500px] -top-20 -left-20 bg-tertiary"></div>
-    <div class="max-w-7xl mx-auto px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center py-20">
-      <div class="lg:col-span-7">
-        <span class="badge badge-primary hero-enter mb-6">{t(lang, 'biz.badge')}</span>
-        <h1 class="text-[clamp(2.5rem,5vw,4.5rem)] font-extrabold font-headline tracking-tight text-primary leading-[1.08] mb-8 hero-enter hero-enter-delay-1">
-          {t(lang, 'biz.hero.title.1')}{t(lang, 'biz.hero.title.2') ? <><br />{t(lang, 'biz.hero.title.2')}<span class="text-tertiary">{t(lang, 'biz.hero.title.accent')}</span></> : <><br /><span class="text-tertiary">{t(lang, 'biz.hero.title.accent')}</span></>}
-        </h1>
-        <p class="text-lg lg:text-xl text-on-surface-variant max-w-2xl leading-relaxed mb-10 hero-enter hero-enter-delay-2">
-          {t(lang, 'biz.hero.desc')}
-        </p>
-        <div class="hero-enter hero-enter-delay-3">
-          <a href={localePath(lang, '/contact?who=business')} class="btn btn-primary">{t(lang, 'biz.hero.btn')}</a>
-        </div>
-      </div>
-      <div class="lg:col-span-5 relative hero-enter hero-enter-delay-2">
-        <div class="rounded-2xl overflow-hidden shadow-2xl transform rotate-1 lg:rotate-2 relative z-10">
-          <img class="w-full h-[480px] object-cover" alt="Modern professional office" src="/images/hero-collaboration.jpg" />
-        </div>
-        <div class="absolute -bottom-4 -right-4 w-full h-full bg-surface-container-high rounded-2xl -z-10"></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Strategic Quote -->
-  <section class="py-28 lg:py-36 bg-surface-container-low">
-    <div class="max-w-3xl mx-auto px-6 lg:px-8 text-center reveal">
-      <span class="badge badge-subtle mb-6">{t(lang, 'biz.quote.label')}</span>
-      <blockquote class="text-2xl lg:text-3xl font-semibold text-on-surface leading-snug font-headline mb-6" set:html={t(lang, 'biz.quote')}>
+  <!-- Point of view -->
+  <section class="section-tight tint">
+    <div class="wrap">
+      <blockquote class="mx-auto max-w-[30em] text-center" data-reveal>
+        <p class="h2 font-medium" set:html={T('biz.quote')} />
       </blockquote>
-      <div class="w-16 h-0.5 accent-gradient mx-auto rounded-full"></div>
     </div>
   </section>
 
-  <!-- What We Offer -->
-  <section class="py-28 lg:py-36">
-    <div class="max-w-7xl mx-auto px-6 lg:px-8">
-      <div class="section-header reveal">
-        <h2>{t(lang, 'biz.offer.title')}</h2>
-        <div class="section-accent accent-gradient"></div>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 reveal-stagger">
-        {[
-          { icon: 'psychology', title: t(lang, 'biz.offer.ai'), desc: t(lang, 'biz.offer.ai.desc'), color: 'bg-secondary-container text-primary' },
-          { icon: 'schema', title: t(lang, 'biz.offer.dx'), desc: t(lang, 'biz.offer.dx.desc'), color: 'bg-tertiary-fixed text-tertiary' },
-          { icon: 'language', title: t(lang, 'biz.offer.global'), desc: t(lang, 'biz.offer.global.desc'), color: 'bg-primary-fixed text-primary' },
-          { icon: 'architecture', title: t(lang, 'biz.offer.custom'), desc: t(lang, 'biz.offer.custom.desc'), color: 'bg-surface-container-highest text-on-surface' },
-        ].map((item) => (
-          <div class="card stone-surface p-8 flex flex-col items-start space-y-5 group">
-            <div class:list={['w-12 h-12 rounded-xl flex items-center justify-center', item.color]}>
-              <span class="material-symbols-outlined text-2xl">{item.icon}</span>
-            </div>
-            <h3 class="text-lg font-bold font-headline">{item.title}</h3>
-            <p class="text-on-surface-variant text-sm leading-relaxed">{item.desc}</p>
-          </div>
+  <!-- What we offer -->
+  <section class="section" id="offer">
+    <div class="wrap">
+      <SectionHead title={T('biz.offer.title')} lead={T('biz.offer.lead')} />
+      <ul class="mt-12 grid gap-x-10 gap-y-10 md:grid-cols-2 lg:mt-16" data-reveal-stagger>
+        {offers.map((o) => (
+          <li class="border-t border-rule-soft pt-6">
+            <span class="grid h-12 w-12 place-items-center rounded-full bg-mint text-rule-deep">
+              <Icon name={o.icon} size={22} />
+            </span>
+            <h3 class="h3 mt-5" set:html={T(o.title)} />
+            <p class="muted mt-2 max-w-[34em] leading-relaxed" set:html={T(o.desc)} />
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   </section>
 
   <!-- Why Waspect -->
-  <section class="py-28 lg:py-36 bg-surface-container-low relative overflow-hidden">
-    <div class="max-w-7xl mx-auto px-6 lg:px-8">
-      <div class="text-center section-header reveal">
-        <h2 class="mx-auto">{t(lang, 'biz.why.title')}</h2>
-        <p class="mx-auto">{t(lang, 'biz.why.desc')}</p>
+  <section class="section tint">
+    <div class="wrap grid gap-12 lg:grid-cols-12 lg:gap-16">
+      <div class="lg:col-span-5">
+        <SectionHead title={T('biz.why.title')} lead={T('biz.why.lead')} />
+        <div class="frame mt-10 aspect-[4/3] bg-mist-deep" data-reveal>
+          <Image src={founders} alt={t(lang, 'biz.why.alt')} width={1200} widths={[560, 840, 1200]} sizes="(min-width: 1024px) 40vw, 100vw" format="webp" quality={80} />
+        </div>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-12 reveal-stagger">
-        {[
-          { icon: 'public', title: t(lang, 'biz.why.global'), desc: t(lang, 'biz.why.global.desc'), color: 'text-primary border-primary/10' },
-          { icon: 'handyman', title: t(lang, 'biz.why.practical'), desc: t(lang, 'biz.why.practical.desc'), color: 'text-tertiary border-tertiary/10' },
-          { icon: 'tune', title: t(lang, 'biz.why.custom'), desc: t(lang, 'biz.why.custom.desc'), color: 'text-secondary border-secondary/10' },
-        ].map((item) => (
-          <div class="text-center space-y-5">
-            <div class:list={['mx-auto w-16 h-16 rounded-full border-2 flex items-center justify-center', item.color]}>
-              <span class:list={['material-symbols-outlined text-3xl', item.color.split(' ')[0]]}>{item.icon}</span>
-            </div>
-            <h4 class="text-base font-bold font-headline">{item.title}</h4>
-            <p class="text-on-surface-variant text-sm leading-relaxed">{item.desc}</p>
-          </div>
+      <ol class="ruled lg:col-span-7" data-reveal-stagger>
+        {strengths.map((s) => (
+          <li class="py-7 lg:py-9">
+            <h3 class="h3" set:html={T(s.title)} />
+            <p class="mt-2 font-bold text-rule-deep" set:html={T(s.sub)} />
+            <p class="muted mt-2 max-w-[40em] leading-relaxed" set:html={T(s.desc)} />
+          </li>
         ))}
-      </div>
+      </ol>
     </div>
   </section>
 
-  <!-- CTA -->
-  <section class="py-20 px-6 lg:px-8">
-    <div class="max-w-5xl mx-auto bg-primary-container rounded-3xl p-12 lg:p-20 relative overflow-hidden flex flex-col lg:flex-row items-center justify-between gap-10 reveal">
-      <div class="absolute top-0 right-0 w-[400px] h-[400px] bg-white/5 rounded-full blur-[80px]"></div>
-      <div class="relative z-10 max-w-xl text-center lg:text-left">
-        <h2 class="text-3xl lg:text-4xl font-extrabold font-headline text-on-primary mb-4 tracking-tight">{t(lang, 'biz.cta.title')}</h2>
-        <p class="text-primary-fixed-dim leading-relaxed">{t(lang, 'biz.cta.desc')}</p>
-      </div>
-      <div class="relative z-10">
-        <a href={localePath(lang, '/contact?who=business')} class="btn btn-lg bg-white text-primary hover:shadow-lg">
-          {t(lang, 'biz.cta.btn')}
-        </a>
-      </div>
-    </div>
-  </section>
-
+  <CtaBand title={T('biz.cta.title')} desc={T('biz.cta.desc')} href={contactHref} label={t(lang, 'biz.cta.btn')} />
 </BaseLayout>

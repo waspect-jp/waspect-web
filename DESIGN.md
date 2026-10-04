@@ -1,94 +1,127 @@
-# Waspect (和スペクト) Website Design System
+# Waspect (和スペクト) Design System · v2
 
-## Brand Identity
+## Concept
 
-- **Name**: Waspect (和スペクト) — blending 和 (Wa, harmony) with "Aspect"
-- **Tagline**: Bridging Tradition and Innovation
-- **Logo**: Bonsai tree with stylized "W" in teal/olive tones (see `public/images/logo.png`)
+The site is built on one idea from the CEO brief: **AI × English is a passport
+that works in any country and any industry.** Everything else supports it.
 
-## Color Palette — "Navy" (Material Design 3)
+The visual language comes from the thing every Japanese student knows:
+**genkō yōshi (原稿用紙)**, the ruled manuscript paper used for compositions.
 
-### Primary (Dark Navy)
+- **Paper** — white, generous margins, calm.
+- **Ink** — blue-black (#1b2740), the fountain-pen colour of the text.
+- **Ruling** — the soft green grid of the paper (#b9dbcf), used for dividers,
+  borders, focus rings and highlights, with a text-safe green (#24896a / #176b52)
+  as the accent.
+- **朱 (shu)** — one vermilion mark (#d8432b), the teacher's pen. Used once per
+  page at most: the side-line (傍線) that marks 「AI×英語」 in the hero.
 
+The signature moment is the home hero: a fragment of manuscript paper on which
+the tagline writes itself in, column by column, then receives the vermilion
+side-line. Everything around it stays quiet.
 
-| Token               | Hex       | Usage                                   |
-| ------------------- | --------- | --------------------------------------- |
-| `primary`           | `#2d3142` | Main brand color, headings, CTA buttons |
-| `primary-container` | `#454a5e` | Card accents, CTA sections, dark cards  |
-| `on-primary`        | `#ffffff` | Text on primary backgrounds             |
+## Tokens
 
+Defined in `src/styles/global.css` (`@theme`) and available as Tailwind
+utilities (`text-ink`, `bg-mist`, `border-rule-soft`, …).
 
-### Secondary (Coral)
-
-
-| Token                 | Hex       | Usage                                |
-| --------------------- | --------- | ------------------------------------ |
-| `secondary`           | `#e07840` | Accent buttons, hover states, energy |
-| `secondary-container` | `#fcdcc8` | Badges, highlight backgrounds        |
-
-
-### Tertiary (Steel Blue)
-
-
-| Token                | Hex       | Usage                                  |
-| -------------------- | --------- | -------------------------------------- |
-| `tertiary`           | `#4f5d75` | Subtle accents, dates, supporting text |
-| `tertiary-container` | `#68788e` | Dark card variants                     |
-
-
-### Surface (Pure White)
-
-
-| Token                      | Hex       | Usage               |
-| -------------------------- | --------- | ------------------- |
-| `surface`                  | `#ffffff` | Page background     |
-| `surface-container-lowest` | `#ffffff` | Card backgrounds    |
-| `surface-container-low`    | `#f6f6f7` | Section alternation |
-| `surface-container-high`   | `#e6e7e8` | Elevated surfaces   |
-| `on-surface`               | `#1a1a1e` | Body text           |
-| `on-surface-variant`       | `#40424a` | Secondary text      |
-
+| Token | Hex | Role |
+| --- | --- | --- |
+| `paper` | `#ffffff` | Page background |
+| `mist` / `mist-deep` | `#f4f7f6` / `#e9eeec` | Section alternation, image placeholders |
+| `ink` / `ink-soft` | `#1b2740` / `#2d3a55` | Headings, body, primary buttons |
+| `ink-muted` / `ink-faint` | `#56607a` / `#8a93a8` | Secondary text, hints |
+| `rule` / `rule-deep` | `#24896a` / `#176b52` | Accent, links, icons (AA on white) |
+| `rule-soft` / `rule-faint` | `#b9dbcf` / `#dcece6` | Ruling: borders, dividers |
+| `mint` | `#e8f4ef` | Soft green tint behind icons and chips |
+| `indigo-tint` | `#e8edf5` | Soft ink tint for secondary chips |
+| `on-ink-muted` | `#b7c1d6` | Secondary text on dark bands |
+| `shu` | `#d8432b` | Vermilion. One mark per page. |
 
 ## Typography
 
-- **Font**: Manrope (all text — headlines, body, labels)
-- **Weights**: 400 (regular), 500 (medium), 700 (bold)
-- **Headline scale**: text-5xl to text-7xl (extrabold, tight tracking)
-- **Body**: text-lg to text-xl (relaxed leading)
+- **Latin:** Schibsted Grotesk (variable, 400–900). Headlines 700, tight
+  tracking (−0.022em), line-height 1.08.
+- **Japanese:** Zen Kaku Gothic New (400/500/700/900). Headlines 700,
+  line-height 1.4, slight positive tracking (+0.015em).
+- Both are loaded from Google Fonts with `display=swap`; Japanese is delivered
+  in unicode-range slices so only the glyphs used are downloaded.
+- `html[lang="ja"]` switches the body face and a smaller heading scale
+  (`--fs-h1`, `--fs-h2`, …) so Japanese never looks oversized.
 
-## Icons
+### Japanese line breaking
 
-- **Library**: Material Symbols Outlined (Google)
-- **Settings**: FILL 0, weight 400, GRAD 0, optical size 24
+Japanese has no spaces, so browsers break anywhere. Every heading and lead that
+contains Japanese is passed through `jp()` (`src/i18n/jp.ts`), which runs
+[BudouX](https://github.com/google/budoux) at build time and inserts `<wbr>` at
+phrase boundaries inside a `<span class="jp">` (`word-break: keep-all;
+overflow-wrap: anywhere`). No client JavaScript is involved.
 
-## Design Motifs
+## Layout
 
-- **Enso circles**: Decorative radial gradients as background accents (`.enso-bg`, `.enso-blob`)
-- **Ink wash**: Subtle multi-gradient background texture (`.ink-wash`)
-- **Stone surface**: Noise-textured card backgrounds (`.stone-surface`)
-- **Accent gradient**: Navy-to-coral signature gradient (`.accent-gradient`)
-- **Rounded corners**: `rounded-xl` through `rounded-[2.5rem]` for cards
-- **Glass nav**: Fixed top nav with `backdrop-blur-xl` and `white/70` bg, scroll-aware shadow
-- **Shadows**: Custom CSS variables (`--shadow-card`, `--shadow-card-hover`, `--shadow-nav`)
-- **Scroll animations**: Intersection Observer reveals (`.reveal`, `.reveal-stagger`), hero entrance animations
-- **Reduced motion**: Full `prefers-reduced-motion` support — all animations disabled
+- Container `1200px` (`.wrap`), gutters 20 / 40px, 12-column grid on `lg`.
+- Sections alternate paper and mist; section padding `--sec` (80 → 128px).
+- Headings are left-aligned. A section opens with a short green rule, then the
+  title (`.sec-head`).
+- Radii: `--radius-sm` 10px (inputs), `--radius-md` 16px (sheet), `--radius-lg`
+  22px (cards), `--radius-xl` 28px (photo frames, dark bands). Buttons are pills.
+- Lists are **ruled**, not boxed: rows separated by the paper's green ruling
+  (`.ruled`). Cards (`.card`) are reserved for navigational items and the two
+  age-group panels.
+
+## Motion
+
+- **Hero sequence** (page load only): characters write in (`write`), the
+  side-line draws (`sideline`), copy rises (`rise`).
+- **Scroll reveal** on a handful of blocks per page (`data-reveal`,
+  `data-reveal-stagger`), handled by one IntersectionObserver in `BaseLayout`.
+- **Steps line** draws itself when the sequence enters view (`.steps`).
+- **Disclosures** (`<details class="disc">`) open with a short fade.
+- Hover: link underlines thicken, button arrows nudge, card photos scale 3%.
+- Everything is disabled under `prefers-reduced-motion: reduce`.
+
+## Components
+
+| File | Purpose |
+| --- | --- |
+| `BaseLayout.astro` | Document shell, fonts, skip link, reveal observer |
+| `Nav.astro` | Sticky nav, language switch, full-screen mobile menu with focus trap |
+| `Footer.astro` | Links, address, newsletter form (Netlify `newsletter`) |
+| `Manuscript.astro` | The genkō yōshi hero sheet |
+| `PageHero.astro` | Sub-page hero: title, lead, actions, facts, photo |
+| `SectionHead.astro` | Rule + h2 + lead |
+| `CtaBand.astro` | Dark ink band with faint ruling and one button |
+| `Icon.astro` | Inline stroke icons (Lucide paths, ISC) |
+| `SeoMeta.astro` | Open Graph, Twitter, canonical, hreflang, JSON-LD |
 
 ## Pages
 
-1. **Home** (`/`) — Hero, Who We Help, Our Approach, Media, CTA
-2. **For Schools** (`/schools`) — Hero, Challenge, Features, MEXT Alignment, Timeline, CTA
-3. **For Businesses** (`/businesses`) — Hero, Quote, Offerings, Why Waspect, CTA
-4. **For Parents** (`/kids`) — Hero, Why AI Literacy, What They Learn, Age Groups, Register
-5. **About** (`/about`) — Hero, Our Story, Founders, Values, Company Info
-6. **Contact** (`/contact`) — Sidebar info + Smart form with identity selector
+| Route | Sections |
+| --- | --- |
+| `/` | Manuscript hero · Who we help · Three pillars · Shimoda case · Media · CTA |
+| `/schools/` | Hero · Think/create/solve with AI · Programs (4 disclosures) · Common to every program · Journey (4 steps) · CTA |
+| `/businesses/` | Hero · Point of view · What we offer · Why Waspect (founders) · CTA |
+| `/kids/` | Hero with quote · Why · What children learn · Two stages · CTA |
+| `/about/` | Hero (founders) · Story · Founders · Values · Company table · CTA |
+| `/contact/` | Who-are-you shortcuts · Netlify form (`contact`) · address and map |
 
-## Tech Stack
+All routes exist in Japanese (default, `/`) and English (`/en/`).
 
-- **Framework**: Astro 6 (static site generation)
-- **Styling**: Tailwind CSS v4 via @tailwindcss/vite
-- **Fonts**: Google Fonts (Manrope, Material Symbols Outlined)
-- **Forms**: Netlify Forms (data-netlify="true" on form elements)
-- **Hosting**: Netlify (see `netlify.toml` for build/deploy config, custom domain waspect.jp)
-- **SEO**: Open Graph + Twitter meta via `SeoMeta.astro` component
-- **CMS**: Decap CMS (future, git-based)
+## Images
 
+Photographs live in `src/assets/photos/` and go through `astro:assets`
+(`<Image>`), which emits responsive WebP `srcset`s at build time. Real
+Waspect photos (Shimoda High School session, founders) are from the company's
+PR TIMES release and the Newswitch feature; the rest are Pexels / Wikimedia
+Commons (see the Open Design project credits). `public/images/` holds only the
+logo and the Open Graph image.
+
+## Forms
+
+Two Netlify Forms, unchanged in name and field set so the HubSpot sync
+function (`netlify/functions/hubspot-sync.mjs`) keeps working:
+
+- `contact` — `identity`, `name`, `email`, `organization`, `role`, `message`
+- `newsletter` — `email`
+
+Both include the honeypot `bot-field` and a hidden `form-name`.

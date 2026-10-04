@@ -1,16 +1,18 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { t } from '../i18n/utils';
 ---
 
-<BaseLayout title="Page Not Found | Waspect" description="The page you're looking for doesn't exist." lang="ja">
-  <section class="min-h-[60vh] flex items-center justify-center px-6">
-    <div class="text-center max-w-md">
-      <span class="text-8xl font-headline font-extrabold text-primary/20">404</span>
-      <h1 class="text-2xl font-headline font-bold text-primary mt-4 mb-4">Page Not Found</h1>
-      <p class="text-on-surface-variant mb-8">The page you're looking for doesn't exist or has been moved.</p>
-      <div class="flex gap-3 justify-center">
-        <a href="/" class="btn btn-primary btn-sm">ホームへ戻る</a>
-        <a href="/en/" class="btn btn-ghost btn-sm">Go to English Home</a>
+<BaseLayout title={`${t('ja', 'notfound.title')} | Waspect`} description={t('ja', 'notfound.desc')} lang="ja">
+  <section class="flex min-h-[60vh] items-center px-6 py-24">
+    <div class="wrap text-center">
+      <p class="latin text-[clamp(4rem,12vw,8rem)] font-extrabold leading-none tracking-tight text-rule-soft">404</p>
+      <h1 class="h2 mt-4">{t('ja', 'notfound.title')}</h1>
+      <p class="muted mt-3">{t('ja', 'notfound.desc')}</p>
+      <p class="muted mt-1" lang="en">{t('en', 'notfound.desc')}</p>
+      <div class="mt-8 flex flex-wrap justify-center gap-3">
+        <a href="/" class="btn btn-primary">{t('ja', 'notfound.home')}</a>
+        <a href="/en/" class="btn btn-ghost latin" lang="en">{t('en', 'notfound.home')}</a>
       </div>
     </div>
   </section>

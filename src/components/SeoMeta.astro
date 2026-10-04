@@ -14,32 +14,49 @@ const siteUrl = 'https://waspect.jp';
 const fullUrl = url ? `${siteUrl}${url}` : siteUrl;
 const fullImage = image.startsWith('http') ? image : `${siteUrl}${image}`;
 
-// Build hreflang paths
 const pathWithoutLocale = url.replace(/^\/en/, '') || '/';
 const jaUrl = `${siteUrl}${pathWithoutLocale}`;
 const enUrl = `${siteUrl}/en${pathWithoutLocale}`;
+
+const organization = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'Waspect',
+  alternateName: '和スペクト',
+  url: siteUrl,
+  logo: `${siteUrl}/images/logo.png`,
+  email: 'info@waspect.jp',
+  foundingDate: '2024',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: '1-22-11 Ginza, Otake Building 2F',
+    addressLocality: 'Chuo-ku',
+    addressRegion: 'Tokyo',
+    addressCountry: 'JP',
+  },
+  sameAs: ['https://www.instagram.com/waspect_jp/', 'https://www.facebook.com/people/Waspect/61566549808615/'],
+};
 ---
 
-<!-- Open Graph -->
 <meta property="og:type" content="website" />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:image" content={fullImage} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
 <meta property="og:url" content={fullUrl} />
 <meta property="og:site_name" content="Waspect (和スペクト)" />
 <meta property="og:locale" content={lang === 'ja' ? 'ja_JP' : 'en_US'} />
 <meta property="og:locale:alternate" content={lang === 'ja' ? 'en_US' : 'ja_JP'} />
 
-<!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={fullImage} />
 
-<!-- Canonical -->
 <link rel="canonical" href={fullUrl} />
-
-<!-- Hreflang -->
 <link rel="alternate" hreflang="ja" href={jaUrl} />
 <link rel="alternate" hreflang="en" href={enUrl} />
 <link rel="alternate" hreflang="x-default" href={jaUrl} />
+
+<script type="application/ld+json" set:html={JSON.stringify(organization)} is:inline />

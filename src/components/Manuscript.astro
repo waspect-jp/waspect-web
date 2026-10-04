@@ -1,0 +1,79 @@
+---
+/**
+ * A fragment of genkō yōshi (原稿用紙), the ruled manuscript paper every
+ * Japanese student writes compositions on. 7 columns × 10 rows, read
+ * top-to-bottom and right-to-left. The characters write themselves in
+ * on page load and a vermilion side-line (傍線) then marks 「AI×英語」.
+ *
+ * The visible text is always Japanese (it is the brand mark); the
+ * translation is exposed through aria-label.
+ */
+interface Props {
+  label: string;
+}
+const { label } = Astro.props;
+
+const ROWS = 10;
+
+type Cell = { ch: string; tcy?: boolean; mark?: boolean; sig?: boolean } | null;
+type Column = { start: number; cells: Cell[] };
+
+const columns: Column[] = [
+  {
+    start: 1,
+    cells: [
+      { ch: '「' },
+      { ch: 'AI', tcy: true, mark: true },
+      { ch: '×', mark: true },
+      { ch: '英', mark: true },
+      { ch: '語', mark: true },
+      { ch: '」' },
+      { ch: 'は' },
+      { ch: '、' },
+    ],
+  },
+  { start: 0, cells: ['世', '界', 'で', '通', '用', 'す', 'る'].map((ch) => ({ ch })) },
+  { start: 0, cells: ['最', '強', 'の', 'パ', 'ス', 'ポ', 'ー', 'ト', '。'].map((ch) => ({ ch })) },
+  { start: 0, cells: [] },
+  { start: 4, cells: ['和', 'ス', 'ペ', 'ク', 'ト'].map((ch) => ({ ch, sig: true })) },
+  { start: 0, cells: [] },
+  { start: 0, cells: [] },
+];
+
+let index = 0;
+const grid = columns.map((col) => {
+  const cells: Array<{ cell: Cell; i: number; first: boolean; last: boolean }> = [];
+  for (let r = 0; r < ROWS; r++) {
+    const cell = col.cells[r - col.start] ?? null;
+    const prev = col.cells[r - col.start - 1] ?? null;
+    const next = col.cells[r - col.start + 1] ?? null;
+    cells.push({
+      cell: r >= col.start ? cell : null,
+      i: cell ? index++ : -1,
+      first: !!cell?.mark && !prev?.mark,
+      last: !!cell?.mark && !next?.mark,
+    });
+  }
+  return cells;
+});
+---
+
+<div class="sheet-wrap hero-media">
+  <div class="sheet" role="img" aria-label={label} lang="ja">
+    {grid.map((col) =>
+      col.map(({ cell, i, first, last }) =>
+        cell ? (
+          <span
+            class:list={['ch', { mark: cell.mark, sig: cell.sig, 'is-first': first, 'is-last': last }]}
+            style={`--i:${i};--n:${i}`}
+            aria-hidden="true"
+          >
+            {cell.tcy ? <span class="tcy">{cell.ch}</span> : cell.ch}
+          </span>
+        ) : (
+          <span aria-hidden="true" />
+        ),
+      ),
+    )}
+  </div>
+</div>

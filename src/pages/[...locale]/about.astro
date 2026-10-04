@@ -1,64 +1,82 @@
 ---
+import { Image } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { t, getStaticPaths as gsp, type Lang } from '../../i18n/utils';
+import PageHero from '../../components/PageHero.astro';
+import SectionHead from '../../components/SectionHead.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import Icon from '../../components/Icon.astro';
+import { t, localePath, getStaticPaths as gsp, type Lang } from '../../i18n/utils';
+import { jp } from '../../i18n/jp';
+import founders from '../../assets/photos/founders-newswitch.jpg';
+import shiboriBinding from '../../assets/photos/shibori-binding.jpg';
+import shiboriSun from '../../assets/photos/shibori-sunlight.jpg';
+import bonsai from '../../assets/photos/bonsai-detail.jpg';
+import mashio from '../../assets/photos/mashio.jpg';
+import stefan from '../../assets/photos/stefan.jpg';
+import ginza from '../../assets/photos/ginza-night.jpg';
+
 export const getStaticPaths = gsp;
 const { lang } = Astro.props as { lang: Lang };
+const T = (key: string) => jp(lang, t(lang, key));
+
+const people = [
+  { img: mashio, name: 'about.mashio.name', role: 'about.mashio.role', bio: 'about.mashio.bio' },
+  { img: stefan, name: 'about.stefan.name', role: 'about.stefan.role', bio: 'about.stefan.bio' },
+];
+
+const values = [
+  { icon: 'handshake', title: 'about.values.1.title', desc: 'about.values.1.desc' },
+  { icon: 'globe', title: 'about.values.2.title', desc: 'about.values.2.desc' },
+  { icon: 'hammer', title: 'about.values.3.title', desc: 'about.values.3.desc' },
+] as const;
+
+const company = [
+  { label: 'about.company.name.label', value: 'about.company.name' },
+  { label: 'about.company.address.label', value: 'about.company.address' },
+  { label: 'about.company.founded.label', value: 'about.company.founded' },
+  { label: 'about.company.business.label', value: 'about.company.business' },
+  { label: 'about.company.lang.label', value: 'about.company.lang' },
+];
+const mapsUrl = 'https://www.google.com/maps/search/?api=1&query=1-22-11+Ginza+Chuo-ku+Tokyo';
 ---
 
 <BaseLayout title={t(lang, 'meta.about.title')} description={t(lang, 'meta.about.desc')} activePage="about" lang={lang}>
+  <PageHero title={T('about.hero.title')} lead={T('about.hero.lead')} image={founders} alt={t(lang, 'about.hero.alt')} position="50% 30%">
+    <Fragment slot="actions">
+      <a href={localePath(lang, '/contact')} class="btn btn-primary btn-lg">
+        {t(lang, 'common.contact')}
+        <Icon name="arrow" size={18} class="ic-arrow" />
+      </a>
+    </Fragment>
+    <Fragment slot="facts">
+      <span class="fact"><Icon name="map-pin" size={16} />{t(lang, 'footer.address')}</span>
+      <span class="fact"><Icon name="languages" size={16} />{t(lang, 'about.company.lang')}</span>
+    </Fragment>
+    <Fragment slot="overlay">
+      <p class="small muted mt-3">{t(lang, 'about.founders.caption')}</p>
+    </Fragment>
+  </PageHero>
 
-  <!-- Hero -->
-  <section class="relative min-h-[80vh] flex items-center ink-wash overflow-hidden">
-    <div class="enso-blob w-[600px] h-[600px] -top-20 -right-20 bg-tertiary"></div>
-    <div class="max-w-7xl mx-auto px-6 lg:px-8 py-20 grid lg:grid-cols-2 gap-16 items-center">
-      <div class="z-10">
-        <span class="badge badge-primary hero-enter mb-6">{t(lang, 'about.badge')}</span>
-        <h1 class="text-[clamp(2.5rem,5vw,4.5rem)] font-headline font-extrabold text-primary leading-[1.08] tracking-tight mb-8 hero-enter hero-enter-delay-1">
-          {t(lang, 'about.hero.title.1')} <span class="text-primary-container">{t(lang, 'about.hero.title.accent')}</span>
-        </h1>
-        <p class="text-lg lg:text-xl text-on-surface-variant leading-relaxed max-w-xl hero-enter hero-enter-delay-2">
-          {t(lang, 'about.hero.desc')}
-        </p>
-      </div>
-      <div class="relative hero-enter hero-enter-delay-2">
-        <div class="aspect-square bg-surface-container-high rounded-[2rem] overflow-hidden shadow-2xl transform rotate-2 hover:rotate-0 transition-transform duration-700">
-          <img class="w-full h-full object-cover" alt="Minimalist Japanese garden" src="/images/zen-garden.jpg" />
+  <!-- Story -->
+  <section class="section tint">
+    <div class="wrap grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
+      <div class="lg:col-span-5">
+        <SectionHead title={T('about.story.title')} />
+        <div class="prose muted mt-6 grid gap-4 leading-relaxed" data-reveal>
+          <p set:html={T('about.story.p1')} />
+          <p set:html={T('about.story.p2')} />
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- Our Story -->
-  <section class="py-28 lg:py-36 bg-surface-container-low">
-    <div class="max-w-7xl mx-auto px-6 lg:px-8">
-      <div class="grid lg:grid-cols-12 gap-16 items-center">
-        <div class="lg:col-span-5 order-2 lg:order-1 reveal">
-          <div class="section-header">
-            <h2>{t(lang, 'about.story.title')}</h2>
-          </div>
-          <div class="space-y-5 text-on-surface-variant leading-relaxed">
-            <p set:html={t(lang, 'about.story.p1')} />
-            <p>{t(lang, 'about.story.p2')}</p>
-          </div>
+      <div class="grid grid-cols-2 gap-4 lg:col-span-7 lg:gap-5" data-reveal-stagger>
+        <div class="frame aspect-[3/4] self-end bg-mist-deep">
+          <Image src={shiboriBinding} alt={t(lang, 'about.story.alt1')} width={900} widths={[400, 640, 900]} sizes="(min-width: 1024px) 28vw, 50vw" format="webp" quality={78} />
         </div>
-        <div class="lg:col-span-7 order-1 lg:order-2 reveal">
-          <div class="grid grid-cols-2 gap-4">
-            <div class="space-y-4 pt-12">
-              <div class="h-56 rounded-3xl overflow-hidden">
-                <img class="w-full h-full object-cover" alt="Traditional Japanese wood joinery" src="/images/wood-joinery.jpg" />
-              </div>
-              <div class="h-72 bg-tertiary-container rounded-3xl flex items-center justify-center">
-                <span class="text-7xl font-headline font-extrabold text-on-tertiary-container opacity-15">和</span>
-              </div>
-            </div>
-            <div class="space-y-4">
-              <div class="h-72 rounded-3xl overflow-hidden">
-                <img class="w-full h-full object-cover" alt="Modern Tokyo skyscraper" src="/images/tokyo-skyscraper.jpg" />
-              </div>
-              <div class="h-56 rounded-3xl overflow-hidden border-4 border-white">
-                <img class="w-full h-full object-cover" alt="Team collaboration" src="/images/team-whiteboard.jpg" />
-              </div>
-            </div>
+        <div class="grid gap-4 lg:gap-5">
+          <div class="frame aspect-[4/3] bg-mist-deep">
+            <Image src={shiboriSun} alt={t(lang, 'about.story.alt2')} width={900} widths={[400, 640, 900]} sizes="(min-width: 1024px) 28vw, 50vw" format="webp" quality={78} />
+          </div>
+          <div class="frame aspect-[4/3] bg-mist-deep">
+            <Image src={bonsai} alt={t(lang, 'about.story.alt3')} width={900} widths={[400, 640, 900]} sizes="(min-width: 1024px) 28vw, 50vw" format="webp" quality={78} />
           </div>
         </div>
       </div>
@@ -66,103 +84,73 @@ const { lang } = Astro.props as { lang: Lang };
   </section>
 
   <!-- Founders -->
-  <section class="py-28 lg:py-36">
-    <div class="max-w-7xl mx-auto px-6 lg:px-8">
-      <div class="text-center section-header reveal">
-        <span class="badge badge-subtle mb-4">{t(lang, 'about.founders.label')}</span>
-        <h2 class="mx-auto">{t(lang, 'about.founders.title')}</h2>
-      </div>
-      <div class="grid md:grid-cols-2 gap-8 lg:gap-16 reveal-stagger">
-        <div class="card stone-surface p-10 flex flex-col items-center text-center group">
-          <div class="w-40 h-40 rounded-full mb-8 border-8 border-surface-container-low overflow-hidden group-hover:scale-105 transition-transform duration-500">
-            <img class="w-full h-full object-cover" alt="Mashio" src="/images/mashio2.jpg" />
-          </div>
-          <h3 class="text-2xl font-headline font-bold text-primary mb-1">{t(lang, 'about.mashio.name')}</h3>
-          <p class="text-tertiary font-semibold text-sm mb-5">{t(lang, 'about.mashio.role')}</p>
-          <p class="text-on-surface-variant text-sm leading-relaxed" set:html={t(lang, 'about.mashio.bio')} />
-        </div>
-        <div class="card stone-surface p-10 flex flex-col items-center text-center group">
-          <div class="w-40 h-40 rounded-full mb-8 border-8 border-surface-container-low overflow-hidden group-hover:scale-105 transition-transform duration-500">
-            <img class="w-full h-full object-cover saturate-[0.85] brightness-[1.02]" alt="Stefan Mihaylov" src="/images/stefan2.jpg" />
-          </div>
-          <h3 class="text-2xl font-headline font-bold text-primary mb-1">{t(lang, 'about.stefan.name')}</h3>
-          <p class="text-tertiary font-semibold text-sm mb-5">{t(lang, 'about.stefan.role')}</p>
-          <p class="text-on-surface-variant text-sm leading-relaxed" set:html={t(lang, 'about.stefan.bio')} />
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Core Values -->
-  <section class="py-28 lg:py-36 bg-surface-container-low">
-    <div class="max-w-7xl mx-auto px-6 lg:px-8">
-      <div class="section-header reveal">
-        <h2>{t(lang, 'about.values.title')}</h2>
-      </div>
-      <div class="grid md:grid-cols-3 gap-6 reveal-stagger">
-        <div class="card stone-surface p-10 min-h-[360px] flex flex-col">
-          <div class="w-14 h-14 bg-primary-container rounded-2xl flex items-center justify-center mb-6">
-            <span class="material-symbols-outlined text-white text-2xl">spa</span>
-          </div>
-          <h4 class="text-xl font-headline font-bold text-primary mb-3">{t(lang, 'about.values.harmony')}</h4>
-          <p class="text-on-surface-variant text-sm leading-relaxed">{t(lang, 'about.values.harmony.desc')}</p>
-        </div>
-        <div class="bg-primary p-10 rounded-3xl min-h-[360px] flex flex-col text-white shadow-[var(--shadow-card)]">
-          <div class="w-14 h-14 bg-white/15 backdrop-blur-sm rounded-2xl flex items-center justify-center mb-6">
-            <span class="material-symbols-outlined text-white text-2xl">conversion_path</span>
-          </div>
-          <h4 class="text-xl font-headline font-bold mb-3">{t(lang, 'about.values.bridge')}</h4>
-          <p class="text-primary-fixed text-sm leading-relaxed">{t(lang, 'about.values.bridge.desc')}</p>
-        </div>
-        <div class="bg-tertiary p-10 rounded-3xl min-h-[360px] flex flex-col text-white shadow-[var(--shadow-card)]">
-          <div class="w-14 h-14 bg-white/15 backdrop-blur-sm rounded-2xl flex items-center justify-center mb-6">
-            <span class="material-symbols-outlined text-white text-2xl">architecture</span>
-          </div>
-          <h4 class="text-xl font-headline font-bold mb-3">{t(lang, 'about.values.hands')}</h4>
-          <p class="text-tertiary-fixed text-sm leading-relaxed">{t(lang, 'about.values.hands.desc')}</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Company Info -->
-  <section class="py-28 lg:py-36">
-    <div class="max-w-7xl mx-auto px-6 lg:px-8">
-      <div class="bg-surface-container-low rounded-[2.5rem] p-12 lg:p-20 relative overflow-hidden reveal">
-        <div class="enso-blob w-[500px] h-[500px] bottom-0 left-0 translate-y-1/2 -translate-x-1/2 bg-tertiary"></div>
-        <div class="relative z-10 grid lg:grid-cols-2 gap-16">
-          <div>
-            <h2 class="text-3xl font-headline font-bold text-primary mb-10">{t(lang, 'about.hq.title')}</h2>
-            <div class="space-y-6">
-              <div class="flex items-start gap-5">
-                <span class="material-symbols-outlined text-tertiary">location_on</span>
-                <div>
-                  <h5 class="font-bold text-primary text-sm mb-0.5">{t(lang, 'about.hq.name')}</h5>
-                  <p class="text-on-surface-variant text-sm">{t(lang, 'about.hq.address')}</p>
-                </div>
-              </div>
-              <div class="flex items-start gap-5">
-                <span class="material-symbols-outlined text-tertiary">mail</span>
-                <div>
-                  <h5 class="font-bold text-primary text-sm mb-0.5">{t(lang, 'about.hq.email.label')}</h5>
-                  <p class="text-on-surface-variant text-sm">{t(lang, 'about.hq.email')}</p>
-                </div>
-              </div>
-              <div class="flex items-start gap-5">
-                <span class="material-symbols-outlined text-tertiary">calendar_today</span>
-                <div>
-                  <h5 class="font-bold text-primary text-sm mb-0.5">{t(lang, 'about.hq.founded.label')}</h5>
-                  <p class="text-on-surface-variant text-sm">{t(lang, 'about.hq.founded')}</p>
-                </div>
-              </div>
+  <section class="section">
+    <div class="wrap">
+      <SectionHead title={T('about.founders.title')} />
+      <div class="mt-12 grid gap-10 md:grid-cols-2 lg:mt-16 lg:gap-16" data-reveal-stagger>
+        {people.map((p) => (
+          <article class="grid gap-6 sm:grid-cols-[9rem_1fr] sm:gap-8">
+            <div class="frame aspect-square w-36 bg-mist-deep">
+              <Image src={p.img} alt={t(lang, p.name)} width={288} height={288} format="webp" quality={82} />
             </div>
-          </div>
-          <div class="rounded-3xl overflow-hidden grayscale contrast-125 h-[360px]">
-            <img class="w-full h-full object-cover" alt="Ginza district, Tokyo" src="/images/ginza-aerial.jpg" />
-          </div>
-        </div>
+            <div>
+              <h3 class="h3 latin">{t(lang, p.name)}</h3>
+              <p class="small mt-1 font-bold text-rule-deep">{t(lang, p.role)}</p>
+              <p class="prose muted mt-4 leading-relaxed" set:html={T(p.bio)} />
+            </div>
+          </article>
+        ))}
       </div>
     </div>
   </section>
 
+  <!-- Values -->
+  <section class="section tint">
+    <div class="wrap">
+      <SectionHead title={T('about.values.title')} />
+      <ul class="mt-12 grid gap-x-10 gap-y-10 md:grid-cols-3 lg:mt-16" data-reveal-stagger>
+        {values.map((v) => (
+          <li class="border-t border-rule-soft pt-6">
+            <span class="grid h-12 w-12 place-items-center rounded-full bg-white text-rule-deep ring-1 ring-rule-soft">
+              <Icon name={v.icon} size={22} />
+            </span>
+            <h3 class="h3 mt-5" set:html={T(v.title)} />
+            <p class="muted mt-2 leading-relaxed" set:html={T(v.desc)} />
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- Company -->
+  <section class="section">
+    <div class="wrap grid gap-12 lg:grid-cols-12 lg:gap-16">
+      <div class="lg:col-span-7">
+        <SectionHead title={T('about.company.title')} />
+        <dl class="ruled mt-10" data-reveal>
+          {company.map((row) => (
+            <div class="grid gap-1 py-4 sm:grid-cols-[9rem_1fr] sm:gap-6">
+              <dt class="small muted">{t(lang, row.label)}</dt>
+              <dd class="text-ink" set:html={T(row.value)} />
+            </div>
+          ))}
+          <div class="grid gap-1 py-4 sm:grid-cols-[9rem_1fr] sm:gap-6">
+            <dt class="small muted">{t(lang, 'about.company.email.label')}</dt>
+            <dd><a href="mailto:info@waspect.jp" class="link">info@waspect.jp</a></dd>
+          </div>
+        </dl>
+      </div>
+      <div class="lg:col-span-5" data-reveal>
+        <div class="frame aspect-[4/5] bg-mist-deep">
+          <Image src={ginza} alt={t(lang, 'about.company.alt')} width={1100} widths={[480, 760, 1100]} sizes="(min-width: 1024px) 40vw, 100vw" format="webp" quality={78} />
+        </div>
+        <a href={mapsUrl} target="_blank" rel="noopener noreferrer" class="link small mt-4">
+          {t(lang, 'about.company.map')}
+          <Icon name="arrow-up-right" size={14} />
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand title={T('home.cta.title')} desc={T('home.cta.desc')} href={localePath(lang, '/contact')} label={t(lang, 'home.cta.btn')} />
 </BaseLayout>
