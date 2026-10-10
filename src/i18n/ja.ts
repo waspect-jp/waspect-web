@@ -45,6 +45,14 @@ export default {
   'footer.address': '〒104-0061 東京都中央区銀座<span class="nobr">1-22-11</span><br />大竹ビル2F',
   'footer.copyright': 'Waspect Inc. All rights reserved.',
 
+  // ── Optional analytics ──
+  'analytics.title': 'サイトの利用状況について',
+  'analytics.description': 'サイトの改善のため、任意のGoogle Analytics Cookieを使用します。フォームの入力内容はGoogle Analyticsに送信しません。設定はページ下部からいつでも変更できます。',
+  'analytics.googlePrivacy': 'Googleのプライバシーポリシー',
+  'analytics.allow': 'アクセス解析を許可',
+  'analytics.decline': '許可しない',
+  'analytics.settings': 'アクセス解析の設定',
+
   // ── Home: hero ──
   'home.hero.title': '「AI×英語」は、世界で通用する最強のパスポート。',
   'home.hero.lead': '弊社のAI教育・グローバル教育は、ビジネスの現場での知見に基づいた、弊社オリジナルかつ実践的なプログラムです。日本の学校・企業・個人の皆さまが、テクノロジーと英語を同時に身につけ、世界とつながり、自ら価値を創出できる人材になるお手伝いをしてまいります。',

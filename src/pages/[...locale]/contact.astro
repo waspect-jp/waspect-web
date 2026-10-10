@@ -155,6 +155,7 @@ const mapEmbed = `https://www.google.com/maps?q=${encodeURIComponent('東京都�
   </section>
 
   <script>
+    import { trackContactSuccess } from '../../lib/analytics';
     const radios = document.querySelectorAll<HTMLInputElement>('input[name="identity"]');
     const scrollBehavior: ScrollBehavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
     const submit = document.getElementById('contact-submit') as HTMLButtonElement | null;
@@ -212,6 +213,7 @@ const mapEmbed = `https://www.google.com/maps?q=${encodeURIComponent('東京都�
           body,
         });
         if (!res.ok) throw new Error(`Form submission failed: ${res.status}`);
+        trackContactSuccess(Array.from(radios).find((r) => r.checked)?.value ?? '');
         wrap?.classList.add('hidden');
         success?.classList.remove('hidden');
         success?.focus();

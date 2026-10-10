@@ -12,6 +12,8 @@ for schools, businesses and families in Japan.
 - Hosted on [Netlify](https://netlify.com); forms via Netlify Forms, synced to HubSpot
 
 See [DESIGN.md](./DESIGN.md) for the design system.
+See [ANALYTICS-SEO.md](./ANALYTICS-SEO.md) for Google Analytics, consent,
+conversion events and the Search Console migration checklist.
 
 ## Development
 

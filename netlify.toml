@@ -2,6 +2,17 @@
   command = "npm run build"
   publish = "dist"
 
+# Preserve the indexed Wix business campaign URL.
+[[redirects]]
+  from = "/promotion2"
+  to = "/businesses/"
+  status = 301
+
+[[redirects]]
+  from = "/en/promotion2"
+  to = "/en/businesses/"
+  status = 301
+
 # Cache static assets aggressively
 [[headers]]
   for = "/images/*"
@@ -20,4 +31,4 @@
     X-Frame-Options = "DENY"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; frame-src https://www.google.com"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://www.googletagmanager.com https://*.google-analytics.com; connect-src 'self' https://www.googletagmanager.com https://*.google-analytics.com https://*.google.com; frame-src https://www.google.com"

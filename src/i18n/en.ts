@@ -1,14 +1,14 @@
 export default {
   // ── Meta ──
-  'meta.home.title': 'AI × English education for schools and companies in Japan | Waspect (和スペクト)',
+  'meta.home.title': 'AI & English Education in Japan | Waspect (和スペクト)',
   'meta.home.desc': 'Waspect teaches AI and English together: inquiry programs for Japanese schools, practical AI training for companies, and a family program in preparation.',
-  'meta.schools.title': 'For Schools | Waspect (和スペクト)',
+  'meta.schools.title': 'AI & English Programmes for Schools in Japan | Waspect',
   'meta.schools.desc': 'AI and English, taught together by bilingual practitioners. Inquiry projects on local issues, AI literacy foundations and more, customized for each school.',
-  'meta.businesses.title': 'For Businesses | Waspect (和スペクト)',
+  'meta.businesses.title': 'Corporate AI Training & Global Team Development | Waspect',
   'meta.businesses.desc': 'Practical AI training for Japanese companies competing globally: AI literacy workshops, DX consulting, and global team development.',
-  'meta.kids.title': 'For Parents | Waspect (和スペクト)',
+  'meta.kids.title': 'AI & English for Children (Coming Soon) | Waspect',
   'meta.kids.desc': 'Learn AI, discover the world, meet English. A family program that grows your child\'s curiosity, coming soon.',
-  'meta.about.title': 'About | Waspect (和スペクト)',
+  'meta.about.title': 'About Waspect | AI & English Education in Japan',
   'meta.about.desc': 'We blend Japanese strengths with global perspectives to take people and organizations to their next stage. Our story, founders and company details.',
   'meta.contact.title': 'Contact | Waspect (和スペクト)',
   'meta.contact.desc': 'Schools, businesses and parents: get in touch. We work in Japanese and English.',
@@ -44,6 +44,14 @@ export default {
   'footer.newsletter.error': 'We couldn\'t sign you up. Please try again in a moment.',
   'footer.address': '1-22-11 Ginza, Otake Building 2F,<br />Chuo-ku, Tokyo 104-0061',
   'footer.copyright': 'Waspect Inc. All rights reserved.',
+
+  // ── Optional analytics ──
+  'analytics.title': 'Help us understand site visits',
+  'analytics.description': 'We use optional Google Analytics cookies to understand how our website is used. Form contents are not sent to Google Analytics. You can change your choice in the footer at any time.',
+  'analytics.googlePrivacy': 'Google’s privacy policy',
+  'analytics.allow': 'Allow analytics',
+  'analytics.decline': 'Decline',
+  'analytics.settings': 'Analytics cookies',
 
   // ── Home: hero ──
   'home.hero.title': 'AI × English is a passport that works in any country and any industry.',

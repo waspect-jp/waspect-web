@@ -1,0 +1,57 @@
+---
+import { t, type Lang } from '../i18n/utils';
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+---
+
+<section
+  id="analytics-consent"
+  hidden
+  aria-labelledby="analytics-consent-title"
+  class="fixed inset-x-4 bottom-4 z-50 max-w-lg rounded-2xl border border-rule-soft bg-white p-5 shadow-xl sm:left-6 sm:right-auto sm:bottom-6 sm:p-6"
+>
+  <h2 id="analytics-consent-title" class="text-base font-bold text-ink">{t(lang, 'analytics.title')}</h2>
+  <p class="small muted mt-2 leading-relaxed">{t(lang, 'analytics.description')}</p>
+  <a class="small link mt-2 inline-flex" href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">{t(lang, 'analytics.googlePrivacy')}</a>
+  <div class="mt-4 flex flex-wrap gap-3">
+    <button id="analytics-allow" type="button" class="btn btn-primary">{t(lang, 'analytics.allow')}</button>
+    <button id="analytics-decline" type="button" class="btn btn-ghost">{t(lang, 'analytics.decline')}</button>
+  </div>
+</section>
+
+<script>
+  import { initAnalytics, MEASUREMENT_ID, type Consent } from '../lib/analytics';
+  const analytics = initAnalytics();
+  const panel = document.getElementById('analytics-consent');
+  const settings = document.querySelector<HTMLButtonElement>('[data-analytics-settings]');
+  const allow = document.getElementById('analytics-allow');
+  const decline = document.getElementById('analytics-decline');
+  let openedFromSettings = false;
+
+  if (panel) panel.hidden = analytics.getConsent() !== null;
+  settings?.addEventListener('click', () => {
+    openedFromSettings = true;
+    if (panel) panel.hidden = false;
+    allow?.focus();
+  });
+
+  function choose(consent: Consent) {
+    analytics.setConsent(consent);
+    if (consent === 'denied') {
+      // Clear Analytics cookies from both host-only and auto domain scopes.
+      for (const cookie of document.cookie.split(';')) {
+        const name = cookie.trim().split('=')[0];
+        if (name === '_ga' || name === `_ga_${MEASUREMENT_ID.slice(2)}`) {
+          for (const domain of ['', '; domain=waspect.jp', '; domain=.waspect.jp']) {
+            document.cookie = `${name}=; Max-Age=0; path=/${domain}; SameSite=Lax`;
+          }
+        }
+      }
+    }
+    if (panel) panel.hidden = true;
+    if (openedFromSettings) settings?.focus();
+  }
+
+  allow?.addEventListener('click', () => choose('granted'));
+  decline?.addEventListener('click', () => choose('denied'));
+</script>

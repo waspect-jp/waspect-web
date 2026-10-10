@@ -64,6 +64,38 @@ describe('built pages', () => {
     expect(existsSync(join(DIST, 'images', 'og-v2.png'))).toBe(true);
   });
 
+  it('lists exactly the indexable bilingual pages with reciprocal sitemap alternates', () => {
+    const sitemap = parse(readFileSync(join(DIST, 'sitemap-0.xml'), 'utf8'), { lowerCaseTagName: false });
+    const entries = sitemap.querySelectorAll('url');
+    expect(entries.map((entry) => entry.querySelector('loc')?.text).sort()).toEqual(LOCALIZED.map((route) => `${SITE}${route}`).sort());
+    for (const entry of entries) {
+      const route = (entry.querySelector('loc')?.text ?? '').replace(SITE, '');
+      const base = route.replace(/^\/en(?=\/|$)/, '') || '/';
+      const alternates = entry.querySelectorAll('xhtml\\:link');
+      expect(alternates.find((link) => link.getAttribute('hreflang') === 'ja')?.getAttribute('href')).toBe(`${SITE}${base}`);
+      expect(alternates.find((link) => link.getAttribute('hreflang') === 'en')?.getAttribute('href')).toBe(`${SITE}/en${base}`);
+      expect(load(route).querySelector('meta[name="robots"][content*="noindex"]')).toBeNull();
+    }
+    expect(readFileSync(join(DIST, 'robots.txt'), 'utf8')).toContain(`Sitemap: ${SITE}/sitemap-index.xml`);
+  });
+
+  it('keeps error pages out of the index without canonical or language alternates', () => {
+    const doc = parse(readFileSync(join(DIST, '404.html'), 'utf8'));
+    expect(doc.querySelector('meta[name="robots"]')?.getAttribute('content')).toBe('noindex');
+    expect(doc.querySelector('link[rel="canonical"]')).toBeNull();
+    expect(doc.querySelector('link[hreflang]')).toBeNull();
+  });
+
+  it.each(LOCALIZED)('%s includes accessible Analytics choices and a way to change them', (route) => {
+    const doc = load(route);
+    expect(doc.querySelector('#analytics-consent')?.hasAttribute('hidden')).toBe(true);
+    expect(doc.querySelector('#analytics-allow')?.text.trim()).not.toBe('');
+    expect(doc.querySelector('#analytics-decline')?.text.trim()).not.toBe('');
+    expect(doc.querySelector('button[data-analytics-settings]')).not.toBeNull();
+    // Loading Google is conditional on runtime host + consent, never a static tag.
+    expect(doc.querySelector('script[src*="googletagmanager.com"]')).toBeNull();
+  });
+
   it.each(LOCALIZED)('%s has no leaked translation keys or undefined values', (route) => {
     const text = load(route).querySelector('body')?.text ?? '';
     expect(text).not.toMatch(/\b(?:home|schools|biz|kids|about|contact|nav|footer|common|meta|notfound)\.[a-z0-9]+(?:\.[a-z0-9]+)+\b/);

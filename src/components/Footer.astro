@@ -107,12 +107,14 @@ const switchUrl = Astro.props.switchUrl ?? switchLangPath(lang, currentPath.repl
 
     <div class="small muted mt-14 flex flex-col items-start justify-between gap-4 border-t border-rule-soft pt-6 md:flex-row md:items-center">
       <p>&copy; {year} {t(lang, 'footer.copyright')}</p>
+      <button type="button" class="link" data-analytics-settings>{t(lang, 'analytics.settings')}</button>
       <a href={switchUrl} class="latin link" lang={lang === 'ja' ? 'en' : 'ja'}>{t(lang, 'nav.lang')}</a>
     </div>
   </div>
 </footer>
 
 <script>
+  import { trackNewsletterSuccess } from '../lib/analytics';
   const form = document.getElementById('newsletter-form') as HTMLFormElement | null;
   const success = document.getElementById('newsletter-success');
   const error = document.getElementById('newsletter-error');
@@ -125,6 +127,7 @@ const switchUrl = Astro.props.switchUrl ?? switchLangPath(lang, currentPath.repl
       const body = new URLSearchParams(new FormData(form) as unknown as Record<string, string>);
       const res = await fetch(form.action, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body });
       if (!res.ok) throw new Error(`Newsletter submission failed: ${res.status}`);
+      trackNewsletterSuccess();
       form.classList.add('hidden');
       success?.classList.remove('hidden');
       success?.classList.add('flex');
